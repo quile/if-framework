@@ -1,0 +1,30 @@
+<script type="text/javascript"><!--
+<BINDING_IF:IS_FIRST_TIME_LOADED>
+var _componentRegistry = new Array();
+var _componentsInOrder = new Array();
+var _componentPosition = new Array();
+function cscComponentWithId (componentId) {
+	return _componentRegistry[componentId];
+}
+function cscParentComponentOfElement (element) {
+	while (element && element.parentNode) {
+		if (_componentRegistry[element.parentNode.id]) {
+			return element.parentNode;
+		}
+		element = element.parentNode;
+	}
+	//alert("Couldn't find parent of " + element);
+}	
+</BINDING_IF:IS_FIRST_TIME_LOADED>
+_componentPosition["<BINDING:COMPONENT_ID>"] = _componentsInOrder.length;
+_componentsInOrder[_componentsInOrder.length] = "<BINDING:COMPONENT_ID>";
+// -->
+</script>
+
+<span id="<BINDING:COMPONENT_ID>" componentType="<BINDING:COMPONENT_TYPE>">
+<BINDING:CONTENT>
+</span>
+<script type="text/javascript"><!--
+_componentRegistry["<BINDING:COMPONENT_ID>"] = document.getElementById("<BINDING:COMPONENT_ID>");
+// -->
+</script>

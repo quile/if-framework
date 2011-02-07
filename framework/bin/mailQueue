@@ -1,0 +1,323 @@
+#!/usr/bin/env perl
+
+# Copyright (c) 2010 - Action Without Borders
+#
+# MIT License
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+use lib qw(lib conf ../applications bin);
+#===================================================
+# mailQueue: wakes up every so often and
+# processes mail messages from the queue
+#===================================================
+
+use strict;
+use lib '.';
+use AppControl::Utility;
+use IF::Mailer;
+use IF::FetchSpecification;
+use IF::Qualifier;
+use IF::ObjectContext;
+use IF::Log;
+use IF::MailQueue;
+#===================================================
+use HTML::Template;
+use POSIX;
+use Fcntl;
+use Socket;
+use Getopt::Long;
+#===================================================
+
+my $applicationName;
+my $nodetach = 0;
+my $debug = 0;
+
+# Process command line args
+my  $result = GetOptions( "application=s" => \$applicationName,
+            "debug" => \$debug,
+			"nodetach" => \$nodetach );
+
+# app loading gunk.  I wish I could abstract this away somewhere nice.
+my $applicationClass = $applicationName."::Application";
+if ($applicationName eq "IFTest") {
+	unshift @INC, "t";
+} else {
+	unshift @INC, "../applications/$applicationName";
+}
+
+print "Loading app config...\n";
+my $appConfigClassName = AppControl::Utility::loadAppConfig($applicationName, undef);
+$ENV{'APP_ROOT'}       = AppControl::Utility::configurationValueForKey('APP_ROOT');
+$ENV{'FRAMEWORK_ROOT'} = AppControl::Utility::configurationValueForKey('FRAMEWORK_ROOT');
+print "App root is $ENV{'APP_ROOT'}, framework is $ENV{'FRAMEWORK_ROOT'}\n";
+
+# this sets up all the include paths
+require "AppControl/Perl5Lib.pl";
+
+eval "use $applicationClass;";
+if ($@) {
+	IF::Log::error($@);
+	exit(1);
+}
+
+# --- ok, moving on now ----
+
+
+usage() unless ($result && $applicationName);
+IF::Log::setLogMask(0) unless $debug;
+IF::Log::setLogMask(0xffff) if $debug;
+
+my $application = IF::Application->defaultApplication();
+my $mailQueueLogFile = $application->configurationValueForKey('APP_ROOT')."/logs/mailQueue.log";
+my $mailQueuePidFile = $application->configurationValueForKey('APP_ROOT')."/logs/mailQueue.pid";
+
+IF::Log::debug("Logging to $mailQueueLogFile");
+
+# Time between checks of the mail queue
+my $SLEEP_INTERVAL = 300;
+my $DEFAULT_MAIL_BATCH_SIZE = 500;
+
+# The list of "clean" smtp servers (will fall back on other methods if these are not defined or working)
+my $smtpServers = $application->configurationValueForKey('SMTP_SERVERS_CLEAN');
+
+# Set up signal handling:
+
+unless ($nodetach) {
+	# daemonize
+	my $pid = fork;
+	exit if $pid;
+	die "couldn't fork: $!" unless defined($pid);
+	POSIX::setsid() or die "can't start a new session: $!";
+}
+
+my $time_to_die = 0;
+
+$SIG{INT} = $SIG{TERM} = \&signal_handler;
+$SIG{HUP} = \&hup_handler;
+$SIG{PIPE} = 'IGNORE';
+
+# write pid file
+open PIDFILE,"> $mailQueuePidFile" || die "Error writing pid $mailQueuePidFile\n";
+print PIDFILE $$;
+close PIDFILE;
+
+# open log file
+open LOG,">> $mailQueueLogFile" || die "Error appending to log file $mailQueueLogFile\n";
+# turn off output buffering for the log file
+my $old_fh = select(LOG);
+$| = 1;
+select($old_fh);
+print LOG scalar localtime," - Mail Queue daemon starting.\n";
+
+# set the process name for easier monitoring
+$0="mailQueue";
+
+my $mqm = IF::MailQueue::Model();
+my $oc = IF::ObjectContext->new();
+$oc->setModel($mqm);
+
+my $mailer = IF::Mailer->new()->initWithApplication($application);
+
+my $messagesSentForEvent = {};
+
+until($time_to_die) {
+
+	# When we wake up, we loop over mail queue entries that
+	# are not associated with mail events.
+	eval {
+		while (my $mailQueueEntries = batchOfMiscellaneousMailQueueEntries()) {
+			foreach my $mailQueueEntry (@$mailQueueEntries) {
+				sendMailQueueEntry($mailQueueEntry);
+				$mailQueueEntry->_deleteSelf(); # ouch
+			}
+		}
+
+		# Now fetch all ready events
+		my $readyEvents = readyMailEvents();
+
+		foreach my $readyEvent (@$readyEvents) {
+			while (my $mailQueueEntries =
+					batchOfMailQueueEntriesForEvent($readyEvent)) {
+				foreach my $mailQueueEntry (@$mailQueueEntries) {
+					sendMailQueueEntry($mailQueueEntry);
+					if ($mailQueueEntry->mailEvent()) {
+						$messagesSentForEvent->{$mailQueueEntry->mailEvent()->id()} += 1;
+					}
+					$mailQueueEntry->_deleteSelf(); # ouch
+				}
+			}
+			# now delete all the messages if there are any left
+			$readyEvent->deleteAllQueueEntries();
+			delete $messagesSentForEvent->{$readyEvent->id()};
+			# and the event itself
+			$readyEvent->_deleteSelf();
+		}
+	};
+	print LOG $@ if $@;
+	sleep($SLEEP_INTERVAL);
+}
+
+# Now perform numerous cleanups
+# TBD...
+
+
+#============================================
+# signal handlers
+#============================================
+sub signal_handler {
+  $time_to_die = 1;
+}
+
+sub hup_handler {
+  print LOG scalar localtime," - Sig HUP\n";
+}
+
+# return a list of mailevents that are ready to go
+sub readyMailEvents {
+	my $sendDateQualifier = IF::Qualifier->key("sendDate < %@", time);
+	my $mailEventQualifier = IF::Qualifier->key("isLastMessage = %@", 1);
+	my $fetchSpecification = IF::FetchSpecification->new("MailQueueEntry",
+					IF::Qualifier->and([$sendDateQualifier,
+										$mailEventQualifier]));
+	$fetchSpecification->setSortOrderings(["CREATION_DATE"]);
+	$fetchSpecification->setFetchLimit($DEFAULT_MAIL_BATCH_SIZE);
+
+	# Grab matching messages
+	my $queueEntries = IF::ObjectContext->new()->entitiesMatchingFetchSpecification($fetchSpecification);
+
+	if (scalar @$queueEntries == 0) {
+		return undef;
+	}
+	my $events = [];
+	foreach my $queueEntry (@$queueEntries) {
+		next unless $queueEntry->mailEvent();
+		push (@$events, $queueEntry->mailEvent());
+	}
+	#IF::Log::dump($events);
+	return $events;
+}
+
+sub batchOfMailQueueEntriesForEvent {
+	my $event = shift;
+	my $eventQualifier = IF::Qualifier->key("mailEventId = %@", $event->id());
+	my $fetchSpecification = IF::FetchSpecification->new("MailQueueEntry", $eventQualifier);
+	$fetchSpecification->setSortOrderings(["ID"]);
+	$fetchSpecification->setFetchLimit($DEFAULT_MAIL_BATCH_SIZE);
+
+	# Grab matching messages
+	my $queueEntries = IF::ObjectContext->new()->entitiesMatchingFetchSpecification($fetchSpecification);
+
+	if (scalar @$queueEntries == 0) {
+		return undef;
+	}
+	return $queueEntries;
+}
+
+sub batchOfMiscellaneousMailQueueEntries {
+	my $sendDateQualifier = IF::Qualifier->key("sendDate < %@", time);
+	my $mailEventQualifier = IF::Qualifier->key("mailEventId = %@", 0);
+	my $fetchSpecification = IF::FetchSpecification->new("MailQueueEntry",
+					IF::Qualifier->and([$sendDateQualifier, $mailEventQualifier]));
+	$fetchSpecification->setSortOrderings(["ID"]);
+	$fetchSpecification->setFetchLimit($DEFAULT_MAIL_BATCH_SIZE);
+
+	# Grab matching messages
+	my $queueEntries = IF::ObjectContext->new()->entitiesMatchingFetchSpecification($fetchSpecification);
+
+	if (scalar @$queueEntries == 0) {
+		return undef;
+	}
+	return $queueEntries;
+}
+
+sub sendMailQueueEntry {
+	my $queueEntry = shift;
+
+	if ($queueEntry->mailMessageId() == 0) {
+	    if ($queueEntry->mailEvent()->createdBy()) {
+    		if ($queueEntry->isLastMessage()) {
+    			$mailer->sendMail(
+    					$queueEntry->email(),
+    					$queueEntry->mailEvent()->createdBy(),
+    					"JOB COMPLETE: ".$queueEntry->mailEvent()->logMessage(),
+    					"Sent ".$messagesSentForEvent->{$queueEntry->mailEvent()->id()}." messages\n\nJob completed at ".scalar localtime(time).".\n",
+    					{},
+    					'system',
+    					0,
+    					$smtpServers,
+    				);
+
+    			print LOG scalar localtime(time)." Finished job '".$queueEntry->mailEvent()->logMessage()."'\n";
+    			print LOG "============================================================\n";
+    		} else {
+    			$mailer->sendMail(
+    					$queueEntry->email(),
+    					$queueEntry->mailEvent()->createdBy(),
+    					"JOB STARTED: ".$queueEntry->mailEvent()->logMessage(),
+    					"Job started at ".scalar localtime(time).".\n",
+    					{},
+    					'system',
+    					0,
+    					$smtpServers,
+    				);
+    			print LOG "============================================================\n";
+    			print LOG scalar localtime(time)." Started job '".$queueEntry->mailEvent()->logMessage()."'\n";
+    		}
+    	}
+	} else {
+		# Build an HTML template and populate it with the fieldValues from
+		# the mailQueueEntry
+		my $message = HTML::Template->new( arrayref => [$queueEntry->message()->body()],
+										   die_on_bad_params => 0
+									   );
+
+		my $fieldValues = $queueEntry->fieldValues();
+		foreach my $key (keys %$fieldValues) {
+			$message->param($key => $fieldValues->{$key});
+		}
+
+		my $headers = $queueEntry->message()->headers() || {};
+
+		# Send the built template
+		if (IF::Log::assert(
+			$mailer->sendMail(
+				$queueEntry->email(),
+				$queueEntry->sender(),
+				$queueEntry->message()->subject(),
+				$message->output(),
+				{ "Content-type" => $queueEntry->message()->contentType(),
+				  %$headers,
+			    },
+				'mailqueue',
+				0,
+				$smtpServers,
+			), "Sending mail queue entry failed")) {
+			print LOG scalar localtime(time)." Sent mail to ".$queueEntry->email()."\n";
+		} else {
+			print LOG scalar localtime(time)." ERROR - Sending mail to ".$queueEntry->email()." FAILED\n";
+		}
+	}
+}
+
+sub usage {
+	my ($self) = @_;
+	print "mailQueue --application=<application> [--debug] [--nodetach]\n";
+	exit;
+}

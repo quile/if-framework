@@ -1,0 +1,64 @@
+#!/usr/bin/env perl
+
+# Copyright (c) 2010 - Action Without Borders
+#
+# MIT License
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+use lib qw(lib conf lib/Root);
+
+use strict;
+use IF::Config;
+use Getopt::Long;
+
+my $applicationPath;
+my $command;
+my $debug = 0;
+
+my $result = GetOptions("application-path=s" => \$applicationPath,
+                        "debug" => \$debug,
+                        "command=s" => \$command,
+                        );
+$applicationPath ||= "../applications";
+usage() unless ($result && $applicationPath && $command);
+
+my $applications = applicationsFoundAtPath($applicationPath);
+foreach my $application (@$applications) {
+    my $appCommand = "bin/appCtl --application=$application $command ApacheModPerl";
+    print `$appCommand`;
+}
+
+#-------------------------------------------------
+
+sub applicationsFoundAtPath {
+    my ($applicationPath) = @_;
+    opendir DIR, $applicationPath || die "Couldn't find applications in path $applicationPath";
+    my @apps = grep {-d "$applicationPath/$_" && $_ !~ /^\.+$/} readdir DIR;
+    closedir DIR;
+    return \@apps;
+}
+
+sub usage {
+    print <<EOU
+usage: serverCtl [--application-path=<path>] [--debug] --command=<stop|start>
+EOU
+    ;
+    exit(1);
+}

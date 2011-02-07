@@ -1,0 +1,174 @@
+#!/usr/bin/env perl
+
+# Copyright (c) 2010 - Action Without Borders
+#
+# MIT License
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+use lib qw(lib conf ../applications bin);
+
+#=======================================
+# given a model, it fetches attributes
+# from the DB and stores them as
+# dictionaries
+#=======================================
+
+use strict;
+use lib '.';
+use Getopt::Long;
+use AppControl::Utility;
+use IF::Log;
+use IF::DB;
+use IF::PrimaryKey;
+use Data::Dumper;
+
+my $inputModel;
+my $outputModel;
+my $application;
+my $debug;
+
+GetOptions( "application=s" => \$application,
+			"input-model=s" => \$inputModel,
+			"output-model=s" => \$outputModel,
+			"debug" => \$debug );
+
+usage() unless ($application && $inputModel && $outputModel);
+if ($debug) {
+    $ENV{'MOD_PERL'} = 1;
+	IF::Log::setLogMask(0xffff);
+}
+
+my $applicationClass = $application."::Application";
+if ($application eq "IFTest") {
+	unshift @INC, "t";
+} else {
+	unshift @INC, "../applications/$application";
+}
+
+print "Loading app config...\n";
+my $appConfigClassName = AppControl::Utility::loadAppConfig($application, undef);
+$ENV{'APP_ROOT'}       = AppControl::Utility::configurationValueForKey('APP_ROOT');
+$ENV{'FRAMEWORK_ROOT'} = AppControl::Utility::configurationValueForKey('FRAMEWORK_ROOT');
+print "App root is $ENV{'APP_ROOT'}, framework is $ENV{'FRAMEWORK_ROOT'}\n";
+
+# this sets up all the include paths
+require "AppControl/Perl5Lib.pl";
+
+
+eval "use $applicationClass;";
+if ($@) {
+	IF::Log::error($@);
+	exit(1);
+}
+
+my $modelFileName = $inputModel;
+my $modelClass = $applicationClass->defaultModelClassName();
+IF::Log::debug("Application model class is $modelClass");
+my $model = $modelClass->new($modelFileName);
+
+foreach my $entityName (keys %{$model->{ENTITIES}}) {
+	IF::Log::debug("Fetching attributes for $entityName");
+	my $entityRecord = $model->{ENTITIES}->{$entityName};
+	IF::Log::dump($entityRecord);
+
+	my $results;
+	if ($entityRecord->{TABLE}) {
+		$results = IF::DB::descriptionOfTable($entityRecord->{TABLE});
+	} elsif ($entityRecord->{AGGREGATE_ENTITY} || $entityRecord->{AGGREGATE_TABLE}) {
+		my $aggregateEntityClass = $model->{ENTITIES}->{$entityRecord->{AGGREGATE_ENTITY}};
+		my $aggregateTable = $aggregateEntityClass->{TABLE} || $entityRecord->{AGGREGATE_TABLE};
+		my $sql = "SHOW COLUMNS FROM ".$aggregateTable;
+		$results = [];
+		my ($aggregateColumns, undef) = IF::DB::rawRowsForSQL($sql);
+		my $aggregatePrimaryKey = IF::PrimaryKey->new($entityRecord->{PRIMARY_KEY});
+		my $primaryKeyFields = {map { uc($_) => 1 } @{$aggregatePrimaryKey->keyFields()}};
+		foreach my $column (@$aggregateColumns) {
+			my $ucColumnName = uc($column->{FIELD});
+			next unless ($ucColumnName eq uc($entityRecord->{AGGREGATE_KEY_NAME}) ||
+						 $ucColumnName eq uc($entityRecord->{AGGREGATE_VALUE_NAME}) ||
+						 $ucColumnName eq uc($entityRecord->{AGGREGATE_QUALIFIER}) ||
+						 $primaryKeyFields->{$ucColumnName});
+			push (@$results, $column);
+		}
+	}
+
+	foreach my $result (@$results) {
+
+		# make a nice name from the DB column name and, if the
+		# user has not specified a custom name, set it for the column
+		my $prettyName = lcfirst(join("", map {ucfirst(lc($_))} split(/_/, $result->{FIELD})));
+		if ($entityRecord->{ATTRIBUTES} &&
+			$entityRecord->{ATTRIBUTES}->{$result->{FIELD}} &&
+			$entityRecord->{ATTRIBUTES}->{$result->{FIELD}}->{ATTRIBUTE_NAME} &&
+			$entityRecord->{ATTRIBUTES}->{$result->{FIELD}}->{ATTRIBUTE_NAME} ne $prettyName) {
+			$prettyName = $entityRecord->{ATTRIBUTES}->{$result->{FIELD}}->{ATTRIBUTE_NAME};
+		}
+
+		my $type = $result->{TYPE};
+		my $size = undef;
+		my $enumeratedValues = [];
+		if ($type =~ /([\w]+)\(([0-9]+)\)/) {
+			$type = $1;
+			$size = $2;
+		}
+
+		if ($type =~ /^enum\(([^\)]+)\)$/i) {
+			$type = "ENUM";
+			$enumeratedValues = eval ("[".$1."]");
+		}
+
+		# TODO: this just takes the values from MySQL and slots
+		# them in.  This really should be a bit smarter...
+
+		$entityRecord->{ATTRIBUTES}->{$result->{FIELD}} = {
+						ATTRIBUTE_NAME => $prettyName,
+						COLUMN_NAME => $result->{FIELD},
+						TYPE => $type,
+						SIZE => $size,
+						VALUES => $enumeratedValues,
+						NULL => $result->{NULL},
+						KEY => $result->{NULL},
+						DEFAULT => $result->{DEFAULT},
+						EXTRA => $result->{DEFAULT},
+		};
+	}
+}
+
+my $newModelFile = Data::Dumper->Dump([$model]);
+$newModelFile =~ s/\$VAR = //g;
+$newModelFile =~ s/          /\t/g;
+
+open (OUTPUT, "> $outputModel") || die "Couldn't write new model to $outputModel";
+print OUTPUT "# Model file last updated ".scalar localtime(time)."\n";
+print OUTPUT "# This file is GENERATED from $modelFileName!  Do not edit!\n";
+print OUTPUT $newModelFile;
+close (OUTPUT);
+
+
+#==========================================
+# end
+#==========================================
+
+sub usage {
+	print STDERR <<EOU;
+usage: populateModel --application=<app> --input-model=<model> --output-model=<model>
+EOU
+	exit (1);
+}

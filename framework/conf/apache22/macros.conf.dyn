@@ -1,0 +1,307 @@
+
+#####
+# Apache
+#####
+<Macro IFApacheConfig $servername $listenaddy $listenport $user $root_path>
+ServerName $servername
+Listen $listenaddy:$listenport
+
+User $user
+Group $user
+
+ServerAdmin sysadmin@foo.com
+
+ServerRoot $root_path
+DocumentRoot $root_path/htdocs
+
+ExtendedStatus On
+
+
+# First, we configure the "default" to be a very restrictive set of
+# permissions.
+#
+<Directory />
+    AllowOverride None
+    Order deny,allow
+    Deny from all
+</Directory>
+
+
+<Directory $root_path/htdocs>
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+
+    ExpiresActive On
+    ExpiresDefault "now plus 12 hours"
+    ExpiresByType text/css "now plus 1 hour"
+    ExpiresByType application/javascript "now plus 1 hour"
+    FileETag MTime Size
+</Directory>
+
+#
+# DirectoryIndex: sets the file that Apache will serve if a directory
+# is requested.
+#
+<IfModule dir_module>
+    DirectoryIndex index.html
+</IfModule>
+
+#
+# AccessFileName: The name of the file to look for in each directory
+# for access control information.
+#
+AccessFileName .htaccess
+
+<Files ~ "^\.([Hh][Tt]|[Dd][Ss]_[Ss]|[Ss][Vv][Nn])">
+    Order allow,deny
+    Deny from all
+</Files>
+
+DefaultType text/plain
+
+<IfModule mime_module>
+    TypesConfig $root_path/conf/mime.types
+
+    #
+    # If the AddEncoding directives above are commented-out, then you
+    # probably should define those extensions to indicate media types:
+    #
+    AddType application/x-compress .Z
+    AddType application/x-gzip .gz .tgz
+</IfModule>
+
+#
+# The mod_mime_magic module allows the server to use various hints from the
+# contents of the file itself to determine its type.  The MIMEMagicFile
+# directive tells the module where the hint definitions are located.
+#
+#MIMEMagicFile /private/etc/apache2/magic
+
+HostnameLookups off
+
+LogLevel warn
+#LogLevel info
+#LogLevel debug
+
+LogFormat "[%P] %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined-with-pid
+
+Alias /icons/ /usr/local/www/icons/
+
+<Directory "/usr/local/www/icons">
+    Options Indexes MultiViews
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+ExtendedStatus On
+<Location /server-status>
+    SetHandler server-status
+    Order deny,allow
+    Deny from all
+    Allow from 10.0.0.0/255.0.0.0
+    Allow from all
+</Location>
+
+AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/x-javascript
+
+ErrorDocument 403 /error403.html
+ErrorDocument 404 /error404.html
+ErrorDocument 500 /error500.html
+ErrorDocument 502 /error502.html
+
+</Macro>
+
+#####
+# ModPerl
+#####
+<Macro IFModPerlConfig $app_name $framework_path $root_path $max_clients $max_requests $max_proc_size $log_mask>
+
+
+PidFile "logs/ApacheModPerl.pid"
+LockFile "logs/ApacheModPerl.accept.lock"
+ErrorLog logs/error_log.ModPerl
+CustomLog logs/access_log.ModPerl combined-with-pid
+
+Timeout 30
+KeepAlive Off
+
+MaxClients            $max_clients
+StartServers          $max_clients
+MaxRequestsPerChild   $max_requests
+
+PerlSetEnv APP_NAME $app_name
+PerlSetEnv APP_ROOT $root_path
+PerlSetEnv FRAMEWORK_ROOT $framework_path
+PerlSetEnv MAX_PROC_SIZE $max_proc_size
+PerlSetEnv LOG_MASK $log_mask
+
+<IfDefine PERLSMALLPROF>
+    <Perl>
+		use APR::Pool ();
+		use Apache::DB ();
+		Apache::DB->init();
+    </Perl>
+
+    <Location /if>
+       PerlFixupHandler Apache::SmallProf
+    </Location>
+</IfDefine>
+
+<IfDefine PERLDPROF>
+	<Perl>
+		use Apache::DProf ();
+	</Perl>
+</IfDefine>
+
+<IfDefine MP2>
+    # This sets up @INC to include the framework's local modules
+    # and the app's local modules
+    PerlConfigRequire "$framework_path/bin/AppControl/Perl5Lib.pl"
+    PerlConfigRequire "$framework_path/conf/perlStartup2.pl"
+
+    # Apache2::Reload is backwards compatible with mod_perl 1
+    #PerlModule Apache2::Reload
+    #PerlInitHandler Apache2::Reload
+    #PerlSetVar ReloadAll Off
+    #PerlSetVar ReloadConstantRedefineWarnings Off
+    #PerlSetVar ReloadModules "IF::* $app_name::*"
+    #PerlSetVar ReloadDebug On
+</IfDefine>
+<IfDefine !MP2>
+	PerlRequire "$framework_path/conf/perlStartup.pl"
+</IfDefine>
+
+<Location /$app_name>
+   SetHandler perl-script
+   PerlResponseHandler  IF::WebServer::Handler
+   PerlCleanUpHandler IF::WebServer::CleanupHandler
+   PerlOptions +ParseHeaders
+
+   PerlSetVar Application $app_name
+
+   Order deny,allow
+   Allow from all
+
+</Location>
+
+Alias /if-static/ $framework_path/htdocs/
+<Directory "$framework_path/htdocs/">
+    Options Indexes MultiViews
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+# TODO: this can be a custom config directive once
+# we're fully mod_perl 2
+# http://perl.apache.org/docs/2.0/user/config/custom.html#Creating_and_Using_Custom_Configuration_Directives
+PerlSetVar IFDefaultPrefix /if
+
+# This cannot be inside a Location section
+# because location has never been determined
+# when a TransHandler is run
+PerlTransHandler   IF::WebServer::TransHandler
+
+
+<Location /perl-status>
+	SetHandler perl-script
+	PerlResponseHandler Apache::Status
+	PerlSetVar StatusOptionsAll On
+	PerlSetVar StatusTerse On
+	PerlSetVar StatusTerseSize On
+	PerlSetVar StatusTerseSizeMainSummary On
+
+   Order deny,allow
+   Allow from all
+</Location>
+
+RewriteEngine On
+#RewriteLog logs/perlReWrite.log
+#RewriteLogLevel 1
+
+# is the file here? if so we're done
+#  note: matches /images/uploaded as well due to lack of
+#         prefixed ^
+RewriteCond		$root_path/htdocs/%{REQUEST_FILENAME}		-f
+RewriteRule 		/uploaded/.+$					-	[L]
+# proxy it to our uploaded source peer if the
+# env var is set (see perlStartup.pl)
+# the query string addition in used to make sure this doesn't loop
+RewriteCond		%{QUERY_STRING} 		  !perl
+RewriteCond		%{ENV:UPLOAD_SOURCE_PEER} .+
+RewriteRule		^(.*)/uploaded/(.+)$		http://%{ENV:UPLOAD_SOURCE_PEER}$1/uploaded/$2?orig-h=%{SERVER_NAME}	[P,L]
+
+# TODO: set expires header on js lib
+
+</Macro>	# ModPerl
+
+
+
+#####
+# Cache
+#####
+<Macro IFCacheConfig $application $framework_path $root_path $max_clients $backend_addy $backend_port>
+
+Timeout 300
+KeepAlive On
+MaxKeepAliveRequests 100
+KeepAliveTimeout 5
+
+# MPM specific
+PidFile "$framework_path/logs/ApacheCache.pid"
+LockFile "$framework_path/logs/ApacheModPerl.accept.lock"
+MaxClients            $max_clients
+MaxRequestsPerChild   $max_requests
+
+ErrorLog "$framework_path/logs/error_log.Cache"
+
+Alias /if-static/ $framework_path/htdocs/
+<Directory "$framework_path/htdocs/">
+    Options Indexes MultiViews
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+</Directory>
+
+#<IfDefine LOCAL_LOGGING>
+  #CustomLog $framework_path/logs/access_log.Cache combined
+#</IfDefine>
+
+ProxyRequests 	off
+ProxyPass	 /$application/ 			http://$backend_addy:$backend_port/$application/
+ProxyPassReverse /$application/ 		http://$backend_addy:$backend_port/$application/
+
+# rewrite stuff
+RewriteEngine On
+RewriteLog logs/rewrite.log
+RewriteLogLevel 2
+
+<Directory $root_path/htdocs>
+  ExpiresActive On
+  ExpiresDefault "now plus 2 weeks"
+  ExpiresByType text/css "now plus 1 month"
+
+  # for nightly feeds
+  ExpiresByType text/xml "now plus 12 hours"
+
+  FileETag MTime Size
+</Directory>
+
+# I think these need to be here because mod_macro doesn't seem to expand variables in included files
+# RewriteMap contentType            txt:$root_path/conf/rewriteMaps/contentType.map
+# RewriteMap shortcutUrls_en        txt:$root_path/conf/rewriteMaps/shortcutUrls_en.map
+# RewriteMap shortcutUrls_es        txt:$root_path/conf/rewriteMaps/shortcutUrls_es.map
+# RewriteMap shortcutUrls_fr        txt:$root_path/conf/rewriteMaps/shortcutUrls_fr.map
+# RewriteMap languageIsKnown        txt:$root_path/conf/rewriteMaps/languages.map
+
+# dummy rules set env vars for proxy host info
+#	these can be over-written by the direct rule
+RewriteRule	^.*		-		[E=BACKEND_ADDR:$backend_addy]
+RewriteRule	^.*		-		[E=BACKEND_PORT:$backend_port]
+
+Include "$root_path/conf/ACTIVE/rewrite.conf"
+
+</Macro> # cache

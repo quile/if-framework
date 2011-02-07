@@ -1,0 +1,70 @@
+# IF::Component::_Admin::Model::EntityFieldEditor bindings
+{
+	ATTRIBUTE_IS_DATE => {
+		type => "BOOLEAN",
+		value => q(attributeIsDate),
+	},
+	ATTRIBUTE_IS_DATETIME => {
+		type => "BOOLEAN",
+		value => q(attributeIsDateTime),
+	},
+	ATTRIBUTE_IS_AREAS_OF_FOCUS => {
+		type => "BOOLEAN",
+		value => q(attributeIsAreasOfFocus),
+	},
+	ATTRIBUTE_IS_LANGUAGE_DESIGNATION => {
+		type => "BOOLEAN",
+		value => q(attributeIsLanguageDesignation),
+	},
+	ATTRIBUTE_IS_LANGUAGE => {
+		type => "BOOLEAN",
+		value => q(attributeIsLanguage),
+	},
+	ATTRIBUTE_IS_YES_NO => {
+		type => "BOOLEAN",
+		value => q(attributeIsYesNo),
+	},
+	ATTRIBUTE_IS_ARRAY => {
+		type => "BOOLEAN",
+		value => q(attributeIsArray),
+	},
+	ATTRIBUTE_ARRAY => {
+		type => "STRING",
+		value => q(attributeArrayAsString),
+		filter => q(filteredValue),
+	},
+	ATTRIBUTE_AREAS_OF_FOCUS => {
+		type => "STRING",
+		value => q(areasOfFocusValues),
+	},
+	ATTRIBUTE_LANGUAGE => {
+		type => "STRING",
+		value => q(languageValues),
+	},
+	ATTRIBUTE_LANGUAGE_DESIGNATION => {
+		type => "STRING",
+		value => q(_s("LANGUAGE_".$self->value(), $context->language())),
+	},
+	ATTRIBUTE_TEXT => {
+		type => "STRING",
+		value => q(value),
+		filter => q(filteredValue),
+	},
+	ATTRIBUTE_DATE => {
+		type => "Date",
+		bindings => {
+			value => q(value),
+		},
+	},
+	ATTRIBUTE_TIME => {
+		type => "Time",
+		bindings => {
+			value => q(value),
+		},
+	},
+	ATTRIBUTE_YES_NO => {
+		type => "STRING",
+		value => q($self->value()? "Yes" : "No"),
+	},
+
+};

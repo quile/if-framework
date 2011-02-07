@@ -1,0 +1,33 @@
+<BINDING_IF:IS_FIRST_TIME_RENDERED>
+<BINDING_UNLESS:HAS_HIGHLIGHTED_ROW_CLASS><style type="text/css">
+	.highlighted-row-default td {
+		font-family: Verdana, Arial, Helvetica;
+		font-size: 11px;
+		padding: 3px;
+		background: #ffffcc;
+		color: #000;
+		border-bottom: 1px solid #ccff00;
+	}
+</style></BINDING_UNLESS:HAS_HIGHLIGHTED_ROW_CLASS>
+<BINDING_UNLESS:HAS_EVEN_ROW_CLASS><style type="text/css">
+	.even-row-default td {
+		font-family: Verdana, Arial, Helvetica;
+		font-size: 11px;
+		padding: 3px;
+		background: #ffffff;
+		border-bottom: 1px solid #cccccc;
+	}
+</style></BINDING_UNLESS:HAS_EVEN_ROW_CLASS>
+<BINDING_UNLESS:HAS_ODD_ROW_CLASS><style type="text/css">
+	.odd-row-default td {
+		font-family: Verdana, Arial, Helvetica;
+		font-size: 11px;
+		padding: 3px;
+		background: #ddddff;
+		border-bottom: 1px solid #cccccc;
+	}
+</style></BINDING_UNLESS:HAS_ODD_ROW_CLASS>
+</BINDING_IF:IS_FIRST_TIME_RENDERED>
+<tr index="<binding:index />" onClick="javascript:window.location='<BINDING_IF:HAS_URL><BINDING:URL><BINDING_ELSE:HAS_URL><BINDING_IF:HAS_SERVER><BINDING_IF:HAS_PROTOCOL><BINDING:PROTOCOL>://</BINDING_IF:HAS_PROTOCOL><BINDING:SERVER></BINDING_IF:HAS_SERVER><BINDING:ACTION><BINDING_IF:HAS_QUERY_DICTIONARY>?<BINDING_LOOP:QUERY_DICTIONARY><BINDING:NAME>=<BINDING:VALUE><TMPL_UNLESS __LAST__>&</TMPL_UNLESS></BINDING_LOOP:QUERY_DICTIONARY></BINDING_IF:HAS_QUERY_DICTIONARY><BINDING_IF:HAS_ANCHOR>#<BINDING:ANCHOR></BINDING_IF:HAS_ANCHOR></BINDING_IF:HAS_URL>';" onMouseOver="javascript:this.className='<BINDING:HIGHLIGHTED_ROW_CLASS>';" onMouseOut="javascript:this.className='<BINDING:ROW_CLASS>';" class="<BINDING:ROW_CLASS>">
+	<BINDING:CONTENT>
+</tr>

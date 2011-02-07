@@ -1,0 +1,78 @@
+# Copyright (c) 2010 - Action Without Borders
+#
+# MIT License
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+# bindings for the DateEditor component
+{
+	LOCALIZED_STRING => {
+	   type => "LocalizedString",
+	},
+	YEAR => {
+		type => "Selection",
+		bindings => {
+			NAME => q("SYYYY_".$self->name()),
+			SELECTED_VALUES => q([ $self->year() ]),
+			LIST => q($self->yearsAsStrings()),
+		},
+	},
+	MONTH => {
+		type => "Selection",
+		bindings => {
+			NAME => q("SMM_".$self->name()),
+			SELECTED_VALUES => q([ $self->month() ]),
+			LIST => q($self->monthsAsStrings($context)),
+			DISPLAY_STRING => q("month"),
+			VALUE => q("index"),
+		},
+	},
+	DAY => {
+		type => "Selection",
+		bindings => {
+			NAME => q("SDD_".$self->name()),
+			SELECTED_VALUES => q([ $self->day() ]),
+			LIST => q($self->daysAsStrings()),
+		},
+	},
+	IS_FIRST_TIME_LOADED => {
+		type => "BOOLEAN",
+		value => q(isFirstTimeLoaded),
+	},
+	SHOULD_SHOW_TODAY_LINK => {
+		type => "BOOLEAN",
+		value => q(shouldShowTodayLink),
+	},
+	CURRENT_YEAR => {
+		type => "STRING",
+		value => q(currentYear),
+	},
+	CURRENT_MONTH => {
+		type => "STRING",
+		value => q(currentMonth),
+	},
+	CURRENT_DAY => {
+		type => "STRING",
+		value => q(currentDay),
+	},
+	NAME => {
+		type => "STRING",
+		value => q(name),
+	},
+}

@@ -1,0 +1,59 @@
+{
+	WRAPPER => {
+		type => "_Admin::Model::PageWrapper",
+		bindings => {
+			controller => q(controller),
+		},
+	},
+	NAVIGATION => {
+		type => "_Admin::Model::Navigation",
+	},
+	MODEL_NAME => {
+		type => "STRING",
+		value => q($context->application()->configurationValueForKey("DEFAULT_MODEL")),
+	},
+	ENTITY_CLASS_DESCRIPTIONS => {
+		type => "LOOP",
+		list => q(entityClassDescriptions),
+		item => q(anEntityClassDescription),
+		index => q(index),
+	},
+	ADD_COLUMN => {
+		type => "BOOLEAN",
+		value => q( $self->{index} == int("". (scalar( @{ $self->entityClassDescriptions() } ) -1) / 2)),
+	},
+	ENTITY_NAME => {
+		type => "STRING",
+		value => q(anEntityClassDescription.name),
+	},
+	ENTITY_STRUCTURE_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntityClassManager"),
+			# directAction => q("clearMenu"),
+			queryDictionary => q({
+				"entity-class-name" => q(anEntityClassDescription.name),
+			}),
+		},
+	},
+	ENTITY_ADD_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntityEditor"),
+			# directAction => q("clearMenu"),
+			queryDictionary => q({
+				"entity-class-name" => q(anEntityClassDescription.name),
+			}),
+		},
+	},
+	ENTITY_SEARCH_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntitySearch"),
+			# directAction => q("clearMenu"),
+			queryDictionary => q({
+				"entity-class-name" => q(anEntityClassDescription.name),
+			}),
+		},
+	},
+};

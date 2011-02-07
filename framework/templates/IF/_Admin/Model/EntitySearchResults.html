@@ -1,0 +1,118 @@
+<BINDING_UNLESS:IS_SHOWN_INLINE>
+	<BINDING:WRAPPER>
+</BINDING_UNLESS:IS_SHOWN_INLINE>
+	<script language="javascript">
+var entityAttributes = new Array();
+<BINDING_LOOP:SEARCH_RESULT_ATTRIBUTES>entityAttributes[entityAttributes.length] = "<BINDING:ATTRIBUTE_NAME>";
+</BINDING_LOOP:SEARCH_RESULT_ATTRIBUTES>
+
+var entities = new Array();
+<BINDING_LOOP:ENTITY_SEARCH_RESULTS>
+entities[entities.length] = {<BINDING_LOOP:SEARCH_RESULT_ATTRIBUTES><BINDING:ATTRIBUTE_NAME>xx:"<BINDING:ATTRIBUTE_VALUE>", </BINDING_LOOP:SEARCH_RESULT_ATTRIBUTES> xyzzy:"" };
+</BINDING_LOOP:ENTITY_SEARCH_RESULTS>
+
+function getElementPosition(elementId) {
+	var offsetTrail = document.getElementById(elementId);
+	var offsetLeft = 0;
+	var offsetTop = 0;
+	while (offsetTrail) {
+		offsetLeft += offsetTrail.offsetLeft;
+		offsetTop += offsetTrail.offsetTop;
+		offsetTrail = offsetTrail.offsetParent;
+	}
+	return {left:offsetLeft, top:offsetTop};
+}
+
+function clearEntityPane () {
+	var entityPane = document.getElementById("entityPane");
+	for (i = entityPane.childNodes.length - 1; i >=0 ; i--) {
+		entityPane.removeChild(entityPane.childNodes[i]);
+	}
+}
+
+function populateEntityPaneWithEntity(entity) {
+	var entityPane = document.getElementById("entityPane");
+	clearEntityPane();
+	var entityPaddingTable = document.createElement("TABLE");
+	entityPaddingTable.setAttribute("width", 300);
+	var entityPaddingTableBody = document.createElement("TBODY");
+	entityPaddingTable.appendChild(entityPaddingTableBody);
+	var tr = entityPaddingTableBody.insertRow(entityPaddingTableBody.rows.length);
+	var entityPaddingTd = tr.insertCell(tr.cells.length);
+	entityPaddingTd.setAttribute("width", 300);
+	entityPaddingTd.innerHTML = "&nbsp;";
+	entityPane.appendChild(entityPaddingTable);
+	
+	var entityTable = document.createElement("TABLE");
+	entityTable.setAttribute("class", "entity-search-results");
+	entityTable.className = "entity-search-results";
+	entityTable.width = 300;
+	entityTable.cellPadding = 3;
+	entityTable.cellSpacing = 0;
+	var entityTableBody = document.createElement("TBODY");
+	entityTable.appendChild(entityTableBody);
+	entityPane.appendChild(entityTable);
+	for (i=0; i < entityAttributes.length; i++) {
+		tr = entityTableBody.insertRow(entityTableBody.rows.length);
+		td = tr.insertCell(tr.cells.length);
+		td.innerHTML = entityAttributes[i];
+		td.className = "field-cell";
+		td = tr.insertCell(tr.cells.length);
+		td.innerHTML = entities[entity][entityAttributes[i]+"xx"];
+	}
+	var entityPanePosition = getElementPosition("entityPane");
+	var scrollTop = document.body.scrollTop;
+	//alert("Entity top is " + entityPanePosition.top + " and scroll top is " + scrollTop);
+	if (entityPanePosition.top < scrollTop) {
+		entityPaddingTd.setAttribute("height", scrollTop - entityPanePosition.top);
+	}
+}
+	</script>
+<BINDING_UNLESS:IS_SHOWN_INLINE>
+	<table class=content>
+		<tr><td><BINDING:NAVIGATION></td></tr> 
+		<tr><td>
+			<h4>Searching Entity <BINDING:ENTITY_NAME></h4>
+			<p>
+			Found <BINDING:COUNT> result(s).
+			<p>
+			<table cellspacing=0 cellpadding=3 border=0>
+				<tr><td valign=top>
+</BINDING_UNLESS:IS_SHOWN_INLINE>
+				<table class="entity-search-results" cellspacing=0 cellpadding=0>
+				<BINDING_LOOP:ENTITY_SEARCH_RESULTS>
+					<BINDING_IF:SHOULD_ALLOW_GRID_DETAIL>
+						<tr onClick="populateEntityPaneWithEntity(<BINDING:INDEX>);" onMouseOver="this.className='entity-search-results-highlighted-row';" onMouseOut="this.className='<BINDING:ROW_CLASS>'"  class="<BINDING:ROW_CLASS>">
+					<BINDING_ELSE:SHOULD_ALLOW_GRID_DETAIL>
+						<tr>
+					</BINDING_IF:SHOULD_ALLOW_GRID_DETAIL>
+					
+							<td><BINDING:EDIT_LINK>edit</BINDING:EDIT_LINK></td>
+							<td><BINDING_IF:SHOULD_SHOW_DELETE_LINK><BINDING:DELETE_LINK>delete</BINDING:DELETE_LINK></BINDING_IF:SHOULD_SHOW_DELETE_LINK>
+							</td>
+							<BINDING_LOOP:SUMMARY_ATTRIBUTES>
+								<td><BINDING:SUMMARY_ATTRIBUTE_VALUE></td>
+							</BINDING_LOOP:SUMMARY_ATTRIBUTES>
+						</tr>
+				</BINDING_LOOP:ENTITY_SEARCH_RESULTS>
+					</table>
+<BINDING_UNLESS:IS_SHOWN_INLINE>
+				</td>
+				<BINDING_IF:SHOULD_ALLOW_GRID_DETAIL>
+					<td valign=top width=300>
+					<span class="information-matrix"><div id="entityPane">Click on a result to see the full record</div></span>
+					</td>
+				</BINDING_IF:SHOULD_ALLOW_GRID_DETAIL>
+				</tr>
+				<tr>
+					<td colspan=2 align=center>
+		<BINDING_IF:HAS_PREVIOUS_PAGE><BINDING:PREVIOUS_LINK>&lt;&lt;Prev</BINDING:PREVIOUS_LINK></BINDING_IF:HAS_PREVIOUS_PAGE>
+		<BINDING_IF:HAS_NEXT_PAGE><BINDING:NEXT_LINK>Next&gt;&gt;</BINDING:NEXT_LINK></BINDING_IF:HAS_NEXT_PAGE>				
+					</td>
+				</tr>
+			</table>
+		</td></tr>
+	</table>
+
+		</BINDING:WRAPPER>
+</BINDING_UNLESS:IS_SHOWN_INLINE>

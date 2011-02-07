@@ -1,0 +1,10 @@
+<input name="<BINDING:NAME>" id="<BINDING:UNIQUE_ID>" title="<BINDING:PARENT_BINDING_NAME>" <BINDING:TAG_ATTRIBUTES> <TMPL_IF BINDING:SIZE>SIZE="<BINDING:SIZE>"</TMPL_IF> <TMPL_IF BINDING:MAX_LENGTH>MAXLENGTH="<BINDING:MAX_LENGTH>"</TMPL_IF> value="<BINDING:VALUE>" /><span id="<BINDING:UNIQUE_ID>-error" class="error" style="display: none;"></span>
+<script type="text/javascript">
+jQuery(function() {
+	var c = new IFEmailField("<BINDING:UNIQUE_ID>", "<BINDING:PARENT_BINDING_NAME>");
+	IF.controllers.<BINDING:UNIQUE_ID> = c;
+	c.setIsRequired(<BINDING:IS_REQUIRED>);
+	c.setErrorMessageForKey("<BINDING:VALID_EMAIL_REQUIRED_MESSAGE>", "VALID_EMAIL_REQUIRED");
+	<BINDING_IF:HAS_REQUIRED_MESSAGE>c.setErrorMessageForKey("<BINDING:REQUIRED_MESSAGE>", "IS_REQUIRED");</BINDING_IF:HAS_REQUIRED_MESSAGE>
+})
+</script>

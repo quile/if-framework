@@ -1,0 +1,112 @@
+# IF::Component::Calendar::Month bindings
+{
+	VIEW_SIZE_IS_SMALL => {
+		type => "BOOLEAN",
+		value => q(uc($self->viewSize()) eq "SMALL"),
+	},
+	FRAME_WIDTH => {
+		type => "NUMBER",
+		value => q(frameWidth),
+	},
+	CELL_PADDING => {
+		type => "NUMBER",
+		value => q(cellPadding),
+	},
+	FRAME_COLOR => {
+		type => "STRING",
+		value => q(frameColor),
+	},
+	BACKGROUND_COLOR => {
+		type => "STRING",
+		value => q(backgroundColor),
+	},
+	HEADER_COLOR => {
+		type => "STRING",
+		value => q(headerColor),
+	},
+	HEADER_CSS_CLASS => {
+		type => "STRING",
+		value => q(headerCSSClass),
+	},
+	EVENT_CSS_CLASS => {
+		type => "STRING",
+		value => q(eventCSSClass),
+	},
+	NO_EVENT_CSS_CLASS => {
+		type => "STRING",
+		value => q(noEventCSSClass),
+	},
+	OTHER_MONTH_CSS_CLASS => {
+		type => "STRING",
+		value => q(otherMonthCSSClass),
+	},
+	MONTH_NAME => {
+		type => "STRING",
+		value => q(_s("MONTH_".$self->date()->month())),
+	},
+	DAY_NAMES => {
+		type => "LOOP",
+		list => q($self->daysOfWeek($context)),
+		item => q(aDayOfWeek),
+	},
+	LONG_DAY_NAME => {
+		type => "STRING",
+		value => q($self->{aDayOfWeek}->{LONG_NAME}),
+	},
+	SHORT_DAY_NAME => {
+		type => "STRING",
+		value => q(uc($self->{aDayOfWeek}->{ABBREVIATION})),
+	},
+	WEEKS => {
+		type => "LOOP",
+		list => q(weeks),
+		item => q(aWeek),
+	},
+	DAYS => {
+		type => "LOOP",
+		list => q($self->{aWeek}->{DAYS}),
+		item => q(aDay),
+	},
+	DATE => {
+		type => "Date",
+		bindings => {
+			date => q(aDay.sqlDate),
+			format => q("MONTH_DAY"),
+		},
+	},
+	SHORT_DATE => {
+		type => "STRING",
+		value => q(aDay.day),
+	},
+	EVENTS => {
+		type => "LOOP",
+		list => q(aDay.events),
+		item => q(anEvent),
+	},
+	EVENT => {
+		type => "CONSUMER",
+		value => q(eventViewer),
+		bindings => {
+			event => q(anEvent),
+		},
+	},
+	HAS_EVENTS => {
+		type => "BOOLEAN",
+		value => q(scalar @{$self->{aDay}->events()} > 0),
+	},
+	HAS_LIST_VIEWER => {
+		type => "BOOLEAN",
+		value => q(listViewer),
+	},
+	LIST_VIEWER => {
+		type => "CONSUMER",
+		value => q(listViewer),
+		bindings => {
+			day => q(aDay),
+		},
+	},
+	IS_THIS_MONTH => {
+		type => "BOOLEAN",
+		value => q($self->date()->month() == $self->{aDay}->month()),
+	},
+};

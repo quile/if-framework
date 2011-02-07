@@ -1,0 +1,52 @@
+<BINDING_IF:IS_FIRST_TIME_LOADED>
+<script type="text/javascript">
+<!--
+function setTimeSelectionToBlank(selection) {
+	var formElements = selection.form.elements;
+	var regexp = /^S[^_]+_/g;
+	componentName = selection.name.replace(regexp, "");
+	formElements["SHH_"+componentName].selectedIndex = 0;
+	formElements["SMM_"+componentName].selectedIndex = 0;
+	formElements["SSS_"+componentName].selectedIndex = 0;
+	formElements["SAP_"+componentName].selectedIndex = 0;
+}
+function onTimeSelection (selection) {
+	if (selection.options[selection.selectedIndex].value == '') {
+		setTimeSelectionToBlank(selection);
+	}
+}
+function indexOfOptionInSelection(option, selection) {
+	var options = selection.options;
+	for (var i=0; i<options.length; i++) {
+		if (options[i].value == option) {
+			//alert(options[i].value);
+			return i;
+		}
+	}
+	return -1;
+}
+function parentFormOfElement (element) {
+	var currentElement = element;
+	while (currentElement != null && currentElement.nodeName != "FORM") {
+		currentElement = currentElement.parentNode;
+	}
+	return currentElement;
+}
+
+function setTimeSelectionWithTime(link, componentName, hour, minute, second, ampm) {
+	var form = parentFormOfElement(link);
+	if (form == null) {
+		return;
+	}
+	var formElements = form.elements;
+	formElements["SHH_"+componentName].options[indexOfOptionInSelection(hour, formElements["SHH_"+componentName])].selected = true;
+	formElements["SMM_"+componentName].options[indexOfOptionInSelection(minute, formElements["SMM_"+componentName])].selected = true;
+	formElements["SSS_"+componentName].options[indexOfOptionInSelection(second, formElements["SSS_"+componentName])].selected = true;
+	formElements["SAP_"+componentName].options[indexOfOptionInSelection(ampm, formElements["SAP_"+componentName])].selected = true;
+}
+// -->
+</script>
+</BINDING_IF:IS_FIRST_TIME_LOADED><BINDING:HOURS onChange="javascript:onTimeSelection(this);"> <BINDING:MINUTES onChange="javascript:onTimeSelection(this);"> <BINDING_IF:SHOW_SECONDS><BINDING:SECONDS onChange="javascript:onTimeSelection(this);"></BINDING_IF:SHOW_SECONDS> <BINDING_UNLESS:IS_TWENTY_FOUR_HOUR><BINDING:AM_PM onChange="javascript:onTimeSelection(this);"></BINDING_UNLESS:IS_TWENTY_FOUR_HOUR>
+<BINDING_IF:SHOULD_SHOW_NOW_LINK>
+<span style="font-size: 9px"><A href='javascript: return false;' onClick="javascript:setTimeSelectionWithTime(this, '<BINDING:NAME>', <BINDING:CURRENT_HOUR>, <BINDING:CURRENT_MINUTE>, <BINDING:CURRENT_SECOND>,'<BINDING:CURRENT_AM_PM>');">now</a></span></BINDING_IF:SHOULD_SHOW_NOW_LINK>
+

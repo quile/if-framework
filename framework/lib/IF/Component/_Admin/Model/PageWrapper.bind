@@ -1,0 +1,13 @@
+#
+{
+	SHOULD_SHOW_WRAPPER => {
+		type => "BOOLEAN",
+		value => q(shouldShowWrapper),
+	},
+	WRAPPER => {
+		type => "_Admin::PageWrapper",
+	},
+	CONTENT => {
+		type => "CONTENT",
+	},
+}

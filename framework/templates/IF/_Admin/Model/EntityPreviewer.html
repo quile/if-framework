@@ -1,0 +1,16 @@
+<BINDING:WRAPPER>
+	<table class="content">
+		<tr><td><BINDING:NAVIGATION /></td></tr> 
+	</table>
+	<BINDING:PREVIEW_FORM>
+		<p>Below is a preview of your <BINDING:ENTITY_NAME /> as it will appear on the site.</p>
+		<ul>
+			<li>If you are not satisfied, please return to make changes.</li>
+			<li>If you are pleased use the Save as is button.</li>
+		</ul>
+		<p><BINDING:EDIT_BUTTON value="Return to make changes" /><BINDING:SAVE_BUTTON value="Save as is" /></p>
+	</BINDING:PREVIEW_FORM>
+	<div style="border: 4px solid #FC0;">
+	<iframe src="<BINDING:PREVIEW_URL />" border="0" width="900" height="1000"/>
+	</div>
+</BINDING:WRAPPER>

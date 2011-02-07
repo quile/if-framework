@@ -1,0 +1,46 @@
+#
+{
+	WRAPPER => {
+		type => "_Admin::Model::PageWrapper",
+		bindings => {
+			controller => q(controller),
+		},
+	},
+	NAVIGATION => {
+		type => "_Admin::Model::Navigation",
+		bindings => {
+			entity => q(entity),
+			rootEntity => q(rootEntity),
+			entityClassName => q(entityClassDescription.name),
+			controller => q(controller),
+		},
+	},
+	ENTITY_NAME => {
+		type => "STRING",
+		value => q(entityClassDescription.name),
+	},
+	ENTITY_SEARCH_FORM => {
+		type => "Form",
+		bindings => {
+			directAction => q("submit"),
+			queryDictionary => q({
+				"entity-class-name" => q(entityClassDescription.name),
+				"entity-id" => q(entity.id),
+				"root-entity-id" => q(rootEntity.id),
+				"root-entity-class-name" => q(rootEntity.entityClassDescription.name),
+				"relationship-name" => q($context->formValueForKey("relationship-name")),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	SUBMIT_BUTTON => {
+		type => "SubmitButton",
+	},
+	ENTITY_SEARCH_EDITOR => {
+		type => "_Admin::Model::EntitySearchEditor",
+		bindings => {
+			entity => q(searchTerms),
+			entityClassName => q(entityClassDescription.name),
+		},
+	},
+}

@@ -1,0 +1,13 @@
+<span id="<BINDING:CLIENT_SIDE_ID />_display" class="time-difference"></span>
+<script type="text/javascript">
+jQuery(function() {
+	var c = new TimeDifference('<BINDING:CLIENT_SIDE_ID />', '<BINDING:CLIENT_SIDE_NAME />');
+	IF.controllers.<BINDING:CLIENT_SIDE_NAME /> = c;
+	c.setProperties(<BINDING:JSON_PROPERTIES />);
+	c.calculateSinceUnixTime(<BINDING:START_DATE />);
+	//if (TD_DICTIONARY) {
+//		c.setTranslationDictionary(TD_DICTIONARY);
+//	}
+	c.updateDisplay();
+});
+</script>

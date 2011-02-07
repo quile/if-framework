@@ -1,0 +1,203 @@
+#
+{
+	WRAPPER => {
+        type => "_Admin::PageWrapper",
+        bindings => {
+ 			controller => q(controller),
+       },
+ 	},
+	NAVIGATION => {
+		type => "_Admin::Model::Navigation",
+		bindings => {
+			entity => q(entity),
+			rootEntity => q(rootEntity),
+			entityClassName => q(entityClassDescription.name),
+			controller => q(controller),
+		},
+	},
+	ENTITY_NAME => {
+		type => "STRING",
+		value => q(entityClassDescription.name),
+	},
+	ENTITY_EDITOR_FORM => {
+		type => "Form",
+		bindings => {
+			queryDictionary => q({
+				"entity-class-name" => q(entityClassDescription.name),
+				"entity-id" => q(entity.id),
+				"root-entity-id" => q(rootEntity.id),
+				"root-entity-class-name" => q(rootEntity.entityClassDescription.name),
+				"relationship-name" => q($context->formValueForKey("relationship-name")),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	CREATE_BUTTON => {
+		type => "SubmitButton",
+		bindings => {
+			directAction => q("submit"),
+		},
+	},
+	SUBMIT_BUTTON => {
+		type => "SubmitButton",
+		bindings => {
+			directAction => q("submit"),
+		},
+	},
+	PREVIEW_BUTTON => {
+		type => "SubmitButton",
+		bindings => {
+			directAction => q("preview"),
+		},
+	},
+	HAS_PREVIEW => {
+		type => "BOOLEAN",
+		value => q(controller.canPreviewEntityType(entityClassDescription.name)),
+	},
+	DELETE_BUTTON => {
+		type => "SubmitButton",
+		bindings => {
+			directAction => q("confirmDelete"),
+		},
+	},
+	ENTITY_EDITOR => {
+		type => "_Admin::Model::EntityFieldEditor",
+		bindings => {
+			entity => q(entity),
+			entityClassName => q(entityClassDescription.name),
+			hiddenAttributes => q(hiddenAttributes),
+			attributeDisplayOrder => q(controller.attributeDisplayOrderForEntityType(entityClassDescription.name)),
+			controller => q(controller),
+		},
+	},
+	ENTITY_IS_NEW => {
+		type => "BOOLEAN",
+		value => q(entity.hasNeverBeenCommitted),
+	},
+	HAS_RELATIONSHIPS => {
+		type => "BOOLEAN",
+		value => q(!$self->entity()->hasNeverBeenCommitted() &&
+					scalar keys %{$self->entityClassDescription()->relationships()}),
+	},
+	RELATIONSHIPS => {
+		type => "LOOP",
+		list => q(relationships),
+		item => "aRelationshipName",
+	},
+	RELATIONSHIP_IS_INLINE => {
+		type => "BOOLEAN",
+		value => q(shouldShowRelationshipInline(aRelationshipName)),
+	},	
+	RELATIONSHIP_NAME => {
+		type => "STRING",
+		value => q(aRelationshipName),
+	},
+	HAS_RELATED_ENTITIES => {
+		type => "BOOLEAN",
+		value => q($self->entity()->countOfEntitiesForRelationshipNamed($self->{aRelationshipName})),
+	},
+	RELATIONSHIP_COUNT => {
+		type => "NUMBER",
+		value => q($self->entity()->countOfEntitiesForRelationshipNamed($self->{aRelationshipName})),
+	},
+	VIEW_RELATED_ENTITIES_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			directAction => q("viewRelatedEntities"),
+			queryDictionary => q({
+				"relationship-name" => q(aRelationshipName),
+				"root-entity-id" => q(entity.id),
+				"root-entity-class-name" => q(entityClassDescription.name),
+				"entity-class-name" => q($self->entity()->relationshipNamed($self->{aRelationshipName})->{TARGET_ENTITY}),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	INLINE_RELATIONSHIP_VIEWER => {
+		type => "_Admin::Model::EntitySearchResults",
+		bindings => {
+			relationshipName => q(aRelationshipName),
+			rootEntity => q(entity),
+			rootEntityClassDescription => q(entityClassDescription),
+			entityClassDescription => q(entityClassDescriptionForTargetEntityOfRelationshipWithName(aRelationshipName)),
+			searchResults => q(entity.entitiesForRelationshipNamed(aRelationshipName)),
+			countOfSearchResults => q(entity.entitiesForRelationshipNamed(aRelationshipName).#),
+			controller => q(controller),	
+			isShownInline => q("1"),	
+		},
+	},
+	SHOULD_SHOW_RELATIONSHIP_CONTROLS => {
+		type => "BOOLEAN",
+		value => q(controller.shouldShowRelationshipControls),
+	},
+	CAN_ADD_RELATED_ENTITY => {
+		type => "BOOLEAN",
+		value => q(canAddRelatedEntity),
+	},
+	ADD_RELATED_ENTITY_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			directAction => q("addRelatedEntity"),
+			queryDictionary => q({
+				"relationship-name" => q(aRelationshipName),
+				"root-entity-id" => q(entity.id),
+				"root-entity-class-name" => q(entityClassDescription.name),
+				"entity-class-name" => q($self->entity()->relationshipNamed($self->{aRelationshipName})->{TARGET_ENTITY}),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	CHOOSE_RELATED_ENTITY_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			directAction => q("chooseRelatedEntity"),
+			queryDictionary => q({
+				"relationship-name" => q(aRelationshipName),
+				"root-entity-id" => q(entity.id),
+				"root-entity-class-name" => q(entityClassDescription.name),
+				"entity-class-name" => q($self->entity()->relationshipNamed($self->{aRelationshipName})->{TARGET_ENTITY}),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	HAS_RELATIONSHIP_HINTS => {
+		type => "BOOLEAN",
+		value => q(relationshipHints),
+	},
+	HINT_EDITOR => {
+		type => "_Admin::Model::EntityFieldEditor",
+		bindings => {
+			entity => q(relationshipHints),
+			entityClassName => q("RelationshipHints"),
+			_attributes => q([values %{$self->relationshipHintEntityClassDescription()->{ATTRIBUTES}}]),
+			controller => q(controller),
+		},
+	},
+	IS_EDITING_FLATTENED_TO_MANY_RELATIONSHIP => {
+		type => "BOOLEAN",
+		value => q(isEditingFlattenedToManyRelationship),
+	},
+	REMOVE_FROM_RELATIONSHIP_BUTTON => {
+		type => "SubmitButton",
+		bindings => {
+			directAction => q("removeFromRelationship"),
+		},
+	},
+	CAN_EDIT_ORDERING => {
+		type => "BOOLEAN",
+		value => q($self->entity()->relationshipNamed($self->{aRelationshipName})->{TARGET_ORDERING_KEY}),
+	},
+	EDIT_ORDERING_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			directAction => q("orderRelatedEntities"),
+			queryDictionary => q({
+				"relationship-name" => q(aRelationshipName),
+				"root-entity-id" => q(entity.id),
+				"root-entity-class-name" => q(entityClassDescription.name),
+				"entity-class-name" => q($self->entity()->relationshipNamed($self->{aRelationshipName})->{TARGET_ENTITY}),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+}

@@ -1,0 +1,34 @@
+#
+{
+    NAMESPACE => {
+        ENTITY => "IF::MailQueue::Entity",
+    },
+    ENTITIES => {
+		MailMessage => {
+			TABLE => "MAIL_MESSAGE",
+			PRIMARY_KEY => "ID",
+		},
+		MailQueueEntry => {
+			TABLE => "MAIL_QUEUE_ENTRY",
+			PRIMARY_KEY => "ID",
+			RELATIONSHIPS => {
+				message => {
+					TARGET_ENTITY => "MailMessage",
+					TARGET_ATTRIBUTE => "ID",
+					SOURCE_ATTRIBUTE => "MAIL_MESSAGE_ID",
+					TYPE => "TO_ONE",
+				},
+				mailEvent => {
+					TARGET_ENTITY => "MailEvent",
+					TARGET_ATTRIBUTE => "ID",
+					SOURCE_ATTRIBUTE => "MAIL_EVENT_ID",
+					TYPE => "TO_ONE",
+				},
+			},
+		},
+		MailEvent => {
+			TABLE => "MAIL_EVENT",
+			PRIMARY_KEY => "ID",
+		},
+    },
+}

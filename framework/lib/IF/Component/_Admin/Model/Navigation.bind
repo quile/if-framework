@@ -1,0 +1,160 @@
+# IF::Component::_Admin::Model::Navigation bindings
+{
+	SHOULD_SHOW_NAVIGATION => {
+		type => "BOOLEAN",
+		value => q(shouldShowNavigation),
+	},
+	HOME_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q(controller.homeClass),
+			queryDictionary => q({
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	HAS_ENTITY_CLASS => {
+		type => "BOOLEAN",
+		value => q(entityClassName),
+	},
+	ENTITY_CLASS_NAME => {
+		type => "STRING",
+		value => q(entityClassName),
+	},
+	ENTITY_HOME_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntityClassManager"),
+			queryDictionary => q({
+				"entity-class-name" => q(entityClassName),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	ADD_ENTITY_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntityEditor"),
+			queryDictionary => q({
+				"entity-class-name" => q(entityClassName),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	SEARCH_ENTITY_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntitySearch"),
+			queryDictionary => q({
+				"entity-class-name" => q(entityClassName),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	HAS_ENTITY => {
+		type => "BOOLEAN",
+		value => q($self->entity() && !$self->entity()->hasNeverBeenCommitted()),
+	},
+	ENTITY_NAME => {
+		type => "STRING",
+		value => q(entityName),
+		maxLength => "20",
+	},
+	VIEW_ENTITY_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntitySearchResults"),
+			directAction => q("submit"),
+			queryDictionary => q({
+				"entity-class-name" => q(entityClassName),
+				"ID" => q(entity.id),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	EDIT_ENTITY_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntityEditor"),
+			queryDictionary => q({
+				"entity-class-name" => q(entityClassName),
+				"entity-id" => q(entity.id),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	DELETE_ENTITY_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntityDeletionConfirmation"),
+			directAction => q("delete"),
+			queryDictionary => q({
+				"entity-class-name" => q(entityClassName),
+				"entity-id" => q(entity.id),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	HAS_ROOT_ENTITY => {
+		type => "BOOLEAN",
+		value => q($self->rootEntity() && !$self->rootEntity()->hasNeverBeenCommitted()),
+	},
+	ROOT_ENTITY_NAME => {
+		type => "STRING",
+		value => q(rootEntityName),
+		maxLength => "20",
+	},
+	VIEW_ROOT_ENTITY_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntitySearchResults"),
+			directAction => q("submit"),
+			queryDictionary => q({
+				"entity-class-name" => q(rootEntityClassName),
+				"ID" => q(rootEntity.id),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	EDIT_ROOT_ENTITY_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntityEditor"),
+			queryDictionary => q({
+				"entity-class-name" => q(rootEntityClassName),
+				"entity-id" => q(rootEntity.id),
+				"root-entity-class-name" => q(rootEntityClassName),
+				"root-entity-id" => q(rootEntity.id),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	DELETE_ROOT_ENTITY_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntityDeletionConfirmation"),
+			directAction => q("delete"),
+			queryDictionary => q({
+				"entity-class-name" => q(rootEntityClassName),
+				"entity-id" => q(rootEntity.id),
+				"root-entity-class-name" => q(rootEntityClassName),
+				"root-entity-id" => q(rootEntity.id),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	RELATIONSHIP_NAME => {
+		type => "STRING",
+		value => q($context->formValueForKey("relationship-name")),
+	},
+	HAS_RELATIONSHIP_NAME => {
+		type => "BOOLEAN",
+		value => q($context->formValueForKey("relationship-name")),
+	},
+	RECENTLY_VIEWED_ENTITIES => {
+		type => "_Admin::Model::RecentlyViewedEntities",
+		bindings => {
+			controller => q(controller),
+		},
+	},
+};

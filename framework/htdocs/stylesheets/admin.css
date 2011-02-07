@@ -1,0 +1,318 @@
+.superClearfix { border: 0px solid #000; }
+.superClearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.superClearfix { display: inline-block; }
+.superClearfix { display: block; }
+
+body {
+	font-family : Verdana, Helvetica, sans-serif;
+	background-color : #ffffff;
+	font-size : 11px;
+	color : #000000;
+	margin:0px;
+}
+td {
+	font-family : Verdana, Helvetica, sans-serif;
+	font-size : 11px;
+	vertical-align : text-top;
+}
+a {
+	color : #009933;
+	/*font-weight : bold; */
+}
+a:HOVER {
+	color : #000033;
+}
+a.title:link {
+	color: #ffffff;
+	font-weight: bold;
+	text-decoration: none;
+}
+a.important:link {
+	color: #ff4000;
+}
+.title {
+	font-size : 15px;
+	font-weight: bold;
+	color: #ffffff;
+}
+.rightside {
+	/*font-size : 80%;*/
+	font-size : 11px;
+}
+.sidebar2 {
+	/* background-color : #ffffff; */
+	background-color : #;
+	/* font-size : 80%; */
+	font-size : 11px;
+}
+
+div#adminheader{
+padding:20px;
+background-color:#EFEFEF;
+}
+
+.sidebar {
+	/* background-color : #ffffff; */
+	background-color : #;
+	/* font-size : 80%; */
+	font-size : 11px;
+	padding-left : 4px;
+	text-alignment:top;
+}
+.even_rows {
+	background-color : #ffffff;
+	padding-left : 4px;
+}
+.odd_rows {
+	background-color : #cccccc;
+	padding-left : 4px;
+}
+.title {
+	color : #000000;
+	font-size : 15px;
+}
+.content {
+/*	background-color : #eaeaea; */
+	background-color : #ffffff;
+	padding-left : 4px;
+}
+.content_title {
+	font-weight: bold;
+}
+.important {
+	color: #ff0000;
+	font-weight: bold;
+}
+.admin-main-frame {
+	border-width: 2px;
+	border-style: solid;
+	background-color: #ffffff;
+	padding: 3px;
+}
+.admin-navigation {
+	font-family: Verdana,Tahoma,Arial,Helvetica;
+	font-size: 12px;
+	line-height: 18px;
+	color: #222260;
+}
+.admin-header {
+	font-family: Arial,Helvetica,Verdana;
+	font-size: 18px;
+	color: #009933;
+}
+
+.successful-action {
+	border-width: 1px;
+	border-style: solid;
+	background-color: #ffffff;
+	font-family: Verdana,Arial,Helvetica;
+	font-size: 11px;
+	font-weight: bold;
+	color: #008000;
+	padding: 3px;
+}
+
+
+h2 .options {
+font-size:50%;
+float:right;
+padding-left:5px;
+}
+span.paragraphImage {
+	float:right;
+	margin:0 0 3px 3px;	
+	display:block;
+	border:1px solid #ccc;
+	text-align:center;
+}
+span.paragraphImage span {
+	font-family: Georgia, 'Times New Roman', Times, serif;
+	font-weight:normal;
+	color:#999;
+	background-color:inherit;
+	font-size:85%;
+	margin:3px;
+}
+.componentFooter {
+clear:both;
+padding:1em 0;
+}
+h4 {font-family: verdana; font-size: 12px; /*font-style: italic*/; font-weight: normal; margin-bottom: 6px; text-transform: uppercase; font-weight: bold; letter-spacing: /*0.5em*/ 1px; padding: 0.33em 0.5em 0.167em; border-bottom: 2px solid #fc0; background: #fff; color: #093;}
+
+div#sidebar {float: left; width: 200px; background: transparent; padding: 5px 5px 5px 20px; margin: 0px; border: 0px solid black;}
+div#sidebar div {margin-bottom: 1em;}
+
+div#sidebar a {display: block; margin: 0; padding: 0.33em; font-size: 11px; font-weight: bold; border-bottom: 1px solid #ffffff; color: #555; background: transparent none center left no-repeat; text-decoration: none;}
+div#sidebar a:link {color: #06c; background-color: #fff /*transparent*/;}
+div#sidebar a:visited {color: #06c; background-color: #fff /*transparent*/;}
+div#sidebar a:hover {background: #efefef; color: #093;}
+div#sidebar a span {display: none;}
+div#sidebar p {font-size: 12px; font-family: verdana; border: 1px dotted #ccc;padding-left:10px}
+
+div#menu {border-color: #224;}
+div#menu h4 {background: #fff; color: #093; text-transform: uppercase; font-size: 10px; text-align: left;}
+div#menu a {text-transform: capitalize;}
+div#menu a:link:hover {background: #efefef;}
+div#menu a:visited:hover {background: #efefef;}
+div#menu div.sublinks {border-width: 0; margin: 0;}
+div#menu div.sublinks a {font-weight: normal; letter-spacing: normal; padding-right: 0.66em; color: #06c;}
+div#menu div.sublinks a:visited {color: #06c;}
+
+div#main {position: absolute; /*top: 3em; left: 25%; */ left:210px; width:800px; margin: 1em; padding: 1em 1.5em;}
+div#main h3 {letter-spacing: 3px; margin: 1.25em 0 0;}
+div#main h3#top {margin-top: 0;}
+div#main p {margin: 0.25em 0 1em; line-height: 1.25em;}
+
+div#model-viewer-navigation {float: top; width: 100%; background: transparent #fff; padding: 2px; margin: 0px; border: 0px solid black;}
+div#model-viewer-menu {float: left; display:block; border: 1px solid #fff; border-left: 2px solid #fc0; font-family: verdana,tacoma,arial,helvetica;}
+div#model-viewer-menu:hover {border: 1px dotted #ccc; border-left: 2px dotted #fc0;}
+div#model-viewer-menu h4 {padding: 1px; margin: 0px; text-transform: none; background: #fff; color: #093; font-size: 10px; text-align: left;}
+div#model-viewer-menu a:link:hover {background: #efefef;}
+div#model-viewer-menu a:visited:hover {background: #efefef;}
+div#model-viewer-menu div.sublinks {display:block; border-width: 0; margin: 0;}
+div#model-viewer-menu div.sublinks a {display: block; margin: 0; padding: 1px; font-size: 11px; font-weight: bold; border-bottom: 1px solid #ffffff; color: #555; background: transparent none center left no-repeat; text-decoration: none;font-size: 11px; font-weight: normal; letter-spacing: normal; padding-right: 0.66em; color: #06c;}
+div#model-viewer-menu div.sublinks a:visited {color: #06c;}
+
+table.entity-search-results {
+	background-color: #ffffff;
+	border-top: solid 1px #ffccff; 
+	border-right: solid 1px #ffccff;
+	font-family: Verdana, Tahoma, Arial, Helvetica;
+	font-size: 10px;
+}
+
+table.entity-search-results TD {	
+	border-left: solid 1px #ffccff; 
+	border-bottom: solid 1px #ffccff;
+	font-family: Verdana, Tahoma, Arial, Helvetica;
+	padding: 2px 2px 2px 2px;
+	font-size: 10px;
+}
+
+table.entity-search-results TD.field-cell {	
+	border-left: solid 1px #ffccff; 
+	border-bottom: solid 1px #ffccff;
+	font-weight: bold;
+	font-family: Verdana, Tahoma, Arial, Helvetica;
+	font-size: 10px;
+	text-align: right;
+	background: #ffccff;
+}
+
+.entity-search-results-even-rows {
+	background-color: #ffffff;
+}
+
+.entity-search-results-odd-rows {
+	background-color: #eeeeff;
+}
+
+.entity-search-results-highlighted-row {
+	background-color: #ffeeff;
+}
+
+table.model-viewer-form {
+	background-color: #ffccff;
+	border-top: solid 1px #ccccff; 
+	border-right: solid 1px #ccccff;
+	font-family: Verdana, Tahoma, Arial, Helvetica;
+	font-size: 10px;
+}
+
+table.model-viewer-form TD {	
+	border-left: solid 1px #ccccff; 
+	border-bottom: solid 1px #ccccff;
+	font-family: Verdana, Tahoma, Arial, Helvetica;
+	padding: 2px 2px 2px 2px;
+	font-size: 10px;
+}
+
+table.model-viewer-form TD.field-cell {	
+	border-left: solid 1px #ccccff; 
+	border-bottom: solid 1px #ccccff;
+	font-weight: bold;
+	font-family: Verdana, Tahoma, Arial, Helvetica;
+	font-size: 10px;
+	text-align: right;
+	background: #ccccff;
+}
+
+table.model-viewer-form TD.field-cell-align-left {	
+	border-left: solid 1px #ccccff; 
+	border-bottom: solid 1px #ccccff;
+	font-weight: bold;
+	font-family: Verdana, Tahoma, Arial, Helvetica;
+	font-size: 10px;
+	text-align: left;
+	background: #ccccff;
+}
+
+.admin-task {
+	border: 1px solid #093;
+	font-family: verdana, tahoma, arial, helvetica;
+	font-size: 12px;
+	#color: #093;
+	background: #fff;
+	width: 450px;
+	display: block;
+	padding: 3px;
+}
+.admin-task:hover {
+	background: #eee;
+	border: 1px dotted #093;
+	text-decoration: underline;
+	color: #09f
+}
+.admin-task h5 {
+	font-weight: normal;
+	border-bottom: 1px solid #093;
+	text-decoration: none;
+	font-size: 11px;
+	padding: 0px;
+	margin: 0px;
+	color: #06c;
+}
+
+
+ul.makeMenu, ul.makeMenu ul {
+  width: auto;                 /* sets the size of the menu blocks */
+  padding-left: 0px;           /* stops the usual indent from ul */
+  cursor: default;             /* gives an arrow cursor */
+  margin-left: 0px;            /* Opera 7 final's margin and margin-box model cause problems */
+  float: top;
+  display: inline;
+}
+ul.makeMenu li {
+  list-style-type: none;       /* removes the bullet points */
+  margin: 0px;                 /* Opera 7 puts large spacings between li elements */
+  position: relative;          /* makes the menu blocks be positioned relative to their parent menu item
+                                  the lack of offset makes these appear normal, but it will make a difference
+                                  to the absolutely positioned child blocks */
+ font-weight: bold; letter-spacing: /*0.5em*/ 1px; border-bottom: 2px solid #fc0; 
+padding: 1px; margin: 0px; text-transform: none; background-color: #fff; color: #093; font-size: 10px; text-align: left;
+ display:block; border: 1px solid #ccc; border-left: 2px solid #fc0; font-family: verdana,tacoma,arial,helvetica;
+ float: left;
+ width: 100%;
+}
+/* this works fine in safari but not mozilla or IE */
+ul.makeMenu li > ul > li {
+	float: none;
+	border: 0px;
+	border-bottom: 1px dotted #ccc;
+}
+ul.makeMenu li > ul {          /* using the > selector prevents many lesser browsers (and IE - see below) hiding child ULs */
+  display: none;               /* hides child menu blocks - one of the most important declarations */
+  position: absolute;          /* make child blocks hover without leaving space for them */
+  top: 12px;                    /* position slightly lower than the parent menu item */
+  left: -2px;
+}
+ul.makeMenu li:hover {
+  border: 1px dotted #ccc; border-left: 2px dotted #fc0; 
+}
+ul.makeMenu li:hover > ul {    /* one of the most important declarations - the browser must detect hovering over arbitrary elements
+                                  the > targets only the child ul, not any child uls of that child ul */
+  display: block;              /* makes the child block visible - one of the most important declarations */
+  z-index: 11;
+}
+ul.makeMenu li a { display: block; margin: 0; padding: 1px; font-size: 11px; font-weight: bold; border-bottom: 1px solid #ffffff; color: #555; background: transparent none center left no-repeat; text-decoration: none;font-size: 11px; font-weight: normal; letter-spacing: normal; padding-right: 0.66em; color: #06c; }
+ul.makeMenu li a:hover { background: #efefef; }

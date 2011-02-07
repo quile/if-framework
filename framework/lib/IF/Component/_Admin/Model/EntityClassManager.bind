@@ -1,0 +1,124 @@
+# IF::Component::_Admin::Model::EntityClassManager bindings
+{
+	WRAPPER => {
+		type => "_Admin::Model::PageWrapper",
+		bindings => {
+			controller => q(controller),
+		},
+	},
+	NAVIGATION => {
+		type => "_Admin::Model::Navigation",
+		bindings => {
+			entityClassName => q(entityClassDescription.name),
+			rootEntity => q(rootEntity),
+			controller => q(controller),
+		},
+	},
+	ENTITY_NAME => {
+		type => "STRING",
+		value => q(entityClassDescription.name),
+	},
+	ENTITY_COUNT => {
+		type => "NUMBER",
+		value => q($self->objectContext()->countOfEntitiesMatchingFetchSpecification(
+						IF::FetchSpecification->new(
+							$self->entityClassDescription()->name()
+							)
+						)
+					),
+	},
+	TABLE => {
+		type => "STRING",
+		value => q(entityClassDescription.table),
+	},
+	PRIMARY_KEY => {
+		type => "STRING",
+		value => q(entityClassDescription.primaryKey),
+	},
+	RELATIONSHIPS => {
+		type => "LOOP",
+		list => q([sort keys %{$self->entityClassDescription()->relationships()}]),
+		item => "aRelationshipName",
+	},
+	RELATIONSHIP_NAME => {
+		type => "STRING",
+		value => q(aRelationshipName),
+	},
+	RELATIONSHIP_TYPE => {
+		type => "STRING",
+		value => q(relationship.TYPE),
+	},
+	RELATIONSHIP_TARGET => {
+		type => "STRING",
+		value => q(relationship.TARGET_ENTITY),
+	},
+	RELATIONSHIP_TARGET_ENTITY_CLASS_MANAGER_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntityClassManager"),
+			queryDictionary => q({
+				"entity-class-name" => q(relationship.TARGET_ENTITY),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	ATTRIBUTES => {
+		type => "LOOP",
+		list => q([sort {$a->{ATTRIBUTE_NAME} cmp $b->{ATTRIBUTE_NAME}} values %{$self->entityClassDescription()->attributes()}]),
+		item => "anAttribute",
+	},
+	ATTRIBUTE_NAME => {
+		type => "STRING",
+		value => q(anAttribute.ATTRIBUTE_NAME),
+	},
+	ATTRIBUTE_COLUMN_NAME => {
+		type => "STRING",
+		value => q(anAttribute.COLUMN_NAME),
+	},
+	ATTRIBUTE_SIZE => {
+		type => "STRING",
+		value => q(anAttribute.SIZE),
+	},
+	ATTRIBUTE_TYPE => {
+		type => "STRING",
+		value => q(anAttribute.TYPE),
+	},
+	ATTRIBUTE_DEFAULT => {
+		type => "STRING",
+		value => q(anAttribute.DEFAULT),
+	},
+	ATTRIBUTE_VALUES => {
+		type => "STRING",
+		value => q(commaSeparatedList($self->{anAttribute}->{VALUES})),
+	},
+	SHOW_ALL_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntitySearch"),
+			directAction => q("submit"),
+			queryDictionary => q({
+				"entity-class-name" => q(entityClassDescription.name),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	GOTO_FORM => {
+		type => "Form",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntityEditor"),
+			queryDictionary => q({
+				"entity-class-name" => q(entityClassDescription.name),
+				"controller-class" => q(controller.controllerClass),
+			}),
+		},
+	},
+	GOTO_ID => {
+		type => "TextField",
+		bindings => {
+			name => q("entity-id"),
+		},
+	},
+	GOTO_BUTTON => {
+		type => "SubmitButton",
+	},
+};

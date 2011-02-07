@@ -1,0 +1,81 @@
+# IF::Component::_Admin::Model::EntityRelationshipOrderingEditor bindings
+{
+	WRAPPER => {
+		type => "Admin::PageWrapper",
+		bindings => {
+			controller => q(controller),
+		},
+	},
+	NAVIGATION => {
+		type => "_Admin::Model::Navigation",
+		bindings => {
+			entity => q(entity),
+			rootEntity => q(rootEntity),
+			entityClassName => q(entityClassDescription.name),
+			controller => q(controller),
+		},
+	},
+	ROOT_ENTITY_NAME => {
+		type => "STRING",
+		value => q(rootEntity.name),
+	},
+	ENTITY_NAME => {
+		type => "STRING",
+		value => q(entityClassDescription.name),
+	},
+	RELATIONSHIP_NAME => {
+		type => "STRING",
+		value => q(relationshipName),
+	},
+	ENTITY_SEARCH_RESULTS => {
+		type => "LOOP",
+		list => q(entities),
+		item => q(anEntity),
+		index => q(anIndex),
+	},
+	ELEMENT_ID => {
+		type => "STRING",
+		value => q(anEntity.id),
+	},
+	# TODO move this key path into the controller
+	RESULT_NAME => {
+		type => "STRING",
+		value => q(anEntity.valueForKey(controller.displayNameKeyForEntityType(entityClassDescription.name))),
+	},
+	RESULT_EDIT_LINK => {
+		type => "Hyperlink",
+		bindings => {
+			targetComponentName => q("_Admin::Model::EntityEditor"),
+			queryDictionary => q({
+				"controller-class" => q(controller.controllerClass),
+				"entity-class-name" => q(entityClassDescription.name),
+				"entity-id" => q(anEntity.id),
+ 			}),
+		},
+	},
+	# callback from the sortable calls this url asynchronously 
+	# so update the 
+	UPDATE_URL => {
+		type => "URL",
+		bindings => {
+			directAction => q("saveOrdering"),
+			queryDictionary => q({
+				"controller-class" => q(controller.controllerClass),
+				"relationship-name" => q(relationshipName),
+				"entity-class-name" => q(entityClassDescription.name),
+				"root-entity-class-name" => q(rootEntity.entityClassDescription.name),	
+				"root-entity-id" => q(rootEntity.id),			
+				"sid" => q(session.externalId),			
+			}),
+		},
+	},	
+	FORM => {
+		type => "Form",
+		bindings => {
+			targetComponentName => q(returnTargetComponent),
+		},
+	},
+	SUBMIT_BUTTON => {
+		type => "SubmitButton",
+	},
+}

@@ -1,0 +1,75 @@
+# Copyright (c) 2010 - Action Without Borders
+#
+# MIT License
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+--
+-- Table structure for table `MAIL_QUEUE_ENTRY`
+--
+
+DROP TABLE IF EXISTS `MAIL_QUEUE_ENTRY`;
+CREATE TABLE `MAIL_QUEUE_ENTRY` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `CREATION_DATE` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `MODIFICATION_DATE` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `EMAIL` varchar(255) NOT NULL DEFAULT '',
+  `SENDER` varchar(255) NOT NULL DEFAULT '',
+  `SEND_DATE` int(11) NOT NULL DEFAULT '0',
+  `MAIL_MESSAGE_ID` int(11) NOT NULL DEFAULT '0',
+  `MAIL_EVENT_ID` int(11) NOT NULL DEFAULT '0',
+  `IS_LAST_MESSAGE` tinyint(4) NOT NULL DEFAULT '0',
+  `FIELD_VALUES` longtext NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `SEND_DATE` (`SEND_DATE`),
+  KEY `SEND_DATE_3` (`SEND_DATE`,`MAIL_EVENT_ID`,`CREATION_DATE`,`ID`,`IS_LAST_MESSAGE`),
+  KEY `SEND_DATE_2` (`SEND_DATE`,`MAIL_EVENT_ID`),
+  KEY `MAIL_EVENT_ID_ID` (`MAIL_EVENT_ID`,`ID`),
+  KEY `IS_LAST_MESSAGE` (`IS_LAST_MESSAGE`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `MAIL_EVENT`
+--
+
+DROP TABLE IF EXISTS `MAIL_EVENT`;
+CREATE TABLE `MAIL_EVENT` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `CREATION_DATE` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `MODIFICATION_DATE` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `LOG_MESSAGE` varchar(255) NOT NULL DEFAULT '',
+  `CREATED_BY` varchar(80) NOT NULL DEFAULT '',
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `MAIL_MESSAGE`
+--
+
+DROP TABLE IF EXISTS `MAIL_MESSAGE`;
+CREATE TABLE `MAIL_MESSAGE` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `CREATION_DATE` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `MODIFICATION_DATE` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `SUBJECT` varchar(255) NOT NULL DEFAULT '',
+  `CONTENT_TYPE` varchar(20) CHARACTER SET latin1 NOT NULL DEFAULT 'text/plain',
+  `BODY` text NOT NULL,
+  `HEADERS` text CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

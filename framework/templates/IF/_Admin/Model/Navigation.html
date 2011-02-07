@@ -1,0 +1,67 @@
+<BINDING_IF:SHOULD_SHOW_NAVIGATION>
+<!--[if gte IE 5]>
+<style type="text/css">
+/* that IE 5+ conditional comment makes this only visible in IE 5+ */
+ul.makeMenu li {  /* the behaviour to mimic the li:hover rules in IE 5+ */
+        behavior: url( /stylesheets/internetExplorerCSSMenus.htc );
+}
+ul.makeMenu ul {  /* copy of above declaration without the > selector */
+        display: none; position: absolute; top: 12px; left: -2px;
+}
+</style>
+<![endif]-->
+<table><tr>
+	<td>
+		<ul class="makeMenu">
+			<li> Model
+				<ul>
+					<li> <BINDING:HOME_LINK>home</BINDING:HOME_LINK>
+				</ul>
+		</ul>
+	</td>
+	
+	<BINDING_IF:HAS_ENTITY_CLASS>
+	<td>
+		<ul class="makeMenu">
+			<li> <BINDING:ENTITY_CLASS_NAME>
+			<ul>
+				<li> <BINDING:ENTITY_HOME_LINK>structure</BINDING:ENTITY_HOME_LINK>
+				<li> <BINDING:ADD_ENTITY_LINK>add</BINDING:ADD_ENTITY_LINK>
+				<li> <BINDING:SEARCH_ENTITY_LINK>search</BINDING:SEARCH_ENTITY_LINK>
+			</ul>
+		</ul>
+	</td>
+	</BINDING_IF:HAS_ENTITY_CLASS>
+	
+	<BINDING_IF:HAS_ROOT_ENTITY>
+	<td>
+		<ul class="makeMenu">
+			<li> <BINDING:ROOT_ENTITY_NAME><BINDING_IF:HAS_RELATIONSHIP_NAME>/<BINDING:RELATIONSHIP_NAME></BINDING_IF:HAS_RELATIONSHIP_NAME>
+			<ul>
+				<li> <BINDING:VIEW_ROOT_ENTITY_LINK>view</BINDING:VIEW_ROOT_ENTITY_LINK>
+				<li> <BINDING:EDIT_ROOT_ENTITY_LINK>edit</BINDING:EDIT_ROOT_ENTITY_LINK>
+				<li> <BINDING:DELETE_ROOT_ENTITY_LINK onClick="javascript:return confirm('Are you sure?');">delete</BINDING:DELETE_ROOT_ENTITY_LINK>
+			</ul>
+		</ul>
+	</td>
+	</BINDING_IF:HAS_ROOT_ENTITY>
+	
+	
+	<BINDING_IF:HAS_ENTITY>
+	<td>
+		<ul class="makeMenu">
+			<li><BINDING:ENTITY_NAME>
+				<ul>
+					<li> <BINDING:VIEW_ENTITY_LINK>view</BINDING:VIEW_ENTITY_LINK>
+					<li> <BINDING:EDIT_ENTITY_LINK>edit</BINDING:EDIT_ENTITY_LINK>
+					<li> <BINDING:DELETE_ENTITY_LINK onClick="javascript:return confirm('Are you sure?');">delete</BINDING:DELETE_ENTITY_LINK>
+				</ul>
+		</ul>
+	</td>
+	</BINDING_IF:HAS_ENTITY>
+	
+	<td>
+	<BINDING:RECENTLY_VIEWED_ENTITIES>
+	</td>
+	</tr></table>
+</BINDING_IF:SHOULD_SHOW_NAVIGATION>

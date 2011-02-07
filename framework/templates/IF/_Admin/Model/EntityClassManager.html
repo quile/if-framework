@@ -1,0 +1,79 @@
+<BINDING:WRAPPER>
+	<table class=content>
+		<tr><td><BINDING:NAVIGATION></td></tr>
+		<tr><td>
+<h4>Entity Class Description Manager - <BINDING:ENTITY_NAME></h4>
+
+<table>
+	<tr>
+		<td>
+		<b>Basic info</b>
+
+			<table cellpadding=2 cellspacing=0 class="information-matrix">
+				<tr>
+					<th>Table:</th>
+					<td><BINDING:TABLE></td>
+				</tr>
+				<tr>
+					<th>Primary key:</th>
+					<td><BINDING:PRIMARY_KEY><br>
+					 <div style="border:solid 1px green; color: green; font-size: 9px"><BINDING:GOTO_FORM>Go to entity with id: <BINDING:GOTO_ID SIZE="5" STYLE="font-size: 9px; color: green;"><BINDING:GOTO_BUTTON VALUE="Go" STYLE="font-size: 9px; color: green;"></td></BINDING:GOTO_FORM></div>
+				</tr>
+				<tr>
+					<th>Number of entities:</th>
+					<td><BINDING:ENTITY_COUNT> (<BINDING:SHOW_ALL_LINK>show all</BINDING:SHOW_ALL_LINK>)</td>
+				</tr>
+			</table>
+			
+		</td>
+		<td>
+		<b>Relationships</b>
+
+			<table cellpadding=2 cellspacing=0 class="information-matrix">
+				<tr>
+					<th>relationship</th>
+					<th>type</th>
+					<th>target entity</th>
+				</tr>
+				
+				<BINDING_LOOP:RELATIONSHIPS>
+				<tr>
+					<td><BINDING:RELATIONSHIP_NAME></td>
+					<td><BINDING:RELATIONSHIP_TYPE></td>
+					<td><BINDING:RELATIONSHIP_TARGET_ENTITY_CLASS_MANAGER_LINK><BINDING:RELATIONSHIP_TARGET></BINDING:RELATIONSHIP_TARGET_ENTITY_CLASS_MANAGER_LINK></td>
+
+				</BINDING_LOOP:RELATIONSHIPS>
+			</table>
+			
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		<b>Attributes</b>
+
+			<table cellpadding=2 cellspacing=0 class="information-matrix">
+				<tr>
+					<th>attribute</th>
+					<th>column</th>
+					<th>type</th>
+					<th>size</th>
+					<th>values</th>
+					<th>default</th>
+				</tr>
+				<BINDING_LOOP:ATTRIBUTES>
+				<tr>
+					<td><BINDING:ATTRIBUTE_NAME>&nbsp;</td>
+					<td><BINDING:ATTRIBUTE_COLUMN_NAME>&nbsp;</td>
+					<td><BINDING:ATTRIBUTE_TYPE>&nbsp;</td>			
+					<td><BINDING:ATTRIBUTE_SIZE>&nbsp;</td>
+					<td><BINDING:ATTRIBUTE_VALUES>&nbsp;</td>
+					<td><BINDING:ATTRIBUTE_DEFAULT>&nbsp;</td>
+				</tr>
+				</BINDING_LOOP:ATTRIBUTES>
+			</table>
+		</td>
+	</tr>
+</table>
+		</td></tr>
+	</table>
+</BINDING:WRAPPER>

@@ -1,0 +1,9 @@
+<span id="<BINDING:UNIQUE_ID>_<BINDING:USE_COUNT_INCREMENTED>" <BINDING:TAG_ATTRIBUTES> <BINDING_IF:IS_HIDDEN>style="display: none;"</BINDING_IF:IS_HIDDEN>><BINDING:CONTENT></span><script type="text/javascript">
+jQuery(function() {
+	var c = new IFSpan("<BINDING:UNIQUE_ID>_<BINDING:USE_COUNT>", "<BINDING:PARENT_BINDING_NAME>");
+	IF.controllers.<BINDING:UNIQUE_ID>_<BINDING:USE_COUNT> = c;
+	if ("<BINDING:EXPRESSION>".length) {
+	    c.setValue(<BINDING:EXPRESSION>);
+	};
+});
+</script>

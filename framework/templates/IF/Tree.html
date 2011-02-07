@@ -1,0 +1,78 @@
+<table cellspacing="<BINDING:COLUMN_SPACE>" cellpadding=0 border=0><tr><td>
+<table cellspacing=1 cellpadding=1 border=0>
+<tr>
+<td><img src="/images/blank.gif" height="1" width="1"><BR></td>
+<td><img src="/images/blank.gif" height="1" width="1"><BR></td>
+<td><img src="/images/blank.gif" height="1" width="1"><BR></td>
+<td><img src="/images/blank.gif" height="1" width="1"><BR></td>
+<td><img src="/images/blank.gif" height="1" width="1"><BR></td>
+<td width="50%"><img src="/images/blank.gif" height="1" width="1"><BR></td>
+</tr>
+<TMPL_LOOP BINDING:BROWSE_VALUES>
+<TMPL_IF NAME=BROWSE_VALUES>
+<tr>
+<td><A HREF="<TMPL_VAR NAME=LINK>"><IMG SRC="/images/arrow_open.gif" ALT="V" WIDTH="10" HEIGHT="10" BORDER="0"></a><BR></td>
+<td colspan=5 nowrap><font size=2 face="verdana,helvetica"><b><A HREF="<TMPL_VAR NAME=LINK>"><TMPL_IF DISPLAY_STRING><TMPL_VAR DISPLAY_STRING><TMPL_ELSE><TMPL_VAR NAME=NAME></TMPL_IF></a></b><TMPL_IF BINDING:SHOW_NUMBERS><TMPL_IF COUNT> <font size=-1 color=#777777>(<TMPL_VAR NAME=COUNT>)</TMPL_IF></TMPL_IF></font><BR></td>
+</tr>
+<TMPL_LOOP NAME=BROWSE_VALUES>
+<TMPL_IF NAME=BROWSE_VALUES>
+<tr>
+<td><img src="/images/blank.gif" width=10><BR></td>
+<td><A HREF="<TMPL_VAR NAME=LINK>"><IMG SRC="/images/arrow_open.gif" ALT="V" WIDTH="10" HEIGHT="10" BORDER="0"></a><BR></td>
+<td colspan=4><b><font size=2 face="verdana,helvetica"><A HREF="<TMPL_VAR NAME=LINK>"><TMPL_IF DISPLAY_STRING><TMPL_VAR DISPLAY_STRING><TMPL_ELSE><TMPL_VAR NAME=NAME></TMPL_IF></a></B><TMPL_IF BINDING:SHOW_NUMBERS><TMPL_IF COUNT> <font size=-1 color=#777777>(<TMPL_VAR NAME=COUNT>)</TMPL_IF></TMPL_IF></font></td>
+</tr>
+<TMPL_LOOP NAME=BROWSE_VALUES>
+<TMPL_IF NAME=BROWSE_VALUES>
+<tr>
+<td><img src="/images/blank.gif" width=10><BR></td>
+<td><img src="/images/blank.gif" width=10><BR></td>
+<td><A HREF="<TMPL_VAR NAME=LINK>"><IMG SRC="/images/arrow_open.gif" ALT="V" WIDTH="10" HEIGHT="10" BORDER="0"></a><BR></td>
+<td colspan=3><font size=2 face="verdana,helvetica"><b><A HREF="<TMPL_VAR NAME=LINK>"><TMPL_IF DISPLAY_STRING><TMPL_VAR DISPLAY_STRING><TMPL_ELSE><TMPL_VAR NAME=NAME></TMPL_IF></a></B><TMPL_IF BINDING:SHOW_NUMBERS><TMPL_IF COUNT> <font size=-1 color=#777777>(<TMPL_VAR NAME=COUNT>)</TMPL_IF></TMPL_IF></font></td>
+</tr>
+<TMPL_LOOP NAME=BROWSE_VALUES>
+<tr>
+<td><img src="/images/blank.gif" width=10><BR></td>
+<td><img src="/images/blank.gif" width=10><BR></td>
+<td><img src="/images/blank.gif" width=10><BR></td>
+<td><A HREF="<TMPL_VAR NAME=LINK>"><IMG SRC="/images/home/bullet.gif" ALT="-" WIDTH="5" HEIGHT="5" HSPACE="3" BORDER="0"></a><BR></td>
+<td colspan=2><font size=2 face="verdana,helvetica"><A HREF="<TMPL_VAR NAME=LINK>"><TMPL_IF DISPLAY_STRING><TMPL_VAR DISPLAY_STRING><TMPL_ELSE><TMPL_VAR NAME=NAME></TMPL_IF></a><TMPL_IF BINDING:SHOW_NUMBERS><TMPL_IF COUNT> <font size=-1 color=#777777>(<TMPL_VAR NAME=COUNT>)</TMPL_IF></TMPL_IF></font></td>
+</tr>
+</TMPL_LOOP>
+<TMPL_ELSE>
+<tr>
+<td><img src="/images/blank.gif" width=10><BR></td>
+<td><img src="/images/blank.gif" width=10><BR></td>
+<td><A HREF="<TMPL_VAR NAME=LINK>"><IMG SRC="/images/arrow_closed.gif" ALT="&gt;" WIDTH="10" HEIGHT="10" BORDER="0"></a><BR></td>
+<td colspan=3 ><font size=2 face="verdana,helvetica"><A HREF="<TMPL_VAR NAME=LINK>"><TMPL_IF DISPLAY_STRING><TMPL_VAR DISPLAY_STRING><TMPL_ELSE><TMPL_VAR NAME=NAME></TMPL_IF></a><TMPL_IF BINDING:SHOW_NUMBERS><TMPL_IF COUNT> <font size=-1 color=#777777>(<TMPL_VAR NAME=COUNT>)</TMPL_IF></TMPL_IF></font></td>
+</tr>
+</TMPL_IF>
+</TMPL_LOOP>
+<TMPL_ELSE>
+<tr>
+<td><img src="/images/blank.gif" width=10><BR></td>
+<td><A HREF="<TMPL_VAR NAME=LINK>"><IMG SRC="/images/arrow_closed.gif" ALT="&gt;" WIDTH="10" HEIGHT="10" BORDER="0"></a><BR></td>
+<td colspan=4><font size=2 face="verdana,helvetica"><A HREF="<TMPL_VAR NAME=LINK>"><TMPL_IF DISPLAY_STRING><TMPL_VAR DISPLAY_STRING><TMPL_ELSE><TMPL_VAR NAME=NAME></TMPL_IF></a><TMPL_IF BINDING:SHOW_NUMBERS><TMPL_IF COUNT> <font size=-1 color=#777777>(<TMPL_VAR NAME=COUNT>)</TMPL_IF></TMPL_IF></font></td>
+</tr>
+</TMPL_IF>
+</TMPL_LOOP>
+<TMPL_ELSE>
+<tr>
+<td><A HREF="<TMPL_VAR NAME=LINK>"><IMG SRC="/images/arrow_closed.gif" ALT="&gt;" WIDTH="10" HEIGHT="10" BORDER="0"></a><BR></td>
+<td colspan=5 nowrap><font size=2 face="verdana,helvetica"><A HREF="<TMPL_VAR NAME=LINK>"><TMPL_IF DISPLAY_STRING><TMPL_VAR DISPLAY_STRING><TMPL_ELSE><TMPL_VAR NAME=NAME></TMPL_IF></a><TMPL_IF BINDING:SHOW_NUMBERS><TMPL_IF COUNT> <font size=-1 color=#777777>(<TMPL_VAR NAME=COUNT>)</TMPL_IF></TMPL_IF></font></td>
+</tr>
+</TMPL_IF>
+<TMPL_IF BINDING:NEW_COLUMN>
+</table></td><td>
+<table cellspacing=1 cellpadding=1 border=0>
+<tr>
+<td><img src="/images/blank.gif" height="1" width="1"><BR></td>
+<td><img src="/images/blank.gif" height="1" width="1"><BR></td>
+<td><img src="/images/blank.gif" height="1" width="1"><BR></td>
+<td><img src="/images/blank.gif" height="1" width="1"><BR></td>
+<td><img src="/images/blank.gif" height="1" width="1"><BR></td>
+<td width="50%"><img src="/images/blank.gif" height="1" width="1"><BR></td>
+</tr>
+</TMPL_IF>
+</TMPL_LOOP>
+</table>
+</td></tr></table>

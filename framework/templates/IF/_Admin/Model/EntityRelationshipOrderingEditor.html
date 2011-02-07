@@ -1,0 +1,66 @@
+<BINDING:WRAPPER>
+<BINDING:NAVIGATION>
+
+<style>
+#ordering-group {
+	width: 500px;
+	border:  1px solid #000000;
+	background-color:  #dddd00;
+}
+div.orderable {
+	border:  1px solid #999999;
+	background-color:  #eeeeee;
+	margin: 1px 3px 1px 3px;
+	padding: 1px 1px 1px 2px;
+	font-size: 9pt;
+	cursor: move;
+}
+#statusBar {
+	margin: 2px 3px 2px 10px;
+	color: #CC0000;
+}
+a.editLink {
+	border:  1px solid #009933;
+	margin: 0px 5px 0px 2px;
+	padding: 0px 2px 0px 2px;
+	font-size: 8pt;
+	text-decoration: none;
+	cursor: auto;
+}
+</style>
+
+<h4>Ordering <BINDING:RELATIONSHIP_NAME> in <BINDING:ROOT_ENTITY_NAME></h4>
+<p>This tools allows you to edit the ordering of a group of items. Simply click and drag the item you want to move.</p>
+<div id="statusBar">&nbsp;
+</div>
+<BINDING:FORM>
+	<BINDING:SUBMIT_BUTTON value="Done">
+</BINDING:FORM>
+<div id="ordering-group">
+<BINDING_LOOP:ENTITY_SEARCH_RESULTS>
+	<div class="orderable" id="element_<BINDING:ELEMENT_ID>"><BINDING:RESULT_EDIT_LINK class="editLink">edit</BINDING:RESULT_EDIT_LINK><BINDING:RESULT_NAME></div>
+</BINDING_LOOP:ENTITY_SEARCH_RESULTS>
+</div>	
+<br>
+<BINDING:FORM>
+	<BINDING:SUBMIT_BUTTON  value="Done">
+</BINDING:FORM>	
+<script type="text/javascript">
+jQuery(function($) {
+    $("#ordering-group").sortable({});  
+    $("#ordering-group").siblings('form').click(function () {
+        var theform = this
+        console.log($("#ordering-group").sortable('serialize'))
+        $.post('<BINDING:UPDATE_URL>&'+$("#ordering-group").sortable('serialize'), null, function(data) {
+            console.log(data)
+            if (data == 'success\n') {
+                $(theform).submit()
+            } else {
+                $('#statusBar').html(data)
+            }
+        })
+        return false;
+    })  
+})
+ </script>
+</BINDING:WRAPPER>
