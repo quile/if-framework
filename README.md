@@ -27,4 +27,33 @@ it has been interesting.
 There is a port of this to Objective-J under way at 
 [Womble](http://github.com/quile/Womble)
 
+
+
+INSTALL
+-------
+I'll write a proper install document soon.  For now, it
+really helps to check out
+
+[if-sandbox](http://github.com/quile/if-sandbox)
+
+and build that, set up your IF_SANDBOX environment
+variable, and then check out this project.  I will
+be posting sample applications that use the framework
+shortly.
+
+
+
+ROUGH EDGES
+-----------
+
+Ironically, the oldest and most commonly used parts of the system are also
+the roughest, because they were developed first -- often in the absence of
+a lot of the tools and features that grew up around them.  The system
+web components, in framework/lib/IF/Component, are very bad examples
+of how to build components, for this very reason.  I have refactored some of
+the core parts of the system, but there is still a lot of pointy bits
+that will hurt you if you poke around too much!
+
+
+
 -kd
