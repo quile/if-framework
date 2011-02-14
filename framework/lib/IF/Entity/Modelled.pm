@@ -10,12 +10,12 @@ sub import {
     $modelClass =~ /(.*)::(.*)$/;
     $modelClass = $1."::Model::_".$2;
     no strict 'refs';
-	my $i = \@{$c."::ISA"};
-	if ($i && scalar @$i > 0 && $i->[0] eq $modelClass) {
-	    IF::Log::debug("Not pushing model class onto ISA because it's already there");
-	    return;
-	}
-	# add model class to the mix
+    my $i = \@{$c."::ISA"};
+    if ($i && scalar @$i > 0 && $i->[0] eq $modelClass) {
+        IF::Log::debug("Not pushing model class onto ISA because it's already there");
+        return;
+    }
+    # add model class to the mix
     eval "use $modelClass;";
     
     unless ($@) {

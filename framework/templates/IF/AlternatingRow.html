@@ -1,29 +1,29 @@
 <BINDING_IF:IS_FIRST_TIME_RENDERED>
 <BINDING_UNLESS:HAS_EVEN_ROW_CLASS>
-	<style type="text/css">
-		.even-row-default td {
-			font-family: Verdana, Arial, Helvetica;
-			font-size: 11px;
-			padding: 3px;
-			background: #ffffff;
-		}
-	</style>
+    <style type="text/css">
+        .even-row-default td {
+            font-family: Verdana, Arial, Helvetica;
+            font-size: 11px;
+            padding: 3px;
+            background: #ffffff;
+        }
+    </style>
 
 </BINDING_UNLESS:HAS_EVEN_ROW_CLASS>
 
 <BINDING_UNLESS:HAS_ODD_ROW_CLASS>
-	<style type="text/css">
-		.odd-row-default td {
-			font-family: Verdana, Arial, Helvetica;
-			font-size: 11px;
-			padding: 3px;
-			background: #E4E8ED;
-		}
-	</style>
+    <style type="text/css">
+        .odd-row-default td {
+            font-family: Verdana, Arial, Helvetica;
+            font-size: 11px;
+            padding: 3px;
+            background: #E4E8ED;
+        }
+    </style>
 </BINDING_UNLESS:HAS_ODD_ROW_CLASS>
 
 
 </BINDING_IF:IS_FIRST_TIME_RENDERED>
 <tr class="<BINDING:ROW_CLASS>" %_TAG_ATTRIBUTES_%>
-	<BINDING:CONTENT>
+    <BINDING:CONTENT>
 </tr>

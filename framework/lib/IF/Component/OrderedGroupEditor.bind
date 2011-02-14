@@ -21,37 +21,37 @@
 # THE SOFTWARE.
 
 {
-	BROWSER_SUCKS => {
-		type => "BOOLEAN",
-		value => q("0")
-	},
+    BROWSER_SUCKS => {
+        type => "BOOLEAN",
+        value => q("0")
+    },
 
-	UNIQUE_ID => {
-		type => "STRING",
-		value => q(uniqueId),
-	},
+    UNIQUE_ID => {
+        type => "STRING",
+        value => q(uniqueId),
+    },
 
-	IS_FIRST_TIME_RENDERED => {
-		type => "BOOLEAN",
-		value => q(isFirstTimeRendered),
-	},
+    IS_FIRST_TIME_RENDERED => {
+        type => "BOOLEAN",
+        value => q(isFirstTimeRendered),
+    },
 
-	SOURCE_LIST => {
-		type => "ScrollingList",
-		bindings => {
-			list => q(list),
-			value => q(value),
-			displayString => q(displayString),
-			size => q(size),
-		},
-	},
-	TARGET_LIST => {
-		type => "ScrollingList",
-		bindings => {
-			list => q(selection),
-			value => q(value),
-			displayString => q(displayString),
-			size => q(size),
-		},
-	},
+    SOURCE_LIST => {
+        type => "ScrollingList",
+        bindings => {
+            list => q(list),
+            value => q(value),
+            displayString => q(displayString),
+            size => q(size),
+        },
+    },
+    TARGET_LIST => {
+        type => "ScrollingList",
+        bindings => {
+            list => q(selection),
+            value => q(value),
+            displayString => q(displayString),
+            size => q(size),
+        },
+    },
 }

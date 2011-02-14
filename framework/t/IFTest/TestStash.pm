@@ -52,8 +52,8 @@ sub setUp : Test(startup => 1) {
 
     IF::Log::setLogMask(0x20);
     if ($self->{debug}) {
-    	IF::Log::setLogMask(0xffff);
-    	$memcachedFlags .= " -vv ";
+        IF::Log::setLogMask(0xffff);
+        $memcachedFlags .= " -vv ";
     }
 
     # -------
@@ -62,13 +62,13 @@ sub setUp : Test(startup => 1) {
     diag("Firing up memcached at $memcachedPath on port $self->{port}");
     $self->{pid} = fork();
     if (not defined $self->{pid}) {
-    	print "fork failed.\n";
+        print "fork failed.\n";
     } elsif ($self->{pid} == 0) {
-    	# child
-    	exec("$memcachedPath $memcachedFlags")
+        # child
+        exec("$memcachedPath $memcachedFlags")
                            or die "Can’t start memcached: $!";
-    	print "Should not get here!\n";
-    	exit(0);
+        print "Should not get here!\n";
+        exit(0);
     } else {
         ok(1, "forked off memcached process");
     }
@@ -77,11 +77,11 @@ sub setUp : Test(startup => 1) {
 sub tearDown : Test(shutdown => 1) {
     my ($self) = @_;
 
-	kill 15, $self->{pid};
-	waitpid($self->{pid}, 0);
-	ok(1, "Memcached shut down");
-	diag "Waiting for memcached to shut down";
-	sleep(5);
+    kill 15, $self->{pid};
+    waitpid($self->{pid}, 0);
+    ok(1, "Memcached shut down");
+    diag "Waiting for memcached to shut down";
+    sleep(5);
 }
 
 
@@ -96,71 +96,71 @@ sub test_stash : Test(18) {
     ok($stasher->_sharedCache()->isa("IF::Cache::Memcached"), "Stasher is backed by a memcache cache");
 
     {
-    		$stasher->setStashedValueForKey("bar", "foo");
-    		ok($stasher->stashedValueForKey("foo") eq "bar", "Set and retrieved a key in the stash");
+            $stasher->setStashedValueForKey("bar", "foo");
+            ok($stasher->stashedValueForKey("foo") eq "bar", "Set and retrieved a key in the stash");
 
-    		$stasher->deleteStashedValueForKey('foo');
-    		ok(! $stasher->stashedValueForKey('foo'), "Deleted entry from stash.");
+            $stasher->deleteStashedValueForKey('foo');
+            ok(! $stasher->stashedValueForKey('foo'), "Deleted entry from stash.");
     }
 
     {
-    		$stasher->setStashedValueForKey({ 'foo' => 'bar', 'bah' => 'pez' }, 'obj');
-    		my $rv = $stasher->stashedValueForKey('obj');
-    		ok($rv && $rv->{foo} eq 'bar', "Set and retrieved an object in the stash");
+            $stasher->setStashedValueForKey({ 'foo' => 'bar', 'bah' => 'pez' }, 'obj');
+            my $rv = $stasher->stashedValueForKey('obj');
+            ok($rv && $rv->{foo} eq 'bar', "Set and retrieved an object in the stash");
 
-    		$stasher->deleteStashedValueForKey('obj');
-    		ok(! $stasher->stashedValueForKey('obj'), "Deleted object from stash.");
+            $stasher->deleteStashedValueForKey('obj');
+            ok(! $stasher->stashedValueForKey('obj'), "Deleted object from stash.");
     }
 
     {
-    		$stasher->setStashedValueForKeyWithTimeout('bar', 'footime', 2);
-    		ok($stasher->stashedValueForKey('footime') eq 'bar', "Set and retrieved a key in the stash with timeout");
+            $stasher->setStashedValueForKeyWithTimeout('bar', 'footime', 2);
+            ok($stasher->stashedValueForKey('footime') eq 'bar', "Set and retrieved a key in the stash with timeout");
 
-    		sleep(2);
-    		ok(! $stasher->stashedValueForKey('footime'), "Entry expired correctly via timeout.");
+            sleep(2);
+            ok(! $stasher->stashedValueForKey('footime'), "Entry expired correctly via timeout.");
     }
 
     {
-    		$stasher->setStashedValueForKeyWithTimeout('bar', 'foolocal');
-    		my $internalKey = $stasher->_stashKeyForLocalKey('foolocal');
-    		ok(! $stasher->_localCache()->cachedValueForKey($internalKey), "KVP IS NOT in local storage");
+            $stasher->setStashedValueForKeyWithTimeout('bar', 'foolocal');
+            my $internalKey = $stasher->_stashKeyForLocalKey('foolocal');
+            ok(! $stasher->_localCache()->cachedValueForKey($internalKey), "KVP IS NOT in local storage");
 
-    		$stasher->setShouldCacheLocally(1);
-    		ok($stasher->stashedValueForKey('foolocal') eq 'bar', "Retrieved a key from the stash with local storage set");
-    		my $rv = $stasher->_localCache()->cachedValueForKey($internalKey);
-    		ok($rv eq 'bar', "KVP IS now in local storage");
-    		$stasher->setShouldCacheLocally(0);
+            $stasher->setShouldCacheLocally(1);
+            ok($stasher->stashedValueForKey('foolocal') eq 'bar', "Retrieved a key from the stash with local storage set");
+            my $rv = $stasher->_localCache()->cachedValueForKey($internalKey);
+            ok($rv eq 'bar', "KVP IS now in local storage");
+            $stasher->setShouldCacheLocally(0);
     }
 
     {
-    		$stasher->setShouldCacheLocally(1);
-    		$stasher->setStashedValueForKeyWithTimeout('bar', 'foolocal2');
-    		ok($stasher->stashedValueForKey('foolocal2') eq 'bar', "Set and retrieved a key in the stash with local storage set");
+            $stasher->setShouldCacheLocally(1);
+            $stasher->setStashedValueForKeyWithTimeout('bar', 'foolocal2');
+            ok($stasher->stashedValueForKey('foolocal2') eq 'bar', "Set and retrieved a key in the stash with local storage set");
 
-    		my $internalKey = $stasher->_stashKeyForLocalKey('foolocal2');
-    		ok($stasher->_localCache()->cachedValueForKey($internalKey) eq 'bar', "KVP is in local storage");
-    		my $rv = $stasher->_sharedCache()->cachedValueForKey($internalKey);
-    		ok($rv && $rv->{v} eq 'bar', "KVP is in shared storage");
-    		$stasher->setShouldCacheLocally(0);
+            my $internalKey = $stasher->_stashKeyForLocalKey('foolocal2');
+            ok($stasher->_localCache()->cachedValueForKey($internalKey) eq 'bar', "KVP is in local storage");
+            my $rv = $stasher->_sharedCache()->cachedValueForKey($internalKey);
+            ok($rv && $rv->{v} eq 'bar', "KVP is in shared storage");
+            $stasher->setShouldCacheLocally(0);
     }
 
     {
-    		$stasher->setShouldCacheLocally(1);
-    		$stasher->setStashedValueForKeyWithTimeout({ 'local' => 'yokel' }, 'foolocalcomplex');
-    		my $rv = $stasher->stashedValueForKey('foolocalcomplex');
-    		ok($rv && $rv->{'local'} eq 'yokel', "Set and retrieved a complex value in the stash with local storage set");
-    		$stasher->setShouldCacheLocally(0);
+            $stasher->setShouldCacheLocally(1);
+            $stasher->setStashedValueForKeyWithTimeout({ 'local' => 'yokel' }, 'foolocalcomplex');
+            my $rv = $stasher->stashedValueForKey('foolocalcomplex');
+            ok($rv && $rv->{'local'} eq 'yokel', "Set and retrieved a complex value in the stash with local storage set");
+            $stasher->setShouldCacheLocally(0);
     }
 
     {
-    		$stasher->setShouldCacheLocally(0);
-    		$ENV{'STASH_CACHE_ALL_LOCALLY'} = 1;
-    		$stasher->setStashedValueForKeyWithTimeout('bar', 'foolocal3');
-    		ok($stasher->stashedValueForKey('foolocal3') eq 'bar', "Set and retrieved a key in the stash with local storage set via ENV");
+            $stasher->setShouldCacheLocally(0);
+            $ENV{'STASH_CACHE_ALL_LOCALLY'} = 1;
+            $stasher->setStashedValueForKeyWithTimeout('bar', 'foolocal3');
+            ok($stasher->stashedValueForKey('foolocal3') eq 'bar', "Set and retrieved a key in the stash with local storage set via ENV");
 
-    		my $internalKey = $stasher->_stashKeyForLocalKey('foolocal3');
-    		ok($stasher->_localCache()->cachedValueForKey($internalKey) eq 'bar', "KVP is in local storage");
-    		delete $ENV{'STASH_CACHE_ALL_LOCALLY'};
+            my $internalKey = $stasher->_stashKeyForLocalKey('foolocal3');
+            ok($stasher->_localCache()->cachedValueForKey($internalKey) eq 'bar', "KVP is in local storage");
+            delete $ENV{'STASH_CACHE_ALL_LOCALLY'};
     }
 
 
@@ -178,18 +178,18 @@ package QA::Stasher;
 use base qw(IF::Interface::Stash);
 
 sub new {
-	my $className = shift;
-	return bless {}, $className;
+    my $className = shift;
+    return bless {}, $className;
 }
 
 sub shouldCacheLocally {
-	my $self = shift;
-	return $self->{_shouldCacheLocally} || $self->SUPER::shouldCacheLocally();
+    my $self = shift;
+    return $self->{_shouldCacheLocally} || $self->SUPER::shouldCacheLocally();
 }
 
 sub setShouldCacheLocally {
-	my ($self, $value) = @_;
-	$self->{_shouldCacheLocally} = $value;
+    my ($self, $value) = @_;
+    $self->{_shouldCacheLocally} = $value;
 }
 
 

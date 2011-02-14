@@ -27,27 +27,27 @@ sub import {
 
     no strict 'refs';
     my $appName = $APP_NAME;
-	my $appRoot = ${$appName."::Config::APP_ROOT"};
-	open (DIR, "find $appRoot/components -name '*.pm' -print |") || die "Can't find any components in $appRoot/components";
-	my $environment = IF::Application->applicationInstanceWithName($appName)->configurationValueForKey("ENVIRONMENT");
-	IF::Log::debug("$appName starting in environment $environment");
-	my ($file, $pkg);
-	while ($file = <DIR>) {
-		next if $file =~ /\/\./o; # skip modules with /. anywhere in their name
-		next unless $file =~ /^.+\.pm$/o;
-		chomp($file);
-		$file =~ s/$appRoot\/components\///g;
+    my $appRoot = ${$appName."::Config::APP_ROOT"};
+    open (DIR, "find $appRoot/components -name '*.pm' -print |") || die "Can't find any components in $appRoot/components";
+    my $environment = IF::Application->applicationInstanceWithName($appName)->configurationValueForKey("ENVIRONMENT");
+    IF::Log::debug("$appName starting in environment $environment");
+    my ($file, $pkg);
+    while ($file = <DIR>) {
+        next if $file =~ /\/\./o; # skip modules with /. anywhere in their name
+        next unless $file =~ /^.+\.pm$/o;
+        chomp($file);
+        $file =~ s/$appRoot\/components\///g;
 
-		$file =~ s/\.pm//;
-		$file =~ s/\//::/g;
-		$pkg = 	$appName."::Component::".$file;
-		eval "use $pkg";
-		IF::Log::debug("Imported component $pkg");
-		if ($@) {
-			die "WARNING: failed to use $pkg: $@";
-		}
-	}
-	close(DIR);
+        $file =~ s/\.pm//;
+        $file =~ s/\//::/g;
+        $pkg =     $appName."::Component::".$file;
+        eval "use $pkg";
+        IF::Log::debug("Imported component $pkg");
+        if ($@) {
+            die "WARNING: failed to use $pkg: $@";
+        }
+    }
+    close(DIR);
 }
 
 1;

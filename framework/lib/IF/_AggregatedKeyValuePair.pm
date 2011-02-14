@@ -28,13 +28,13 @@ use base qw(
 );
 
 sub setEntityClassDescription {
-	my ($self, $value) = @_;
-	$self->{_entityClassDescription} = $value;
+    my ($self, $value) = @_;
+    $self->{_entityClassDescription} = $value;
 }
 
 sub entityClassDescription {
-	my $self = shift;
-	return $self->{_entityClassDescription};
+    my $self = shift;
+    return $self->{_entityClassDescription};
 }
 
 1;

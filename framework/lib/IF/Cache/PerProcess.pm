@@ -28,46 +28,46 @@ package IF::Cache::PerProcess;
 use base qw(IF::Interface::Cache);
 
 sub init {
-	my $self = shift;
-	$self->setCacheTimeout($DEFAULT_CACHE_TIMEOUT);
-	$self->{cache} = {};
-	$self->{expires} = {};
+    my $self = shift;
+    $self->setCacheTimeout($DEFAULT_CACHE_TIMEOUT);
+    $self->{cache} = {};
+    $self->{expires} = {};
 }
 
 sub cachedValueForKey {
-	my ($self, $key) = @_;
-	if ($self->cachedValueForKeyHasExpired($key)) {
-		$self->deleteCachedValueForKey($key);
-	}
-	return $self->{cache}->{$key};
+    my ($self, $key) = @_;
+    if ($self->cachedValueForKeyHasExpired($key)) {
+        $self->deleteCachedValueForKey($key);
+    }
+    return $self->{cache}->{$key};
 }
 
 sub setCachedValueForKey {
-	my ($self, $value, $key) = @_;
-	$self->setCachedValueForKeyWithTimeout($value, $key, $self->cacheTimeout());
+    my ($self, $value, $key) = @_;
+    $self->setCachedValueForKeyWithTimeout($value, $key, $self->cacheTimeout());
 }
 
 sub setCachedValueForKeyWithTimeout {
-	my ($self, $value, $key, $timeout) = @_;
-	$self->{cache}->{$key} = $value;
-	$self->{expires}->{$key} = time() + $timeout;
+    my ($self, $value, $key, $timeout) = @_;
+    $self->{cache}->{$key} = $value;
+    $self->{expires}->{$key} = time() + $timeout;
 }
 
 sub allKeys {
-	my ($self) = @_;
-	return keys %{$self->{cache}};
+    my ($self) = @_;
+    return keys %{$self->{cache}};
 }
 
 sub cachedValueForKeyHasExpired {
-	my ($self, $key) = @_;
-	return 1 unless $self->{expires}->{$key};
-	return $self->{expires}->{$key} < time();
+    my ($self, $key) = @_;
+    return 1 unless $self->{expires}->{$key};
+    return $self->{expires}->{$key} < time();
 }
 
 sub deleteCachedValueForKey {
-	my ($self, $key) = @_;
-	delete $self->{cache}->{$key};
-	delete $self->{expires}->{$key};
+    my ($self, $key) = @_;
+    delete $self->{cache}->{$key};
+    delete $self->{expires}->{$key};
 }
 
 1;

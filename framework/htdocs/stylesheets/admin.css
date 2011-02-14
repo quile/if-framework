@@ -4,46 +4,46 @@
 .superClearfix { display: block; }
 
 body {
-	font-family : Verdana, Helvetica, sans-serif;
-	background-color : #ffffff;
-	font-size : 11px;
-	color : #000000;
-	margin:0px;
+    font-family : Verdana, Helvetica, sans-serif;
+    background-color : #ffffff;
+    font-size : 11px;
+    color : #000000;
+    margin:0px;
 }
 td {
-	font-family : Verdana, Helvetica, sans-serif;
-	font-size : 11px;
-	vertical-align : text-top;
+    font-family : Verdana, Helvetica, sans-serif;
+    font-size : 11px;
+    vertical-align : text-top;
 }
 a {
-	color : #009933;
-	/*font-weight : bold; */
+    color : #009933;
+    /*font-weight : bold; */
 }
 a:HOVER {
-	color : #000033;
+    color : #000033;
 }
 a.title:link {
-	color: #ffffff;
-	font-weight: bold;
-	text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
 }
 a.important:link {
-	color: #ff4000;
+    color: #ff4000;
 }
 .title {
-	font-size : 15px;
-	font-weight: bold;
-	color: #ffffff;
+    font-size : 15px;
+    font-weight: bold;
+    color: #ffffff;
 }
 .rightside {
-	/*font-size : 80%;*/
-	font-size : 11px;
+    /*font-size : 80%;*/
+    font-size : 11px;
 }
 .sidebar2 {
-	/* background-color : #ffffff; */
-	background-color : #;
-	/* font-size : 80%; */
-	font-size : 11px;
+    /* background-color : #ffffff; */
+    background-color : #;
+    /* font-size : 80%; */
+    font-size : 11px;
 }
 
 div#adminheader{
@@ -52,64 +52,64 @@ background-color:#EFEFEF;
 }
 
 .sidebar {
-	/* background-color : #ffffff; */
-	background-color : #;
-	/* font-size : 80%; */
-	font-size : 11px;
-	padding-left : 4px;
-	text-alignment:top;
+    /* background-color : #ffffff; */
+    background-color : #;
+    /* font-size : 80%; */
+    font-size : 11px;
+    padding-left : 4px;
+    text-alignment:top;
 }
 .even_rows {
-	background-color : #ffffff;
-	padding-left : 4px;
+    background-color : #ffffff;
+    padding-left : 4px;
 }
 .odd_rows {
-	background-color : #cccccc;
-	padding-left : 4px;
+    background-color : #cccccc;
+    padding-left : 4px;
 }
 .title {
-	color : #000000;
-	font-size : 15px;
+    color : #000000;
+    font-size : 15px;
 }
 .content {
-/*	background-color : #eaeaea; */
-	background-color : #ffffff;
-	padding-left : 4px;
+/*    background-color : #eaeaea; */
+    background-color : #ffffff;
+    padding-left : 4px;
 }
 .content_title {
-	font-weight: bold;
+    font-weight: bold;
 }
 .important {
-	color: #ff0000;
-	font-weight: bold;
+    color: #ff0000;
+    font-weight: bold;
 }
 .admin-main-frame {
-	border-width: 2px;
-	border-style: solid;
-	background-color: #ffffff;
-	padding: 3px;
+    border-width: 2px;
+    border-style: solid;
+    background-color: #ffffff;
+    padding: 3px;
 }
 .admin-navigation {
-	font-family: Verdana,Tahoma,Arial,Helvetica;
-	font-size: 12px;
-	line-height: 18px;
-	color: #222260;
+    font-family: Verdana,Tahoma,Arial,Helvetica;
+    font-size: 12px;
+    line-height: 18px;
+    color: #222260;
 }
 .admin-header {
-	font-family: Arial,Helvetica,Verdana;
-	font-size: 18px;
-	color: #009933;
+    font-family: Arial,Helvetica,Verdana;
+    font-size: 18px;
+    color: #009933;
 }
 
 .successful-action {
-	border-width: 1px;
-	border-style: solid;
-	background-color: #ffffff;
-	font-family: Verdana,Arial,Helvetica;
-	font-size: 11px;
-	font-weight: bold;
-	color: #008000;
-	padding: 3px;
+    border-width: 1px;
+    border-style: solid;
+    background-color: #ffffff;
+    font-family: Verdana,Arial,Helvetica;
+    font-size: 11px;
+    font-weight: bold;
+    color: #008000;
+    padding: 3px;
 }
 
 
@@ -119,19 +119,19 @@ float:right;
 padding-left:5px;
 }
 span.paragraphImage {
-	float:right;
-	margin:0 0 3px 3px;	
-	display:block;
-	border:1px solid #ccc;
-	text-align:center;
+    float:right;
+    margin:0 0 3px 3px;    
+    display:block;
+    border:1px solid #ccc;
+    text-align:center;
 }
 span.paragraphImage span {
-	font-family: Georgia, 'Times New Roman', Times, serif;
-	font-weight:normal;
-	color:#999;
-	background-color:inherit;
-	font-size:85%;
-	margin:3px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight:normal;
+    color:#999;
+    background-color:inherit;
+    font-size:85%;
+    margin:3px;
 }
 .componentFooter {
 clear:both;
@@ -174,103 +174,103 @@ div#model-viewer-menu div.sublinks a {display: block; margin: 0; padding: 1px; f
 div#model-viewer-menu div.sublinks a:visited {color: #06c;}
 
 table.entity-search-results {
-	background-color: #ffffff;
-	border-top: solid 1px #ffccff; 
-	border-right: solid 1px #ffccff;
-	font-family: Verdana, Tahoma, Arial, Helvetica;
-	font-size: 10px;
+    background-color: #ffffff;
+    border-top: solid 1px #ffccff; 
+    border-right: solid 1px #ffccff;
+    font-family: Verdana, Tahoma, Arial, Helvetica;
+    font-size: 10px;
 }
 
-table.entity-search-results TD {	
-	border-left: solid 1px #ffccff; 
-	border-bottom: solid 1px #ffccff;
-	font-family: Verdana, Tahoma, Arial, Helvetica;
-	padding: 2px 2px 2px 2px;
-	font-size: 10px;
+table.entity-search-results TD {    
+    border-left: solid 1px #ffccff; 
+    border-bottom: solid 1px #ffccff;
+    font-family: Verdana, Tahoma, Arial, Helvetica;
+    padding: 2px 2px 2px 2px;
+    font-size: 10px;
 }
 
-table.entity-search-results TD.field-cell {	
-	border-left: solid 1px #ffccff; 
-	border-bottom: solid 1px #ffccff;
-	font-weight: bold;
-	font-family: Verdana, Tahoma, Arial, Helvetica;
-	font-size: 10px;
-	text-align: right;
-	background: #ffccff;
+table.entity-search-results TD.field-cell {    
+    border-left: solid 1px #ffccff; 
+    border-bottom: solid 1px #ffccff;
+    font-weight: bold;
+    font-family: Verdana, Tahoma, Arial, Helvetica;
+    font-size: 10px;
+    text-align: right;
+    background: #ffccff;
 }
 
 .entity-search-results-even-rows {
-	background-color: #ffffff;
+    background-color: #ffffff;
 }
 
 .entity-search-results-odd-rows {
-	background-color: #eeeeff;
+    background-color: #eeeeff;
 }
 
 .entity-search-results-highlighted-row {
-	background-color: #ffeeff;
+    background-color: #ffeeff;
 }
 
 table.model-viewer-form {
-	background-color: #ffccff;
-	border-top: solid 1px #ccccff; 
-	border-right: solid 1px #ccccff;
-	font-family: Verdana, Tahoma, Arial, Helvetica;
-	font-size: 10px;
+    background-color: #ffccff;
+    border-top: solid 1px #ccccff; 
+    border-right: solid 1px #ccccff;
+    font-family: Verdana, Tahoma, Arial, Helvetica;
+    font-size: 10px;
 }
 
-table.model-viewer-form TD {	
-	border-left: solid 1px #ccccff; 
-	border-bottom: solid 1px #ccccff;
-	font-family: Verdana, Tahoma, Arial, Helvetica;
-	padding: 2px 2px 2px 2px;
-	font-size: 10px;
+table.model-viewer-form TD {    
+    border-left: solid 1px #ccccff; 
+    border-bottom: solid 1px #ccccff;
+    font-family: Verdana, Tahoma, Arial, Helvetica;
+    padding: 2px 2px 2px 2px;
+    font-size: 10px;
 }
 
-table.model-viewer-form TD.field-cell {	
-	border-left: solid 1px #ccccff; 
-	border-bottom: solid 1px #ccccff;
-	font-weight: bold;
-	font-family: Verdana, Tahoma, Arial, Helvetica;
-	font-size: 10px;
-	text-align: right;
-	background: #ccccff;
+table.model-viewer-form TD.field-cell {    
+    border-left: solid 1px #ccccff; 
+    border-bottom: solid 1px #ccccff;
+    font-weight: bold;
+    font-family: Verdana, Tahoma, Arial, Helvetica;
+    font-size: 10px;
+    text-align: right;
+    background: #ccccff;
 }
 
-table.model-viewer-form TD.field-cell-align-left {	
-	border-left: solid 1px #ccccff; 
-	border-bottom: solid 1px #ccccff;
-	font-weight: bold;
-	font-family: Verdana, Tahoma, Arial, Helvetica;
-	font-size: 10px;
-	text-align: left;
-	background: #ccccff;
+table.model-viewer-form TD.field-cell-align-left {    
+    border-left: solid 1px #ccccff; 
+    border-bottom: solid 1px #ccccff;
+    font-weight: bold;
+    font-family: Verdana, Tahoma, Arial, Helvetica;
+    font-size: 10px;
+    text-align: left;
+    background: #ccccff;
 }
 
 .admin-task {
-	border: 1px solid #093;
-	font-family: verdana, tahoma, arial, helvetica;
-	font-size: 12px;
-	#color: #093;
-	background: #fff;
-	width: 450px;
-	display: block;
-	padding: 3px;
+    border: 1px solid #093;
+    font-family: verdana, tahoma, arial, helvetica;
+    font-size: 12px;
+    #color: #093;
+    background: #fff;
+    width: 450px;
+    display: block;
+    padding: 3px;
 }
 .admin-task:hover {
-	background: #eee;
-	border: 1px dotted #093;
-	text-decoration: underline;
-	color: #09f
+    background: #eee;
+    border: 1px dotted #093;
+    text-decoration: underline;
+    color: #09f
 }
 .admin-task h5 {
-	font-weight: normal;
-	border-bottom: 1px solid #093;
-	text-decoration: none;
-	font-size: 11px;
-	padding: 0px;
-	margin: 0px;
-	color: #06c;
+    font-weight: normal;
+    border-bottom: 1px solid #093;
+    text-decoration: none;
+    font-size: 11px;
+    padding: 0px;
+    margin: 0px;
+    color: #06c;
 }
 
 
@@ -296,9 +296,9 @@ padding: 1px; margin: 0px; text-transform: none; background-color: #fff; color: 
 }
 /* this works fine in safari but not mozilla or IE */
 ul.makeMenu li > ul > li {
-	float: none;
-	border: 0px;
-	border-bottom: 1px dotted #ccc;
+    float: none;
+    border: 0px;
+    border-bottom: 1px dotted #ccc;
 }
 ul.makeMenu li > ul {          /* using the > selector prevents many lesser browsers (and IE - see below) hiding child ULs */
   display: none;               /* hides child menu blocks - one of the most important declarations */

@@ -28,150 +28,150 @@ use Encode ();
 my $_componentCache;
 
 sub init {
-	my $self = shift;
-	unless ($_componentCache) {
-		$_componentCache = IF::Cache::bestAvailableCacheWithName("Component");
-		IF::Log::debug("Using cache: ".$_componentCache." for Component");
-	}
-	$self->setCacheTimeout($_componentCache->cacheTimeout());
-	return $self->SUPER::init();
+    my $self = shift;
+    unless ($_componentCache) {
+        $_componentCache = IF::Cache::bestAvailableCacheWithName("Component");
+        IF::Log::debug("Using cache: ".$_componentCache." for Component");
+    }
+    $self->setCacheTimeout($_componentCache->cacheTimeout());
+    return $self->SUPER::init();
 }
 
 sub shouldCacheValueForContext {
-	my $self = shift;
-	my $context = shift;
-	return 1;
+    my $self = shift;
+    my $context = shift;
+    return 1;
 }
 
 sub shouldUseCachedValueForContext {
-	my $self = shift;
-	my $context = shift;
-	return 1;
+    my $self = shift;
+    my $context = shift;
+    return 1;
 }
 
 sub shouldFlushCacheForContext {
-	my $self = shift;
-	my $context = shift;
-	return $context->formValueForKey("flush-cached-components")
-	    || $context->formValueForKey("fcc");
+    my $self = shift;
+    my $context = shift;
+    return $context->formValueForKey("flush-cached-components")
+        || $context->formValueForKey("fcc");
 }
 
 sub hasCachedValueForContext {
-	my $self = shift;
-	my $context = shift;
-	if ($context->formValueForKey("flush-cached-components")
-	 || $context->formValueForKey("fcc")) {
-		return 0;
-	}
-	my $cacheKey = $self->cacheKeyForContext($context);
-	return 0 unless $cacheKey;
-	return ($_componentCache && $_componentCache->hasCachedValueForKey($cacheKey));
+    my $self = shift;
+    my $context = shift;
+    if ($context->formValueForKey("flush-cached-components")
+     || $context->formValueForKey("fcc")) {
+        return 0;
+    }
+    my $cacheKey = $self->cacheKeyForContext($context);
+    return 0 unless $cacheKey;
+    return ($_componentCache && $_componentCache->hasCachedValueForKey($cacheKey));
 }
 
 # projects should override this as nevessary
 sub cacheKeyBaseKeyPaths {
-	my $self = shift;
+    my $self = shift;
     return ['componentName','context.language'];
 }
 
 # components should override this as nevessary
 sub cacheKeyRequiredKeyPaths {
-	my $self = shift;
+    my $self = shift;
     return [];
 }
 
 sub cacheKeyForContext {
-	my ($self, $context) = @_;
-	my $baseKeys = $self->cacheKeyBaseKeyPaths();
-	my $componentSpecificKeys = $self->cacheKeyRequiredKeyPaths();
-	my $cacheKey = join('/', map { $self->valueForKey($_) } @$baseKeys,@$componentSpecificKeys );
-	$cacheKey =~ s/[\s\X]/_/g;
-	IF::Log::debug("cacheKey: $cacheKey");
-	return $cacheKey;
+    my ($self, $context) = @_;
+    my $baseKeys = $self->cacheKeyBaseKeyPaths();
+    my $componentSpecificKeys = $self->cacheKeyRequiredKeyPaths();
+    my $cacheKey = join('/', map { $self->valueForKey($_) } @$baseKeys,@$componentSpecificKeys );
+    $cacheKey =~ s/[\s\X]/_/g;
+    IF::Log::debug("cacheKey: $cacheKey");
+    return $cacheKey;
 }
 
 sub inflateContentWithContext {
     my ($self, $content, $context) = @_;
-	return unless $context->session();
-	my $externalSessionId = $context->session()->externalId();
-	$content =~ s/<TMPL_VAR SID>/$externalSessionId/g;
-	return $content;
+    return unless $context->session();
+    my $externalSessionId = $context->session()->externalId();
+    $content =~ s/<TMPL_VAR SID>/$externalSessionId/g;
+    return $content;
 }
 
 sub prepareContentForCachingInContext {
     my ($self, $content, $context) = @_;
-	return unless $context->session();
-	my $externalSessionId = $context->session()->externalId();
-	my $regex = $context->session()->externalIdRegularExpression();
-	my $rcontent = $content;
-	$rcontent =~ s/$regex/<TMPL_VAR SID>/g;
-	return $rcontent;
+    return unless $context->session();
+    my $externalSessionId = $context->session()->externalId();
+    my $regex = $context->session()->externalIdRegularExpression();
+    my $rcontent = $content;
+    $rcontent =~ s/$regex/<TMPL_VAR SID>/g;
+    return $rcontent;
 }
 
 sub appendToResponse {
-	my $self = shift;
-	my $response = shift;
-	my $context = shift;
+    my $self = shift;
+    my $response = shift;
+    my $context = shift;
 
-	if ($self->shouldFlushCacheForContext($context) && $_componentCache) {
-		$_componentCache->invalidateAllObjects();
-	}
-	my $cacheKey = $self->cacheKeyForContext($context);
-	if ($cacheKey && $self->shouldUseCachedValueForContext($context) && $self->hasCachedValueForContext($context)) {
-		my $content = $_componentCache->cachedValueForKey($cacheKey);
-		if ($content) {
-#			IF::Log::deubug("utf8: (out: $cacheKey) content is utf8? ".(Encode::is_utf8($content) ? 'yes' : 'no'));
-			unless ($self->application()->configurationValueForKey("HIDE_COMPONENT_COMMENTS")) {
-				$content = $self->inflateContentWithContext($content, $context);
-					# "\n<!-- CachedContentStart -->\n".
-					#$self->inflateContentWithContext($content, $context).
-					#"\n<!-- CachedContentEnd -->\n";
-			} else {
-				$content = $self->inflateContentWithContext($content, $context);
-			}
-			$response->setContent($content);
-			return;
-		}
-	}
+    if ($self->shouldFlushCacheForContext($context) && $_componentCache) {
+        $_componentCache->invalidateAllObjects();
+    }
+    my $cacheKey = $self->cacheKeyForContext($context);
+    if ($cacheKey && $self->shouldUseCachedValueForContext($context) && $self->hasCachedValueForContext($context)) {
+        my $content = $_componentCache->cachedValueForKey($cacheKey);
+        if ($content) {
+#            IF::Log::deubug("utf8: (out: $cacheKey) content is utf8? ".(Encode::is_utf8($content) ? 'yes' : 'no'));
+            unless ($self->application()->configurationValueForKey("HIDE_COMPONENT_COMMENTS")) {
+                $content = $self->inflateContentWithContext($content, $context);
+                    # "\n<!-- CachedContentStart -->\n".
+                    #$self->inflateContentWithContext($content, $context).
+                    #"\n<!-- CachedContentEnd -->\n";
+            } else {
+                $content = $self->inflateContentWithContext($content, $context);
+            }
+            $response->setContent($content);
+            return;
+        }
+    }
 
-	$self->SUPER::appendToResponse($response, $context);
+    $self->SUPER::appendToResponse($response, $context);
 
-	if ($cacheKey && $self->shouldCacheValueForContext($context)) {
-		my $content = $response->content();
-#		IF::Log::debug("utf8: (in: $cacheKey) content is utf8? ".(Encode::is_utf8($content) ? 'yes' : 'no'));
-		$content = $self->prepareContentForCachingInContext($content, $context);
-		$_componentCache->setCachedValueForKeyWithTimeout($content, $cacheKey, $self->cacheTimeout());
-		$self->setValueWasCached(1);
-	}
-	return;
+    if ($cacheKey && $self->shouldCacheValueForContext($context)) {
+        my $content = $response->content();
+#        IF::Log::debug("utf8: (in: $cacheKey) content is utf8? ".(Encode::is_utf8($content) ? 'yes' : 'no'));
+        $content = $self->prepareContentForCachingInContext($content, $context);
+        $_componentCache->setCachedValueForKeyWithTimeout($content, $cacheKey, $self->cacheTimeout());
+        $self->setValueWasCached(1);
+    }
+    return;
 }
 
 sub _componentCache {
-	return $_componentCache;
+    return $_componentCache;
 }
 
 sub cacheTimeout {
-	my $self = shift;
-	return $self->{_cacheTimeout};
+    my $self = shift;
+    return $self->{_cacheTimeout};
 }
 
 sub setCacheTimeout {
-	my $self = shift;
-	$self->{_cacheTimeout} = shift;
+    my $self = shift;
+    $self->{_cacheTimeout} = shift;
 }
 
 sub cache {
-	return $_componentCache;
+    return $_componentCache;
 }
 
 sub valueWasCached {
-	my $self = shift;
-	return $self->{valueWasCached};
+    my $self = shift;
+    return $self->{valueWasCached};
 }
 
 sub setValueWasCached {
-	my ($self, $value) = @_;
-	$self->{valueWasCached} = $value;
+    my ($self, $value) = @_;
+    $self->{valueWasCached} = $value;
 }
 
 1;

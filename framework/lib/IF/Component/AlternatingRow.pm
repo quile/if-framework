@@ -35,55 +35,55 @@ sub init {
 }
 
 sub evenRowClass {
-	my $self = shift;
-	return $self->{evenRowClass};
+    my $self = shift;
+    return $self->{evenRowClass};
 }
 
 sub setEvenRowClass {
-	my ($self, $value) = @_;
-	$self->{evenRowClass} = $value;
+    my ($self, $value) = @_;
+    $self->{evenRowClass} = $value;
 }
 
 sub oddRowClass {
-	my $self = shift;
-	return $self->{oddRowClass};
+    my $self = shift;
+    return $self->{oddRowClass};
 }
 
 sub setOddRowClass {
-	my ($self, $value) = @_;
-	$self->{oddRowClass} = $value;
+    my ($self, $value) = @_;
+    $self->{oddRowClass} = $value;
 }
 
 sub index {
-	my $self = shift;
-	return $self->{index} || $index;
+    my $self = shift;
+    return $self->{index} || $index;
 }
 
 sub setIndex {
-	my ($self, $value) = @_;
-	$self->{index} = $value;
+    my ($self, $value) = @_;
+    $self->{index} = $value;
 }
 
 sub rowClass {
-	my $self = shift;
-	return $self->{rowClass} if $self->{rowClass};
-	if ($self->index() % 2) {
-		return $self->oddRowClass() || "odd-row-default";
-	}
-	return $self->evenRowClass() || "even-row-default";
+    my $self = shift;
+    return $self->{rowClass} if $self->{rowClass};
+    if ($self->index() % 2) {
+        return $self->oddRowClass() || "odd-row-default";
+    }
+    return $self->evenRowClass() || "even-row-default";
 }
 
 sub setRowClass {
-	my ($self, $value) = @_;
-	$self->{rowClass} = $value;
+    my ($self, $value) = @_;
+    $self->{rowClass} = $value;
 }
 
 sub appendToResponse {
-	my ($self, $response, $context) = @_;
-	my $return = $self->SUPER::appendToResponse($response, $context);
-	$index++;
-	$self->setRowClass();
-	return $return;
+    my ($self, $response, $context) = @_;
+    my $return = $self->SUPER::appendToResponse($response, $context);
+    $index++;
+    $self->setRowClass();
+    return $return;
 }
 
 1;

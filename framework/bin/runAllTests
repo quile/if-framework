@@ -42,7 +42,7 @@ BEGIN {
                );
 
     unless ($application) {
-    	usage();
+        usage();
     }
 
     # load app config:
@@ -73,10 +73,10 @@ Test::Class->runtests;
 
 #----------------------------------------------
 sub usage {
-	print <<EOU
+    print <<EOU
 usage: runAllTests --application=Foo [--test-name=Name] [--debug]
 EOU
-	;
-	exit(1);
+    ;
+    exit(1);
 }
 

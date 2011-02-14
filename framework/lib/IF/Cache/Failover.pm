@@ -42,92 +42,92 @@ my $DEFAULT_CACHE_TIMEOUT = 3600;
 
 
 sub init {
-	my $self = shift;
-	$self->SUPER::init(@_);
-	$self->{_caches} = [
-		IF::Cache::cacheOfTypeWithName("Memcached", $self->name()),
-		IF::Cache::cacheOfTypeWithName("File",      $self->name()),   #... any others?
-		];
-	return $self;
+    my $self = shift;
+    $self->SUPER::init(@_);
+    $self->{_caches} = [
+        IF::Cache::cacheOfTypeWithName("Memcached", $self->name()),
+        IF::Cache::cacheOfTypeWithName("File",      $self->name()),   #... any others?
+        ];
+    return $self;
 }
 
 sub hasCachedValueForKey {
-	my ($self, $key) = @_;
-	foreach my $c (@{$self->{_caches}}) {
-		next unless $c;
-		return $c->hasCachedValueForKey($key);
-	}
+    my ($self, $key) = @_;
+    foreach my $c (@{$self->{_caches}}) {
+        next unless $c;
+        return $c->hasCachedValueForKey($key);
+    }
 }
 
 sub cachedValueForKey {
-	my ($self, $key) = @_;
+    my ($self, $key) = @_;
 
-	foreach my $c (@{$self->{_caches}}) {
-		next unless $c;
-		IF::Log::debug("Getting cache value for key $key from cache $c");
-		my $cv = $c->cachedValueForKey($key);
-		return $cv if $cv;
-	}
-	return;
+    foreach my $c (@{$self->{_caches}}) {
+        next unless $c;
+        IF::Log::debug("Getting cache value for key $key from cache $c");
+        my $cv = $c->cachedValueForKey($key);
+        return $cv if $cv;
+    }
+    return;
 }
 
 # how inefficient is it to cache values in all available caches?
 
 sub setCachedValueForKey {
-	my ($self, $value, $key) = @_;
-	foreach my $c (@{$self->{_caches}}) {
-		next unless $c;
-		IF::Log::debug("Setting cache value for key $key in cache $c");
-		last if $c->setCachedValueForKey($value, $key);
-	}
-	return;
+    my ($self, $value, $key) = @_;
+    foreach my $c (@{$self->{_caches}}) {
+        next unless $c;
+        IF::Log::debug("Setting cache value for key $key in cache $c");
+        last if $c->setCachedValueForKey($value, $key);
+    }
+    return;
 }
 
 sub setCachedValueForKeyWithTimeout {
-	my ($self, $value, $key, $timeout) = @_;
-	foreach my $c (@{$self->{_caches}}) {
-		next unless $c;
-		IF::Log::debug("Setting cache value for key $key in cache $c with timeout $timeout");
-		last if $c->setCachedValueForKeyWithTimeout($value, $key, $timeout);
-	}
+    my ($self, $value, $key, $timeout) = @_;
+    foreach my $c (@{$self->{_caches}}) {
+        next unless $c;
+        IF::Log::debug("Setting cache value for key $key in cache $c with timeout $timeout");
+        last if $c->setCachedValueForKeyWithTimeout($value, $key, $timeout);
+    }
 }
 
 sub allKeys {
-	my ($self) = @_;
-	foreach my $c (@{$self->{_caches}}) {
-		next unless $c;
-		return $c->allKeys();
-	}
-	return;
+    my ($self) = @_;
+    foreach my $c (@{$self->{_caches}}) {
+        next unless $c;
+        return $c->allKeys();
+    }
+    return;
 }
 
 # TODO needs to know if parent throws
 sub cachedValueForKeyHasExpired {
-	my ($self, $key) = @_;
-	foreach my $c (@{$self->{_caches}}) {
-		next unless $c;
-		return $c->cachedValueForKeyHasExpired($key);
-	}
-	return;
+    my ($self, $key) = @_;
+    foreach my $c (@{$self->{_caches}}) {
+        next unless $c;
+        return $c->cachedValueForKeyHasExpired($key);
+    }
+    return;
 }
 
 # delete it from all caches
 sub deleteCachedValueForKey {
-	my ($self, $key) = @_;
-	foreach my $c (@{$self->{_caches}}) {
-		next unless $c;
-		$c->deleteCachedValueForKey($key);
-	}
-	return;
+    my ($self, $key) = @_;
+    foreach my $c (@{$self->{_caches}}) {
+        next unless $c;
+        $c->deleteCachedValueForKey($key);
+    }
+    return;
 }
 
 sub setCacheTimeout {
-	my ($self, $timeout) = @_;
-	foreach my $c (@{$self->{_caches}}) {
-		next unless $c;
-		$c->setCacheTimeout($timeout);
-	}
-	$self->{cacheTimeout} = $timeout;
+    my ($self, $timeout) = @_;
+    foreach my $c (@{$self->{_caches}}) {
+        next unless $c;
+        $c->setCacheTimeout($timeout);
+    }
+    $self->{cacheTimeout} = $timeout;
 }
 
 1;

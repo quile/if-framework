@@ -42,87 +42,87 @@ sub requiredPageResources {
 }
 
 sub init {
-	my $self = shift;
-	$self->SUPER::init(@_);
-	# $self->{queryDictionaryAdditions}->addObject({ NAME => $self->application()->sessionIdKey(), VALUE => $self->context()->session()->externalId() });
-	# Commented out to remove SIDs from Hyperlinks.  It can be
-	# forced by setting this to 1. -kd
-	#$self->setShouldIncludeSID(1);
+    my $self = shift;
+    $self->SUPER::init(@_);
+    # $self->{queryDictionaryAdditions}->addObject({ NAME => $self->application()->sessionIdKey(), VALUE => $self->context()->session()->externalId() });
+    # Commented out to remove SIDs from Hyperlinks.  It can be
+    # forced by setting this to 1. -kd
+    #$self->setShouldIncludeSID(1);
 }
 
 sub shouldIncludeSID {
-	my $self = shift;
-	return $self->{shouldIncludeSID};
+    my $self = shift;
+    return $self->{shouldIncludeSID};
 }
 
 sub setShouldIncludeSID {
-	my ($self, $value) = @_;
-	$self->{shouldIncludeSID} = $value;
+    my ($self, $value) = @_;
+    $self->{shouldIncludeSID} = $value;
 }
 
 sub sessionId {
-	my $self = shift;
-	return undef unless ($self->shouldIncludeSID());
-	return $self->{sessionId};
+    my $self = shift;
+    return undef unless ($self->shouldIncludeSID());
+    return $self->{sessionId};
 }
 
 sub hasCompiledResponse {
-	my $self = shift;
-	return 1 if $self->componentNameRelativeToSiteClassifier() eq "Hyperlink";
-	return 0;
+    my $self = shift;
+    return 1 if $self->componentNameRelativeToSiteClassifier() eq "Hyperlink";
+    return 0;
 }
 
 # Commented out because the cookie val is not being updated
 # correctly on each transaction.
 # -------------------------------
 #sub shouldSuppressQueryDictionaryKey {
-#	my ($self, $key) = @_;
-#	# Suppress the SID if we received it as a cookie
-#	# from the remote user.
-#	#return 1 if ($key eq $self->application()->sessionIdKey() && $self->context()->receivedCookieWithName($self->application()->sessionIdKey())
-#	#			 && !$self->context()->cookieValueForKey("is-admin")); # This is such a hack
-#	return $self->SUPER::shouldSuppressQueryDictionaryKey($key);
+#    my ($self, $key) = @_;
+#    # Suppress the SID if we received it as a cookie
+#    # from the remote user.
+#    #return 1 if ($key eq $self->application()->sessionIdKey() && $self->context()->receivedCookieWithName($self->application()->sessionIdKey())
+#    #             && !$self->context()->cookieValueForKey("is-admin")); # This is such a hack
+#    return $self->SUPER::shouldSuppressQueryDictionaryKey($key);
 #}
 
 sub shouldSuppressQueryDictionaryKey {
-	my ($self, $key) = @_;
-	return 1 if ($key eq $self->application()->sessionIdKey() && !$self->shouldIncludeSID());
-	return 0;
+    my ($self, $key) = @_;
+    return 1 if ($key eq $self->application()->sessionIdKey() && !$self->shouldIncludeSID());
+    return 0;
 }
 
 # This has been unrolled to speed it up; do not be tempted to do this
 # anywhere else!
 
 sub appendToResponse {
-	my ($self, $response, $context) = @_;
+    my ($self, $response, $context) = @_;
 
-	if ($self->hasCompiledResponse() && $self->componentNameRelativeToSiteClassifier() eq "Hyperlink") {
+    if ($self->hasCompiledResponse() && $self->componentNameRelativeToSiteClassifier() eq "Hyperlink") {
 
-	    $response->renderState()->addPageResources($self->requiredPageResources());
+        $response->renderState()->addPageResources($self->requiredPageResources());
 
 
-		# asString is compiled response of IF::Component::URL
-		my $html = [q#<a href="#, $self->asString(), q#"#];
+        # asString is compiled response of IF::Component::URL
+        my $html = [q#<a href="#, $self->asString(), q#"#];
 
-		if ($self->onClickHandler()) {
-			push @$html, ' onclick="', $self->onClickHandler(), '"';
-		}
+        if ($self->onClickHandler()) {
+            push @$html, ' onclick="', $self->onClickHandler(), '"';
+        }
 
-		if ($self->title()) {
-			push @$html, ' title="', $self->title(), '"';
-		}
+        if ($self->title()) {
+            push @$html, ' title="', $self->title(), '"';
+        }
 
-		if ($self->shouldShowTooltip()) {
-		    push (@$html, ' id="'.$self->uniqueId().'"');
-		}
-		#   <BINDING:TAG_ATTRIBUTES>
-		push @$html, ' ', $IF::Component::TAG_ATTRIBUTE_MARKER,' >';
-		#	<BINDING:CONTENT>
-		#</A>
-		push @$html, $IF::Component::COMPONENT_CONTENT_MARKER,'</a>';
+        if ($self->shouldShowTooltip()) {
+            push (@$html, ' id="'.$self->uniqueId().'"');
+        }
+        #   <BINDING:TAG_ATTRIBUTES>
+        push @$html, ' ', $IF::Component::TAG_ATTRIBUTE_MARKER,' >';
+        #    <BINDING:CONTENT>
+        #</A>
+        push @$html, $IF::Component::COMPONENT_CONTENT_MARKER,'</a>';
 
-	    if ($self->shouldShowTooltip()) {
-	        push (@$html, "<script type=\"text/javascript\">
+        if ($self->shouldShowTooltip()) {
+            push (@$html, "<script type=\"text/javascript\">
 jQuery(\"#".$self->uniqueId()."\").tipsy({ "
             .($self->hasTooltipStyles()?
                 "styles: ".to_json($self->tooltipStyles()).", "
@@ -132,13 +132,13 @@ jQuery(\"#".$self->uniqueId()."\").tipsy({ "
               : "")
             ."gravity: \"".$self->tooltipGravity()."\" });
 </script>");
-	    }
+        }
 
-		$response->setContent(join('', @$html));
-		return;
-	} else {
-		$self->SUPER::appendToResponse($response, $context);
-	}
+        $response->setContent(join('', @$html));
+        return;
+    } else {
+        $self->SUPER::appendToResponse($response, $context);
+    }
 }
 
 sub hasTooltipStyles {
@@ -162,19 +162,19 @@ sub setTooltipClass   { $_[0]->{tooltipClass} = $_[1] }
 
 
 sub url {
-	my ($self) = @_;
-	#IF::Log::debug("URL tag attribute is ".$self->tagAttributeForKey("URL"));
-	return $self->SUPER::url() || $self->tagAttributeForKey("URL");
+    my ($self) = @_;
+    #IF::Log::debug("URL tag attribute is ".$self->tagAttributeForKey("URL"));
+    return $self->SUPER::url() || $self->tagAttributeForKey("URL");
 }
 
 sub title {
-	my ($self) = @_;
-	return $self->{title} ||= $self->tagAttributeForKey("title");
+    my ($self) = @_;
+    return $self->{title} ||= $self->tagAttributeForKey("title");
 }
 
 sub setTitle {
-	my ($self, $value) = @_;
-	$self->{title} = $value;
+    my ($self, $value) = @_;
+    $self->{title} = $value;
 }
 
 1;

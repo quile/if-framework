@@ -22,19 +22,19 @@
 
 #
 {
-	inheritsFrom => "IF::Component::_Default",
-	SELECTION => {
-		type => "Selection",
-		bindings => {
-			LIST => q(list),
-			VALUE => q(value),
-			DISPLAY_STRING => q(displayString),
-			SELECTED_VALUES => q(IF::Array::isArray($self->selection())? $self->selection() : [$self->selection()]),
-			NAME => q(name),
-			SIZE => q(size),
-			IS_MULTIPLE => q(isMultiple),
-			ANY_STRING => q(anyString),
-			ANY_VALUE => q(anyValue),
-		},
-	},
+    inheritsFrom => "IF::Component::_Default",
+    SELECTION => {
+        type => "Selection",
+        bindings => {
+            LIST => q(list),
+            VALUE => q(value),
+            DISPLAY_STRING => q(displayString),
+            SELECTED_VALUES => q(IF::Array::isArray($self->selection())? $self->selection() : [$self->selection()]),
+            NAME => q(name),
+            SIZE => q(size),
+            IS_MULTIPLE => q(isMultiple),
+            ANY_STRING => q(anyString),
+            ANY_VALUE => q(anyValue),
+        },
+    },
 };

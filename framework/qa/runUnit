@@ -42,13 +42,13 @@ my $noBootstrap = 0;
 
 GetOptions("debug" => \$debug,
         "no-bootstrap" => \$noBootstrap,
-		"test-name=s" => $testName,
-		"silent" => \$silent);
+        "test-name=s" => $testName,
+        "silent" => \$silent);
 
 my $cwd = getcwd;
 # There must be a better way to do this:
 if ($cwd =~ /qa$/) {
-	chdir "..";
+    chdir "..";
 }
 my $FRAMEWORK_ROOT = getcwd;
 use lib 'conf';

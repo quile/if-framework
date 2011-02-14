@@ -29,31 +29,31 @@ use base qw(
 
 # TODO rewrite this without SQL
 sub deleteAllQueueEntries {
-	my $self = shift;
-	my $query = "DELETE FROM MAIL_QUEUE_ENTRY WHERE MAIL_EVENT_ID=".int($self->id());
-	my ($results, $dbh) = IF::DB::executeArbitrarySQL($query);
+    my $self = shift;
+    my $query = "DELETE FROM MAIL_QUEUE_ENTRY WHERE MAIL_EVENT_ID=".int($self->id());
+    my ($results, $dbh) = IF::DB::executeArbitrarySQL($query);
 }
 
 sub createdBy {
-	my $self = shift;
-	return $self->storedValueForKey("createdBy");
+    my $self = shift;
+    return $self->storedValueForKey("createdBy");
 }
 
 sub setCreatedBy {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "createdBy");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "createdBy");
 }
 
 sub logMessage {
-	my $self = shift;
-	return $self->storedValueForKey("logMessage");
+    my $self = shift;
+    return $self->storedValueForKey("logMessage");
 }
 
 sub setLogMessage {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "logMessage");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "logMessage");
 }
 
 1;

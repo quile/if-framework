@@ -24,101 +24,101 @@ package IF::Component::SubmitButton;
 
 use strict;
 use base qw(
-	IF::Component
-	IF::Interface::FormComponent
+    IF::Component
+    IF::Interface::FormComponent
 );
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
+    my ($self) = @_;
+    return [
         IF::PageResource->javascript("/if-static/javascript/IF/SubmitButton.js"),
-	];
+    ];
 }
 
 sub init {
-	my ($self) = @_;
-	$self->SUPER::init();
-	$self->setShouldValidateForm(1);
+    my ($self) = @_;
+    $self->SUPER::init();
+    $self->setShouldValidateForm(1);
 }
 
 sub name {
-	my $self = shift;
-	my $name = $self->{NAME};
-	IF::Log::debug ("Name is $name");
-	return $name if $name;
-	if ($self->directAction()) {
-		IF::Log::debug("We have a direct action, so returning _ACTION:".$self->targetComponent()."/".$self->directAction());
-		return "_ACTION:".$self->targetComponent()."/".$self->directAction();
-	}
-	return $self->queryKeyNameForPageAndLoopContexts();
+    my $self = shift;
+    my $name = $self->{NAME};
+    IF::Log::debug ("Name is $name");
+    return $name if $name;
+    if ($self->directAction()) {
+        IF::Log::debug("We have a direct action, so returning _ACTION:".$self->targetComponent()."/".$self->directAction());
+        return "_ACTION:".$self->targetComponent()."/".$self->directAction();
+    }
+    return $self->queryKeyNameForPageAndLoopContexts();
 }
 
 sub _deprecated_uniqueId {
-	my $self = shift;
-	my $uniqueNumber = $self->pageContextNumber();
-	$uniqueNumber =~ tr/[0-9]/[A-Z]/;
-	$uniqueNumber =~ s/\./_/g;
-	return $uniqueNumber;
+    my $self = shift;
+    my $uniqueNumber = $self->pageContextNumber();
+    $uniqueNumber =~ tr/[0-9]/[A-Z]/;
+    $uniqueNumber =~ s/\./_/g;
+    return $uniqueNumber;
 }
 
 sub value {
-	my $self = shift;
-	return $self->{VALUE};
+    my $self = shift;
+    return $self->{VALUE};
 }
 
 sub setValue {
-	my $self = shift;
-	$self->{VALUE} = shift;
+    my $self = shift;
+    $self->{VALUE} = shift;
 }
 
 sub setDirectAction {
-	my $self = shift;
-	$self->{DIRECT_ACTION} = shift;
+    my $self = shift;
+    $self->{DIRECT_ACTION} = shift;
 }
 
 sub directAction {
-	my $self = shift;
-	return $self->{DIRECT_ACTION};
+    my $self = shift;
+    return $self->{DIRECT_ACTION};
 }
 
 sub targetComponent {
-	my $self = shift;
-	return $self->{TARGET_COMPONENT};
+    my $self = shift;
+    return $self->{TARGET_COMPONENT};
 }
 
 sub setTargetComponent {
-	my $self = shift;
-	$self->{TARGET_COMPONENT} = shift;
+    my $self = shift;
+    $self->{TARGET_COMPONENT} = shift;
 }
 
 sub _alternateValue {
-	my ($self) = @_;
-	return $self->alternateValue()
-	    || $self->tagAttributeForKey("alternateValue")
-	    || "...";  # TODO: hmm - at least localize
+    my ($self) = @_;
+    return $self->alternateValue()
+        || $self->tagAttributeForKey("alternateValue")
+        || "...";  # TODO: hmm - at least localize
 }
 
 sub alternateValue    { return $_[0]->{alternateValue}  }
 sub setAlternateValue { $_[0]->{alternateValue} = $_[1] }
 
 sub canOnlyBeClickedOnce {
-	my ($self) = @_;
-	return $self->{canOnlyBeClickedOnce};
+    my ($self) = @_;
+    return $self->{canOnlyBeClickedOnce};
 }
 
 sub setCanOnlyBeClickedOnce {
-	my ($self, $value) = @_;
-	$self->{canOnlyBeClickedOnce} = $value;
+    my ($self, $value) = @_;
+    $self->{canOnlyBeClickedOnce} = $value;
 }
 
 sub shouldValidateForm {
-	my ($self) = @_;
-	return $self->{shouldValidateForm} || $self->tagAttributeForKey("shouldValidateForm");
+    my ($self) = @_;
+    return $self->{shouldValidateForm} || $self->tagAttributeForKey("shouldValidateForm");
 }
 
 sub setShouldValidateForm {
-	my ($self, $value) = @_;
-	$self->{shouldValidateForm} = $value;
+    my ($self, $value) = @_;
+    $self->{shouldValidateForm} = $value;
 }
 
 1;

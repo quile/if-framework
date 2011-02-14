@@ -32,132 +32,132 @@ use base qw(
 #--------------- Class Methods --------------------
 
 sub sessionWithExternalId {
-	IF::Log::error("sessionWithExternalId() not overridden in Session subclass");
+    IF::Log::error("sessionWithExternalId() not overridden in Session subclass");
 }
 
 sub sessionWithExternalIdAndContextNumber {
-	IF::Log::error("sessionWithExternalIdAndContextNumber() not overridden in Session subclass");
+    IF::Log::error("sessionWithExternalIdAndContextNumber() not overridden in Session subclass");
 }
 
 sub sessionWithId {
-	IF::Log::error("sessionWithId() not overridden in Session subclass");
+    IF::Log::error("sessionWithId() not overridden in Session subclass");
 }
 
 sub sessionWithIdAndContextNumber {
-	IF::Log::error("sessionWithIdAndContextNumber() not overridden in Session subclass");
+    IF::Log::error("sessionWithIdAndContextNumber() not overridden in Session subclass");
 }
 
 sub externalIdRegularExpression {
-	IF::Log::error("externalIdRegularExpression() not overridden in Session subclass");
+    IF::Log::error("externalIdRegularExpression() not overridden in Session subclass");
 }
 
 sub sessionWithExternalIdIsAuthenticated {
-	IF::Log::error("sessionWithExternalIdIsAuthenticated() not overridden in Session subclass");
+    IF::Log::error("sessionWithExternalIdIsAuthenticated() not overridden in Session subclass");
 }
 
 
 #--------------- Core Methods --------------------
 
 sub lastActiveDate {
-	my $self = shift;
-	return $self->storedValueForKey("lastActiveDate");
+    my $self = shift;
+    return $self->storedValueForKey("lastActiveDate");
 }
 
 sub setLastActiveDate {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "lastActiveDate");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "lastActiveDate");
 }
 
 sub contextNumber {
-	my $self = shift;
-	return $self->storedValueForKey("contextNumber");
+    my $self = shift;
+    return $self->storedValueForKey("contextNumber");
 }
 
 sub setContextNumber {
-	my $self = shift;
-	my $value = shift;
-	IF::Log::stack(4);
-	$self->setStoredValueForKey($value, "contextNumber");
+    my $self = shift;
+    my $value = shift;
+    IF::Log::stack(4);
+    $self->setStoredValueForKey($value, "contextNumber");
 }
 
 sub clientIp {
-	my $self = shift;
-	return $self->storedValueForKey("clientIp");
+    my $self = shift;
+    return $self->storedValueForKey("clientIp");
 }
 
 sub setClientIp {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "clientIp");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "clientIp");
 }
 
 sub store {
-	my $self = shift;
-	return $self->faultEntityForRelationshipNamed("store");
+    my $self = shift;
+    return $self->faultEntityForRelationshipNamed("store");
 }
 
 sub requestContextForContextNumber {
-	my ($self, $contextNumber, $noDefault) = @_;
-	# short circuit this pain if we can
-	if ($self->{_requestContextsByNumber}->{$contextNumber}) {
-		return $self->{_requestContextsByNumber}->{$contextNumber};
-	}
-	$self->{_requestContextsByNumber}->{$contextNumber} = $self->requestContextClassName()->requestContextForSessionIdAndContextNumber($self->id(), $contextNumber);
-	return $self->{_requestContextsByNumber}->{$contextNumber} if $self->{_requestContextsByNumber}->{$contextNumber};
-	return $self->requestContextForLastRequest() unless $noDefault;
+    my ($self, $contextNumber, $noDefault) = @_;
+    # short circuit this pain if we can
+    if ($self->{_requestContextsByNumber}->{$contextNumber}) {
+        return $self->{_requestContextsByNumber}->{$contextNumber};
+    }
+    $self->{_requestContextsByNumber}->{$contextNumber} = $self->requestContextClassName()->requestContextForSessionIdAndContextNumber($self->id(), $contextNumber);
+    return $self->{_requestContextsByNumber}->{$contextNumber} if $self->{_requestContextsByNumber}->{$contextNumber};
+    return $self->requestContextForLastRequest() unless $noDefault;
     return;
 }
 
 sub requestContextForLastRequest {
-	my $self = shift;
-	return if ($self->contextNumber() == 0);
-	unless ($self->{_requestContextForLastRequest}) {
-		$self->{_requestContextForLastRequest} = $self->requestContextForContextNumber($self->contextNumber()-1, 1);
-	}
-	return $self->{_requestContextForLastRequest};
+    my $self = shift;
+    return if ($self->contextNumber() == 0);
+    unless ($self->{_requestContextForLastRequest}) {
+        $self->{_requestContextForLastRequest} = $self->requestContextForContextNumber($self->contextNumber()-1, 1);
+    }
+    return $self->{_requestContextForLastRequest};
 }
 
 sub newRequestContext {
-	my $self = shift;
-	unless ($self->application()) {
-		IF::Log::error("Session has no application object");
-		return undef;
-	}
-	my $requestContextClassName = $self->requestContextClassName();
-	return unless $requestContextClassName;
-	return $requestContextClassName->new();
+    my $self = shift;
+    unless ($self->application()) {
+        IF::Log::error("Session has no application object");
+        return undef;
+    }
+    my $requestContextClassName = $self->requestContextClassName();
+    return unless $requestContextClassName;
+    return $requestContextClassName->new();
 }
 
 sub requestContext {
-	my $self = shift;
-	unless ($self->{_requestContext}) {
-		$self->{_requestContext} = $self->newRequestContext();
-		$self->{_requestContext}->setSessionId($self->id());
-		$self->{_requestContext}->setContextNumber($self->contextNumber());
-	}
-	return $self->{_requestContext};
+    my $self = shift;
+    unless ($self->{_requestContext}) {
+        $self->{_requestContext} = $self->newRequestContext();
+        $self->{_requestContext}->setSessionId($self->id());
+        $self->{_requestContext}->setContextNumber($self->contextNumber());
+    }
+    return $self->{_requestContext};
 }
 
 sub wasInflated {
     my ($self) = @_;
-	# If the session is authenticated force it to always use
-	# the master db.  You need to implement the sessionWithExternalIdIsAuthenticated
-	# or it won't work...
-	# TODO... fix this nasty rubbish.
-	if (ref($self)->sessionWithExternalIdIsAuthenticated($self->externalId())) {
-		IF::DB::dbConnection()->setLockedToDefaultWriteDataSource();
-	}
+    # If the session is authenticated force it to always use
+    # the master db.  You need to implement the sessionWithExternalIdIsAuthenticated
+    # or it won't work...
+    # TODO... fix this nasty rubbish.
+    if (ref($self)->sessionWithExternalIdIsAuthenticated($self->externalId())) {
+        IF::DB::dbConnection()->setLockedToDefaultWriteDataSource();
+    }
 }
 
 sub save {
-	my ($self, $when) = @_;
+    my ($self, $when) = @_;
 
-	IF::Log::stack(5);
+    IF::Log::stack(5);
 
-	# Don't save null sessions
-	return if $self->isNullSession();
-	return $self->SUPER::save($when);
+    # Don't save null sessions
+    return if $self->isNullSession();
+    return $self->SUPER::save($when);
 }
 
 sub becomeInvalidated {

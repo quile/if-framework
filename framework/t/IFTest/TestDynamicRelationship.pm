@@ -134,32 +134,32 @@ sub tearDown : Test(shutdown) {
 sub test_basic_dynamic_relationship : Test(2) {
     my ($self) = @_;
 
-	# Let's start in a verbose fashion and move to something less
-	# wordy and a bit smarter.  Here's verbose:
-	my $dq = IF::Relationship::Dynamic->new();
-	$dq->setTargetAssetTypeAttribute("zabType");
-	$dq->setSourceAttributeName("zabId");
-	$dq->setTargetAttributeName("id");
-	$dq->setTargetAssetTypeName("Zab");
+    # Let's start in a verbose fashion and move to something less
+    # wordy and a bit smarter.  Here's verbose:
+    my $dq = IF::Relationship::Dynamic->new();
+    $dq->setTargetAssetTypeAttribute("zabType");
+    $dq->setSourceAttributeName("zabId");
+    $dq->setTargetAttributeName("id");
+    $dq->setTargetAssetTypeName("Zab");
 
-	# now that we've created it, let's see if it gets set
-	# up right when we add it to a fetch spec
-	my $fs = IF::FetchSpecification->new("Branch");
-	$fs->addDynamicRelationshipWithName($dq, "foo");
-	ok($dq->entityClassDescription() && $dq->entityClassDescription()->name() eq "Branch", "ECD gets set");
+    # now that we've created it, let's see if it gets set
+    # up right when we add it to a fetch spec
+    my $fs = IF::FetchSpecification->new("Branch");
+    $fs->addDynamicRelationshipWithName($dq, "foo");
+    ok($dq->entityClassDescription() && $dq->entityClassDescription()->name() eq "Branch", "ECD gets set");
 
 
-	# let's see if prefetching works:
-	$fs->setPrefetchingRelationships(["foo"]);
-	$fs->setQualifier(IF::Qualifier->and([
-		IF::Qualifier->key("foo.title = %@", "Zab-3"),
-	]));
+    # let's see if prefetching works:
+    $fs->setPrefetchingRelationships(["foo"]);
+    $fs->setQualifier(IF::Qualifier->and([
+        IF::Qualifier->key("foo.title = %@", "Zab-3"),
+    ]));
 
-	my $results = $self->{oc}->entitiesMatchingFetchSpecification($fs);
+    my $results = $self->{oc}->entitiesMatchingFetchSpecification($fs);
 
-	ok(scalar @$results && $results->[0]->_cachedEntitiesForRelationshipNamed("foo") &&
-		scalar @{$results->[0]->_cachedEntitiesForRelationshipNamed("foo")},
-		"Prefetched entities across a dynamic relationship");
+    ok(scalar @$results && $results->[0]->_cachedEntitiesForRelationshipNamed("foo") &&
+        scalar @{$results->[0]->_cachedEntitiesForRelationshipNamed("foo")},
+        "Prefetched entities across a dynamic relationship");
 
 }
 

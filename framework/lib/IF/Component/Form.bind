@@ -22,76 +22,76 @@
 
 #
 {
-	inheritsFrom => "IF::Component::URL",
-	HIDDEN_KEY_VALUE => {
-		type => "HiddenField",
-		bindings => {
-			name => q(aKeyValuePair.NAME),
-			value => q(aKeyValuePair.VALUE),
-		},
-	},
-	TAG_ATTRIBUTES => {
-		type => "ATTRIBUTES",
-	},
-	CONTENT => {
-		type => "CONTENT",
-	},
-	METHOD => {
-		type => "STRING",
-		value => q(method),
-	},
-	ENC_TYPE => {
-		type => "STRING",
-		value => q(encType),
-	},
-	HAS_ENC_TYPE => {
-		type => "BOOLEAN",
-		value => q(encType),
-	},
-	SHOULD_ENABLE_CLIENT_SIDE_SCRIPTING => {
-		type => "BOOLEAN",
-		value => q(shouldEnableClientSideScripting),
-	},
-	IS_FIRST_TIME_RENDERED => {
-		type => "BOOLEAN",
-		value => q(isFirstTimeRendered),
-	},
-	FORM_NAME => {
-		type => "STRING",
-		value => q(formName),
-	},
+    inheritsFrom => "IF::Component::URL",
+    HIDDEN_KEY_VALUE => {
+        type => "HiddenField",
+        bindings => {
+            name => q(aKeyValuePair.NAME),
+            value => q(aKeyValuePair.VALUE),
+        },
+    },
+    TAG_ATTRIBUTES => {
+        type => "ATTRIBUTES",
+    },
+    CONTENT => {
+        type => "CONTENT",
+    },
+    METHOD => {
+        type => "STRING",
+        value => q(method),
+    },
+    ENC_TYPE => {
+        type => "STRING",
+        value => q(encType),
+    },
+    HAS_ENC_TYPE => {
+        type => "BOOLEAN",
+        value => q(encType),
+    },
+    SHOULD_ENABLE_CLIENT_SIDE_SCRIPTING => {
+        type => "BOOLEAN",
+        value => q(shouldEnableClientSideScripting),
+    },
+    IS_FIRST_TIME_RENDERED => {
+        type => "BOOLEAN",
+        value => q(isFirstTimeRendered),
+    },
+    FORM_NAME => {
+        type => "STRING",
+        value => q(formName),
+    },
     UNIQUE_ID => {
         type => "STRING",
         value => q(uniqueId),
     },
-	JAVASCRIPT_ROOT => {
-		type => "STRING",
-		value => q(application.systemConfigurationValueForKey("JAVASCRIPT_ROOT")),
-	},
-	PARENT_BINDING_NAME => {
-		type => "STRING",
-		value => q(nestedBindingPath),
-	},
-	CAN_ONLY_BE_SUBMITTED_ONCE => {
-		type => "STRING",
-		value => q(canOnlyBeSubmittedOnce),
-	},
-	HAS_VALIDATION_ERROR_MESSAGES => {
-		type => "BOOLEAN",
-#		value => q(validationErrorMessages.#),
-		value => q("keys %$self->validationErrorMessages()"),
-	},
-	VALIDATION_ERROR_MESSAGES => {
-		type => "LOOP",
-		list => q(validationErrorMessagesArray),
-		item => "aMessage",
-	},
-	A_VALIDATION_ERROR_MESSAGE_TEXT => {
-		type => "STRING",
-		value => q(aMessage.value),
-	},
-	A_VALIDATION_ERROR_MESSAGE_KEY => {
-		type => "STRING",
-		value => q(aMessage.key),
-	},
+    JAVASCRIPT_ROOT => {
+        type => "STRING",
+        value => q(application.systemConfigurationValueForKey("JAVASCRIPT_ROOT")),
+    },
+    PARENT_BINDING_NAME => {
+        type => "STRING",
+        value => q(nestedBindingPath),
+    },
+    CAN_ONLY_BE_SUBMITTED_ONCE => {
+        type => "STRING",
+        value => q(canOnlyBeSubmittedOnce),
+    },
+    HAS_VALIDATION_ERROR_MESSAGES => {
+        type => "BOOLEAN",
+#        value => q(validationErrorMessages.#),
+        value => q("keys %$self->validationErrorMessages()"),
+    },
+    VALIDATION_ERROR_MESSAGES => {
+        type => "LOOP",
+        list => q(validationErrorMessagesArray),
+        item => "aMessage",
+    },
+    A_VALIDATION_ERROR_MESSAGE_TEXT => {
+        type => "STRING",
+        value => q(aMessage.value),
+    },
+    A_VALIDATION_ERROR_MESSAGE_KEY => {
+        type => "STRING",
+        value => q(aMessage.key),
+    },
 }

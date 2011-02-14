@@ -39,43 +39,43 @@ our $DEFAULT_JQUERY_VERSION = "1.2.6";
 # +++++ class methods +++++
 
 sub stylesheet {
-	my ($className, $location, $domId) = @_;
-	my $value = $className->new();
-	$value->setLocation($location);
-	$value->setDomId($domId);
-	$value->setMimeType("text/css");
-	$value->setType("stylesheet");
-	return $value;
+    my ($className, $location, $domId) = @_;
+    my $value = $className->new();
+    $value->setLocation($location);
+    $value->setDomId($domId);
+    $value->setMimeType("text/css");
+    $value->setType("stylesheet");
+    return $value;
 }
 
 sub javascript {
-	my ($className, $location) = @_;
-	my $value = $className->new();
+    my ($className, $location) = @_;
+    my $value = $className->new();
     $value->setLocation($location);
 
     if (IF::Application->defaultApplication()->environmentIsProduction()) {
     #if (1) {
-    	if ($location =~ m!/IF/!) {
-    	    $value->setLocation("/if-static/javascript/if.js");
+        if ($location =~ m!/IF/!) {
+            $value->setLocation("/if-static/javascript/if.js");
         } elsif ($location =~ m!jquery.(\d\.\d\.\d).?js!) {
             my $version = $1 || $DEFAULT_JQUERY_VERSION;
             $value->setLocation("http://ajax.googleapis.com/ajax/libs/jquery/$version/jquery.min.js");
         }
     }
 
-	$value->setMimeType("text/javascript");
-	$value->setType("javascript");
-	return $value;
+    $value->setMimeType("text/javascript");
+    $value->setType("javascript");
+    return $value;
 }
 
 sub alternateStylesheetNamed {
-	my ($className, $location, $name) = @_;
-	my $value = $className->new();
-	$value->setLocation($location, "location");
-	$value->setObjectForKey($name, "title");
-	$value->setMimeType("text/css", "mimeType");
-	$value->setType("alternate stylesheet", "type");
-	return $value;
+    my ($className, $location, $name) = @_;
+    my $value = $className->new();
+    $value->setLocation($location, "location");
+    $value->setObjectForKey($name, "title");
+    $value->setMimeType("text/css", "mimeType");
+    $value->setType("alternate stylesheet", "type");
+    return $value;
 }
 
 # --------- instance methods -----------
@@ -85,71 +85,71 @@ sub alternateStylesheetNamed {
 # --------------------------------------
 
 sub location {
-	my $self = shift;
-	return $self->objectForKey("location");
+    my $self = shift;
+    return $self->objectForKey("location");
 }
 
 sub setLocation {
-	my ($self, $value) = @_;
-	$self->setObjectForKey($value, "location");
+    my ($self, $value) = @_;
+    $self->setObjectForKey($value, "location");
 }
 
 sub mimeType {
-	my $self = shift;
-	return $self->objectForKey("mimeType");
+    my $self = shift;
+    return $self->objectForKey("mimeType");
 }
 
 sub setMimeType {
-	my ($self, $value) = @_;
-	$self->setObjectForKey($value, "mimeType");
+    my ($self, $value) = @_;
+    $self->setObjectForKey($value, "mimeType");
 }
 
 sub type {
-	my $self = shift;
-	return $self->objectForKey("type");
+    my $self = shift;
+    return $self->objectForKey("type");
 }
 
 sub setType {
-	my ($self, $value) = @_;
-	$self->setObjectForKey($value, "type");
+    my ($self, $value) = @_;
+    $self->setObjectForKey($value, "type");
 }
 
 sub domId {
-	my ($self) = @_;
-	return $self->{domId};
+    my ($self) = @_;
+    return $self->{domId};
 }
 
 sub setDomId {
-	my ($self, $value) = @_;
-	$self->{domId} = $value;
+    my ($self, $value) = @_;
+    $self->{domId} = $value;
 }
 
 sub firstRequester {
-	my $self = shift;
-	return $self->{firstRequester};
+    my $self = shift;
+    return $self->{firstRequester};
 }
 
 sub setFirstRequester {
-	my ($self, $value) = @_;
-	$self->{firstRequester} = $value;
+    my ($self, $value) = @_;
+    $self->{firstRequester} = $value;
 }
 
 # ------- this generates the tag to pull this resource in -------
 
 sub tag {
-	my ($self) = @_;
-	my $libVersion = IF::Application->systemConfigurationValueForKey("BUILD_VERSION");
+    my ($self) = @_;
+    my $libVersion = IF::Application->systemConfigurationValueForKey("BUILD_VERSION");
 
-	if ($self->type() eq "javascript") {
-		return '<script type="'.$self->mimeType().'" src="'.$self->location().'?v='. $libVersion.'"></script>';
-	} elsif ($self->type() eq "stylesheet" || $self->type() eq "alternate stylesheet") {
-		my $media = $self->objectForKey("media") || "screen, print";
-		my $link = '<link rel="'.$self->type().'" type="'.$self->mimeType().'" href="'.$self->location().'?v='. $libVersion .'" media="'.$media.'" title="'.$self->objectForKey("title").'"';
-		$link .= ' id="' . $self->domId() . '" ' if $self->domId();
-		$link .= ' />';
-		return $link;
-	}
-	return "<!-- unknown resource type: ".$self->type()." location: ".$self->location()." -->";
+    if ($self->type() eq "javascript") {
+        return '<script type="'.$self->mimeType().'" src="'.$self->location().'?v='. $libVersion.'"></script>';
+    } elsif ($self->type() eq "stylesheet" || $self->type() eq "alternate stylesheet") {
+        my $media = $self->objectForKey("media") || "screen, print";
+        my $link = '<link rel="'.$self->type().'" type="'.$self->mimeType().'" href="'.$self->location().'?v='. $libVersion .'" media="'.$media.'" title="'.$self->objectForKey("title").'"';
+        $link .= ' id="' . $self->domId() . '" ' if $self->domId();
+        $link .= ' />';
+        return $link;
+    }
+    return "<!-- unknown resource type: ".$self->type()." location: ".$self->location()." -->";
 }
 
 1;

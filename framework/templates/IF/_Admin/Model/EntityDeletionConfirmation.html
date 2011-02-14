@@ -1,30 +1,30 @@
 <BINDING:WRAPPER>
-	<table class=content>
-		<tr><td><BINDING:NAVIGATION></td></tr>
-		<tr><td>
-			<h4>ARE YOU SURE?</h4>
-			<p>
-			<div style="padding:4px;border: 1px solid red;font-weight: bold;color: red;">
-			
-			Please only click 'delete' below if you are SURE!  There is NO WAY TO UNDO THIS.
-			<br><br>
-			When you click 'delete', these items will be PERMANENTLY DELETED:
-			<br><br>
-			<table>
-			<BINDING_LOOP:ITEMS_SCHEDULED_FOR_DELETION>
-			<tr class="<BINDING:ROW_CLASS>"><td><BINDING:ITEM_ENTITY_CLASS></td>
-			<td><BINDING:ITEM_NAME></td></tr>
-			</BINDING_LOOP:ITEMS_SCHEDULED_FOR_DELETION>
-			</table>
-			</div>
-			<BINDING:DELETION_CONFIRMATION_FORM>
-				<table align=center>
-					<tr>
-						<td><BINDING:DELETE_BUTTON VALUE="Delete"></td>
-						<td><BINDING:CANCEL_BUTTON VALUE="Cancel"></td>
-					</tr>
-				</table>
-			</BINDING:DELETION_CONFIRMATION_FORM>
-		</td></tr>
-	</table>
+    <table class=content>
+        <tr><td><BINDING:NAVIGATION></td></tr>
+        <tr><td>
+            <h4>ARE YOU SURE?</h4>
+            <p>
+            <div style="padding:4px;border: 1px solid red;font-weight: bold;color: red;">
+            
+            Please only click 'delete' below if you are SURE!  There is NO WAY TO UNDO THIS.
+            <br><br>
+            When you click 'delete', these items will be PERMANENTLY DELETED:
+            <br><br>
+            <table>
+            <BINDING_LOOP:ITEMS_SCHEDULED_FOR_DELETION>
+            <tr class="<BINDING:ROW_CLASS>"><td><BINDING:ITEM_ENTITY_CLASS></td>
+            <td><BINDING:ITEM_NAME></td></tr>
+            </BINDING_LOOP:ITEMS_SCHEDULED_FOR_DELETION>
+            </table>
+            </div>
+            <BINDING:DELETION_CONFIRMATION_FORM>
+                <table align=center>
+                    <tr>
+                        <td><BINDING:DELETE_BUTTON VALUE="Delete"></td>
+                        <td><BINDING:CANCEL_BUTTON VALUE="Cancel"></td>
+                    </tr>
+                </table>
+            </BINDING:DELETION_CONFIRMATION_FORM>
+        </td></tr>
+    </table>
 </BINDING:WRAPPER>

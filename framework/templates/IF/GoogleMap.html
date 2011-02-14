@@ -1,27 +1,27 @@
 <style type="text/css">
 
 .map-info-window h2 {
-	font-weight: bold;
-	font-size:15px;
-	margin-top:0;
-	margin-bottom:3px;
+    font-weight: bold;
+    font-size:15px;
+    margin-top:0;
+    margin-bottom:3px;
 }
 .map-info-window em {
-	font-size:0.86em;
-	}
+    font-size:0.86em;
+    }
 .map-info-window textarea {
-	width:95%;
-	height:50px;
-	overflow:auto;
+    width:95%;
+    height:50px;
+    overflow:auto;
 }
 .map-info-window p {
-	font-size: 9px;
+    font-size: 9px;
 }
 .map-info-window textarea {
-	background: #fff;
-	color: #333;
-	border: 1px solid black;
-	padding: 3px;
+    background: #fff;
+    color: #333;
+    border: 1px solid black;
+    padding: 3px;
 }
 </style>
 <div id="<BINDING:UNIQUE_ID>">
@@ -30,13 +30,13 @@
 <div id="<BINDING:UNIQUE_ID>-map" %_TAG_ATTRIBUTES_% ></div>
 <script type="text/javascript">
 
-	jQuery(document).ready(function() {
-		console.log("initializing assetMap on ready...");
-		var <BINDING:BINDING_NAME> = new GoogleMap('<BINDING:UNIQUE_ID>', '<BINDING:BINDING_NAME>');
-		<BINDING:BINDING_NAME>.setAssets([<BINDING_LOOP:ASSETS><BINDING:ASSET><TMPL_UNLESS __IS_LAST__>,
+    jQuery(document).ready(function() {
+        console.log("initializing assetMap on ready...");
+        var <BINDING:BINDING_NAME> = new GoogleMap('<BINDING:UNIQUE_ID>', '<BINDING:BINDING_NAME>');
+        <BINDING:BINDING_NAME>.setAssets([<BINDING_LOOP:ASSETS><BINDING:ASSET><TMPL_UNLESS __IS_LAST__>,
 </TMPL_UNLESS></BINDING_LOOP:ASSETS>
-		]);
-		<BINDING:BINDING_NAME>.render();
-	});
+        ]);
+        <BINDING:BINDING_NAME>.render();
+    });
 </script>
 </div>

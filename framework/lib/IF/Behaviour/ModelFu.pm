@@ -431,24 +431,24 @@ sub withValueForKey {
 sub withDetailedGeographicInformation {
     my ($self) = @_;
     my $value = {
-		COUNTRY_NAME 		=> "country",
-		STATE_NAME   		=> "state",
-		CITY_NAME    		=> "city",
-		METRO_AREA_NAME    	=> "metroArea",
-		ADDRESS1_NAME       => "add1",
-		ADDRESS2_NAME       => "add2",
-	};
+        COUNTRY_NAME         => "country",
+        STATE_NAME           => "state",
+        CITY_NAME            => "city",
+        METRO_AREA_NAME        => "metroArea",
+        ADDRESS1_NAME       => "add1",
+        ADDRESS2_NAME       => "add2",
+    };
     return $self->withValueForKey($value, "GEOGRAPHIC_ATTRIBUTE_KEYS");
 }
 
 sub withCityGeographicInformation {
     my ($self) = @_;
     my $value = {
-		COUNTRY_NAME 		=> "country",
-		STATE_NAME   		=> "state",
-		CITY_NAME    		=> "city",
-		METRO_AREA_NAME    	=> "metroArea",
-	};
+        COUNTRY_NAME         => "country",
+        STATE_NAME           => "state",
+        CITY_NAME            => "city",
+        METRO_AREA_NAME        => "metroArea",
+    };
     return $self->withValueForKey($value, "GEOGRAPHIC_ATTRIBUTE_KEYS");
 }
 

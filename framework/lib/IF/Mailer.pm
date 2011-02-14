@@ -86,72 +86,72 @@ sub SENDMAIL           { return $_[0]->{SENDMAIL}           }
 # and transparently be re-opened by this method.
 sub smtpHandle {
     my $self = shift;
-	my $smtpServers = shift
-		|| $self->SMTP_SERVERS() || [];
+    my $smtpServers = shift
+        || $self->SMTP_SERVERS() || [];
 
-	IF::Log::dump($smtpServers);
+    IF::Log::dump($smtpServers);
 
-	return $_smtpHandle if ($_smtpHandle && $_smtpHandle->reset());
-	$_smtpHandle = undef;
+    return $_smtpHandle if ($_smtpHandle && $_smtpHandle->reset());
+    $_smtpHandle = undef;
 
-	my $hello = $self->SMTP_EHLO_NAME();
-	foreach my $smtpServer (@$smtpServers) {
-		IF::Log::debug("Trying connection to SMTP server $smtpServer");
-		$_smtpHandle = Net::SMTP->new( Host => $smtpServer,
-						Hello => $hello,
-						Timeout => 5,
-						Debug => 0,
-					);
-		last if $_smtpHandle;
-	}
+    my $hello = $self->SMTP_EHLO_NAME();
+    foreach my $smtpServer (@$smtpServers) {
+        IF::Log::debug("Trying connection to SMTP server $smtpServer");
+        $_smtpHandle = Net::SMTP->new( Host => $smtpServer,
+                        Hello => $hello,
+                        Timeout => 5,
+                        Debug => 0,
+                    );
+        last if $_smtpHandle;
+    }
 
-	# At this point we've either found a server in the list to connect to, or
-	# $_smtpServer is still undef so the app should fall back to using maildrop style delivery
-	if ($_smtpHandle) {
-		IF::Log::info("Connected to SMTP server ".$_smtpHandle->banner());
-	} else {
-		IF::Log::warning("Could not connect to an SMTP server.  Falling back to maildrop.");
-	}
+    # At this point we've either found a server in the list to connect to, or
+    # $_smtpServer is still undef so the app should fall back to using maildrop style delivery
+    if ($_smtpHandle) {
+        IF::Log::info("Connected to SMTP server ".$_smtpHandle->banner());
+    } else {
+        IF::Log::warning("Could not connect to an SMTP server.  Falling back to maildrop.");
+    }
 
-	return $_smtpHandle;
+    return $_smtpHandle;
 }
 
 sub sendMessageBySMTP {
     my $self = shift;
-	my $to = shift;
-	my $bounceAddr = shift;
-	my $headers = shift || {};
-	my $body = shift;
-	my $attachedFiles = shift;
-	my $smtpServers = shift;
+    my $to = shift;
+    my $bounceAddr = shift;
+    my $headers = shift || {};
+    my $body = shift;
+    my $attachedFiles = shift;
+    my $smtpServers = shift;
 
-	#$body = encode_utf8($body) if utf8::is_utf8($body);
+    #$body = encode_utf8($body) if utf8::is_utf8($body);
 
-	my $smtp = $self->smtpHandle($smtpServers);
-	return undef unless $smtp;
-	return undef unless IF::Log::assert($smtp->mail($bounceAddr), "SMTP MAIL cmd failed.");
-	return undef unless IF::Log::assert($smtp->recipient($to), "SMTP RCPT cmd failed for $to.");
-	return undef unless IF::Log::assert($smtp->data(), "SMTP server refused DATA cmd.");
-	return undef unless IF::Log::assert($smtp->datasend($headers), "Sending DATA.");
-	if (@$attachedFiles) {
-		my $boundary_separator = "";
-	    # Create arbitrary boundary separator
-	    my ($i, $number, @chrs);
-	    foreach $number (48..57,65..90,97..122) { $chrs[$i++] = chr($number);}
-	    foreach $number (0..20) {$boundary_separator .= $chrs[rand($i)];}
-	    return undef unless IF::Log::assert($smtp->datasend("Content-Type: multipart/mixed; charset=utf-8; boundary=\"$boundary_separator\"\n"), "SMTP content type.");
-		return undef unless IF::Log::assert($smtp->datasend("--$boundary_separator\nContent-type: text/plain; charset=utf-8\n"), "SMTP body content.");
-		return undef unless IF::Log::assert($smtp->datasend("Content-Disposition: inline\n\n"), "SMTP body disp.");
-		return undef unless IF::Log::assert($smtp->datasend("$body\n"), "SMTP MAIL body.");
-		foreach my $fileNameWithPath (@$attachedFiles) {
-			return undef unless IF::Log::assert(_attachFileFromFilePath($smtp, $fileNameWithPath, $boundary_separator), "Attaching File $fileNameWithPath	.");
-		}
+    my $smtp = $self->smtpHandle($smtpServers);
+    return undef unless $smtp;
+    return undef unless IF::Log::assert($smtp->mail($bounceAddr), "SMTP MAIL cmd failed.");
+    return undef unless IF::Log::assert($smtp->recipient($to), "SMTP RCPT cmd failed for $to.");
+    return undef unless IF::Log::assert($smtp->data(), "SMTP server refused DATA cmd.");
+    return undef unless IF::Log::assert($smtp->datasend($headers), "Sending DATA.");
+    if (@$attachedFiles) {
+        my $boundary_separator = "";
+        # Create arbitrary boundary separator
+        my ($i, $number, @chrs);
+        foreach $number (48..57,65..90,97..122) { $chrs[$i++] = chr($number);}
+        foreach $number (0..20) {$boundary_separator .= $chrs[rand($i)];}
+        return undef unless IF::Log::assert($smtp->datasend("Content-Type: multipart/mixed; charset=utf-8; boundary=\"$boundary_separator\"\n"), "SMTP content type.");
+        return undef unless IF::Log::assert($smtp->datasend("--$boundary_separator\nContent-type: text/plain; charset=utf-8\n"), "SMTP body content.");
+        return undef unless IF::Log::assert($smtp->datasend("Content-Disposition: inline\n\n"), "SMTP body disp.");
+        return undef unless IF::Log::assert($smtp->datasend("$body\n"), "SMTP MAIL body.");
+        foreach my $fileNameWithPath (@$attachedFiles) {
+            return undef unless IF::Log::assert(_attachFileFromFilePath($smtp, $fileNameWithPath, $boundary_separator), "Attaching File $fileNameWithPath    .");
+        }
     } else {
-	    	return undef unless IF::Log::assert($smtp->datasend("$body\n"), "SMTP MAIL body.");
+            return undef unless IF::Log::assert($smtp->datasend("$body\n"), "SMTP MAIL body.");
     }
-	return undef unless IF::Log::assert($smtp->dataend(), "SMTP server refused DATA end cmd.");
+    return undef unless IF::Log::assert($smtp->dataend(), "SMTP server refused DATA end cmd.");
 
-	return 1;
+    return 1;
 }
 
 # TODO - rewrite this... I never really reviewed it and now that I'm
@@ -163,53 +163,53 @@ sub _attachFileFromFilePath {
 
     my ($bytesread, $buffer, $data, $total, $fileHandle);
 
-	unless (-f $fileNameWithPath) {
-		IF::Log::dump("File to attach not found: $fileNameWithPath");
-		return 0;
+    unless (-f $fileNameWithPath) {
+        IF::Log::dump("File to attach not found: $fileNameWithPath");
+        return 0;
     }
-	return 0 unless open($fileHandle, "$fileNameWithPath") ;
+    return 0 unless open($fileHandle, "$fileNameWithPath") ;
 
-	binmode($fileHandle);
-	while ( ($bytesread = sysread($fileHandle, $buffer, 1024))==1024 ){
-		$total += $bytesread;
-		$data .= $buffer;
-	}
-	if ($bytesread) {
-		$data .= $buffer;
-		$total += $bytesread ;
-	}
-	close $fileHandle;
-	if ($data) {
-		$smtp->datasend("--$boundary_separator\n");
-		$smtp->datasend("Content-Type: application/octet-stream; name=\"$fileNameWithPath\"\n");
-		$smtp->datasend("Content-Transfer-Encoding: base64\n");
-		$smtp->datasend("Content-Disposition: attachment; =filename=\"$fileNameWithPath\"\n\n");
-		$smtp->datasend(encode_base64($data));
-		$smtp->datasend("\n");
-	}
+    binmode($fileHandle);
+    while ( ($bytesread = sysread($fileHandle, $buffer, 1024))==1024 ){
+        $total += $bytesread;
+        $data .= $buffer;
+    }
+    if ($bytesread) {
+        $data .= $buffer;
+        $total += $bytesread ;
+    }
+    close $fileHandle;
+    if ($data) {
+        $smtp->datasend("--$boundary_separator\n");
+        $smtp->datasend("Content-Type: application/octet-stream; name=\"$fileNameWithPath\"\n");
+        $smtp->datasend("Content-Transfer-Encoding: base64\n");
+        $smtp->datasend("Content-Disposition: attachment; =filename=\"$fileNameWithPath\"\n\n");
+        $smtp->datasend(encode_base64($data));
+        $smtp->datasend("\n");
+    }
 }
 
 ## NOTE:  subject may appear in a template
 sub sendMailWithAttachments {
     my $self = shift;
-	my $to = shift;
+    my $to = shift;
 
-	if ($to =~ /,/) {
-		my @addresses = split(',',$to);
-		foreach my $singleTo (@addresses) {
-			$singleTo =~ s/ //g;
-			$self->sendMailWithAttachments($singleTo, @_);
-		}
-		return;
-	}
-	my $from = shift;
-	my $subject = shift;
-	my $body = shift;
-	my $attachedFiles = shift;
-	my $headers = shift;
-	my $recipientType = shift;  # helps us classify bouncing mail
-	my $bounceToFromAddress = shift; # deprecated
-	my $smtpServers = shift; # optional
+    if ($to =~ /,/) {
+        my @addresses = split(',',$to);
+        foreach my $singleTo (@addresses) {
+            $singleTo =~ s/ //g;
+            $self->sendMailWithAttachments($singleTo, @_);
+        }
+        return;
+    }
+    my $from = shift;
+    my $subject = shift;
+    my $body = shift;
+    my $attachedFiles = shift;
+    my $headers = shift;
+    my $recipientType = shift;  # helps us classify bouncing mail
+    my $bounceToFromAddress = shift; # deprecated
+    my $smtpServers = shift; # optional
 
     if ($self->blockerClass()) {
         # This only makes sense if the blocker class implements emailIsBlocked...
@@ -227,86 +227,86 @@ sub sendMailWithAttachments {
             }
         }
     }
-	$headers = {} unless $headers;
+    $headers = {} unless $headers;
 
-	return unless IF::Log::assert($self->emailAddressIsValid($to), "Valid To address");
-	return unless IF::Log::assert($self->emailAddressIsValid($from), "Valid From address");
+    return unless IF::Log::assert($self->emailAddressIsValid($to), "Valid To address");
+    return unless IF::Log::assert($self->emailAddressIsValid($from), "Valid From address");
 
-	my $bounceAddr = $self->application()->createBounceAddress($to, $from, $recipientType);
+    my $bounceAddr = $self->application()->createBounceAddress($to, $from, $recipientType);
 
-	# Stop embarrassing things happening in testing and staging:
+    # Stop embarrassing things happening in testing and staging:
     unless ($self->emailAddressIsSafe($to)) {
         IF::Log::debug("$to is UNSAFE, sending to administrator instead.");
         $to = $self->SITE_ADMINISTRATOR();
     }
 
-	# Here we format the From: header to avoid spam detection.  hmm
-	# TODO: this code probably belongs sowewhere else ?
-	my $formattedFrom;
-	if ($from =~ m/ /) {
-		$formattedFrom = $from;
-	} else {
-		my ($fromName) = ($from =~ /^([\w\.\-]+)@/);
-		$formattedFrom = ucfirst($fromName)." <$from> ";
-	}
-
-	$headers->{'To'} = $to;
-	$headers->{'From'} = $formattedFrom;
-	unless ($headers->{'Reply-To'} || $body =~ /Reply-To:/) {
-	    $headers->{'Reply-To'} = $from;
+    # Here we format the From: header to avoid spam detection.  hmm
+    # TODO: this code probably belongs sowewhere else ?
+    my $formattedFrom;
+    if ($from =~ m/ /) {
+        $formattedFrom = $from;
+    } else {
+        my ($fromName) = ($from =~ /^([\w\.\-]+)@/);
+        $formattedFrom = ucfirst($fromName)." <$from> ";
     }
-	$headers->{'Subject'} = $subject if (($subject) && ($subject ne ""));
-#	$headers->{'Errors-To'} = $bounceAddr;
-	$headers->{'Mime-Version'} = "1.0";
 
-	# This helps us know the sender even if AOL or someone munges the headers
-	$headers->{'X-IF-Sender'} = $from;
+    $headers->{'To'} = $to;
+    $headers->{'From'} = $formattedFrom;
+    unless ($headers->{'Reply-To'} || $body =~ /Reply-To:/) {
+        $headers->{'Reply-To'} = $from;
+    }
+    $headers->{'Subject'} = $subject if (($subject) && ($subject ne ""));
+#    $headers->{'Errors-To'} = $bounceAddr;
+    $headers->{'Mime-Version'} = "1.0";
 
-	if ($headers->{'Content-type'} ne 'multipart/mixed') {
-		$headers->{'Content-type'} = 'text/plain' unless $headers->{'Content-type'};
-		# set the character encoding
-		unless ($headers->{'Content-type'} =~ /charset/i) {
-			$headers->{'Content-type'} .= '; charset=utf-8';
-		}
-	}
-	my $formattedHeaders = "";
-	foreach my $k (keys %$headers) {
-		$formattedHeaders .= "$k: ".$headers->{$k}."\n";
-	}
+    # This helps us know the sender even if AOL or someone munges the headers
+    $headers->{'X-IF-Sender'} = $from;
 
-	if ($self->sendMessageBySMTP($to, $bounceAddr, $formattedHeaders, $body, $attachedFiles, $smtpServers)) {
-		IF::Log::info("Mail ($subject) sent to $to via SMTP\n");
-		return 1;
-	}
+    if ($headers->{'Content-type'} ne 'multipart/mixed') {
+        $headers->{'Content-type'} = 'text/plain' unless $headers->{'Content-type'};
+        # set the character encoding
+        unless ($headers->{'Content-type'} =~ /charset/i) {
+            $headers->{'Content-type'} .= '; charset=utf-8';
+        }
+    }
+    my $formattedHeaders = "";
+    foreach my $k (keys %$headers) {
+        $formattedHeaders .= "$k: ".$headers->{$k}."\n";
+    }
 
-	# backup plan using sendmail
-	# we're either here because we couldn't open a connection to the SMTP
-	# server or because the transmission failed along the way
-	my $SENDMAIL = $self->SENDMAIL();
-	die "No SENDMAIL in application configuration" unless $SENDMAIL;
+    if ($self->sendMessageBySMTP($to, $bounceAddr, $formattedHeaders, $body, $attachedFiles, $smtpServers)) {
+        IF::Log::info("Mail ($subject) sent to $to via SMTP\n");
+        return 1;
+    }
 
-	return undef unless IF::Log::assert(
-			open (MAIL, "| $SENDMAIL -t -f \"<$bounceAddr>\""),
-			 "Problem talking to sendmail");
+    # backup plan using sendmail
+    # we're either here because we couldn't open a connection to the SMTP
+    # server or because the transmission failed along the way
+    my $SENDMAIL = $self->SENDMAIL();
+    die "No SENDMAIL in application configuration" unless $SENDMAIL;
 
-	print MAIL $formattedHeaders, $body;
-	close (MAIL);
-	IF::Log::debug("Mail ($subject) going out to $to by local delivery\n");
-	return 1;
+    return undef unless IF::Log::assert(
+            open (MAIL, "| $SENDMAIL -t -f \"<$bounceAddr>\""),
+             "Problem talking to sendmail");
+
+    print MAIL $formattedHeaders, $body;
+    close (MAIL);
+    IF::Log::debug("Mail ($subject) going out to $to by local delivery\n");
+    return 1;
 }
 
 sub sendMail {
-	my ($self, $to, $from, $subject, $body, $headers, $recipientType, $bounceToFromAddress, $smtpServers) = @_;
-	$self->sendMailWithAttachments(
-	        $to,
-			$from,
-			$subject,
-			$body,
-			[],
-			$headers,
-			$recipientType,,
-			$bounceToFromAddress,
-			$smtpServers,
+    my ($self, $to, $from, $subject, $body, $headers, $recipientType, $bounceToFromAddress, $smtpServers) = @_;
+    $self->sendMailWithAttachments(
+            $to,
+            $from,
+            $subject,
+            $body,
+            [],
+            $headers,
+            $recipientType,,
+            $bounceToFromAddress,
+            $smtpServers,
     );
 }
 
@@ -316,123 +316,123 @@ sub sendMail {
 # SQL patch that creates these tables.
 
 sub createMailMessage {
-	my $subject = shift;
-	my $body = shift;
-	my $contentType = shift;
-	my $headers = shift;
+    my $subject = shift;
+    my $body = shift;
+    my $contentType = shift;
+    my $headers = shift;
 
-	my $message = IF::MailQueue::Entity::MailMessage->new();
-	$message->setSubject($subject);
-	$message->setBody($body);
-	$message->setContentType($contentType);
-	$message->setHeaders($headers);
-	$message->save();
-	return $message;
+    my $message = IF::MailQueue::Entity::MailMessage->new();
+    $message->setSubject($subject);
+    $message->setBody($body);
+    $message->setContentType($contentType);
+    $message->setHeaders($headers);
+    $message->save();
+    return $message;
 }
 
 sub addMailQueueEntry {
-	my $to = shift;
-	my $from = shift;
-	my $message = shift;
-	my $fieldValues = shift;
-	my $sendDate = shift;
-	my $mailEvent = shift;
+    my $to = shift;
+    my $from = shift;
+    my $message = shift;
+    my $fieldValues = shift;
+    my $sendDate = shift;
+    my $mailEvent = shift;
 
-	return unless $message;
-	my $mailQueueEntry = IF::MailQueue::Entity::MailQueueEntry->new();
-	$mailQueueEntry->setEmail($to);
-	$mailQueueEntry->setSender($from);
-	$mailQueueEntry->setFieldValues($fieldValues);
-	$mailQueueEntry->setMailMessageId($message->id());
-	$mailQueueEntry->setSendDate($sendDate);
-	if ($mailEvent) {
-		$mailQueueEntry->setMailEventId($mailEvent->id());
-	}
-	$mailQueueEntry->save('LATER');
+    return unless $message;
+    my $mailQueueEntry = IF::MailQueue::Entity::MailQueueEntry->new();
+    $mailQueueEntry->setEmail($to);
+    $mailQueueEntry->setSender($from);
+    $mailQueueEntry->setFieldValues($fieldValues);
+    $mailQueueEntry->setMailMessageId($message->id());
+    $mailQueueEntry->setSendDate($sendDate);
+    if ($mailEvent) {
+        $mailQueueEntry->setMailEventId($mailEvent->id());
+    }
+    $mailQueueEntry->save('LATER');
 
-	return $mailQueueEntry; #???
+    return $mailQueueEntry; #???
 }
 
 sub startMailJob {
-	my $logMessage = shift;
-	my $jobCreator = shift;
+    my $logMessage = shift;
+    my $jobCreator = shift;
 
-	my $mailEvent = IF::MailQueue::Entity::MailEvent->new();
-	$mailEvent->setLogMessage($logMessage);
-	$mailEvent->setCreatedBy($jobCreator);
-	$mailEvent->save();
+    my $mailEvent = IF::MailQueue::Entity::MailEvent->new();
+    $mailEvent->setLogMessage($logMessage);
+    $mailEvent->setCreatedBy($jobCreator);
+    $mailEvent->save();
 
-	# now add a "start" message
-	my $mailQueueEntry = IF::MailQueue::Entity::MailQueueEntry->new();
-	$mailQueueEntry->setEmail($mailEvent->createdBy());
-	$mailQueueEntry->setSender();
-	$mailQueueEntry->setSendDate(time);
-	$mailQueueEntry->setMailEventId($mailEvent->id());
-	$mailQueueEntry->setMailMessageId(0);
-	$mailQueueEntry->setIsLastMessage(0);
-	$mailQueueEntry->save();
+    # now add a "start" message
+    my $mailQueueEntry = IF::MailQueue::Entity::MailQueueEntry->new();
+    $mailQueueEntry->setEmail($mailEvent->createdBy());
+    $mailQueueEntry->setSender();
+    $mailQueueEntry->setSendDate(time);
+    $mailQueueEntry->setMailEventId($mailEvent->id());
+    $mailQueueEntry->setMailMessageId(0);
+    $mailQueueEntry->setIsLastMessage(0);
+    $mailQueueEntry->save();
 
-	return $mailEvent;
+    return $mailEvent;
 }
 
 sub endMailJob {
-	my $mailEvent = shift;
+    my $mailEvent = shift;
 
-	my $mailQueueEntry = IF::MailQueue::Entity::MailQueueEntry->new();
-	$mailQueueEntry->setEmail($mailEvent->createdBy());
-	$mailQueueEntry->setSender();
-	$mailQueueEntry->setSendDate(time);
-	$mailQueueEntry->setMailEventId($mailEvent->id());
-	$mailQueueEntry->setMailMessageId(0);
-	$mailQueueEntry->setIsLastMessage(1);
-	$mailQueueEntry->save();
-	return $mailQueueEntry;
+    my $mailQueueEntry = IF::MailQueue::Entity::MailQueueEntry->new();
+    $mailQueueEntry->setEmail($mailEvent->createdBy());
+    $mailQueueEntry->setSender();
+    $mailQueueEntry->setSendDate(time);
+    $mailQueueEntry->setMailEventId($mailEvent->id());
+    $mailQueueEntry->setMailMessageId(0);
+    $mailQueueEntry->setIsLastMessage(1);
+    $mailQueueEntry->save();
+    return $mailQueueEntry;
 }
 
 sub emailAddressIsSafe {
     my $self = shift;
-	my $address = shift;
+    my $address = shift;
 
-	# here is where you check if it's ok to send random
-	# email to this address (for testing, etc.)
-	IF::Log::debug("Checking if $address is safe");
+    # here is where you check if it's ok to send random
+    # email to this address (for testing, etc.)
+    IF::Log::debug("Checking if $address is safe");
     return $self->application()->emailAddressIsSafe($address);
 }
 
 sub emailAddressIsValid {
     my $self = shift;
-	my $address = shift;
-	return $address =~ /^([A-Z0-9]+[._-]?)*[A-Z0-9]+\@(([A-Z0-9]+[-]?)*[A-Z0-9]+\.){1,}[A-Z]{2,}$/i;
+    my $address = shift;
+    return $address =~ /^([A-Z0-9]+[._-]?)*[A-Z0-9]+\@(([A-Z0-9]+[-]?)*[A-Z0-9]+\.){1,}[A-Z]{2,}$/i;
 }
 
 sub responseForMailTemplateInContext {
     my $self = shift;
-	my $templateName = shift;
-	my $context = shift;
+    my $templateName = shift;
+    my $context = shift;
 
-	my $templatePath = mailTemplatePath();
-	unless ($templateName =~ /^$templatePath/) {
-		$templateName = $templatePath."/".$templateName;
-	}
+    my $templatePath = mailTemplatePath();
+    unless ($templateName =~ /^$templatePath/) {
+        $templateName = $templatePath."/".$templateName;
+    }
 
-	return $self->responseForResolvedMailTemplateInContext($templateName, $context);
+    return $self->responseForResolvedMailTemplateInContext($templateName, $context);
 }
 
 # rewrite this to use the basic renderer
 sub responseForResolvedMailTemplateInContext {
     my $self = shift;
-	my $templateName = shift;
-	my $context = shift;
+    my $templateName = shift;
+    my $context = shift;
 
-	IF::Log::debug("responseForResolvedMailTemplateInContext(): templateName = ". $templateName);
-	my $template = $context->siteClassifier()->bestTemplateForPathAndContext($templateName, $context);
-	unless ($template) {
-		IF::Log::error("Unable to locate mail message template $templateName");
-		return;
-	}
-	my $response = IF::Response->new();
-	$response->setTemplate($template);
-	return $response;
+    IF::Log::debug("responseForResolvedMailTemplateInContext(): templateName = ". $templateName);
+    my $template = $context->siteClassifier()->bestTemplateForPathAndContext($templateName, $context);
+    unless ($template) {
+        IF::Log::error("Unable to locate mail message template $templateName");
+        return;
+    }
+    my $response = IF::Response->new();
+    $response->setTemplate($template);
+    return $response;
 }
 
 # pass in the text source of the template
@@ -440,28 +440,28 @@ sub responseForResolvedMailTemplateInContext {
 #  (used by the admin mailing tool)
 sub responseForMailTemplateStringInContext {
     my $self = shift;
-	my $templateString = shift;
-	my $context = shift;
-	my $template = IF::Template->new();
-	$template->initWithStringInContext($templateString, $context);
-	my $response = IF::Response->new();
-	$response->setTemplate($template);
-	return $response;
+    my $templateString = shift;
+    my $context = shift;
+    my $template = IF::Template->new();
+    $template->initWithStringInContext($templateString, $context);
+    my $response = IF::Response->new();
+    $response->setTemplate($template);
+    return $response;
 }
 
 sub generateMessageInContext {
     my $self = shift;
-	my $message = shift;
-	my $context = shift;
-	my $component = IF::Component->new();
-	$component->appendToResponse($message, $context);
-	IF::Log::debug($message->content());
-	return $message->content();
+    my $message = shift;
+    my $context = shift;
+    my $component = IF::Component->new();
+    $component->appendToResponse($message, $context);
+    IF::Log::debug($message->content());
+    return $message->content();
 }
 
 sub mailTemplatePath {
     my $self = shift;
-	return $self->application()->configurationValueForKey('MAIL_TEMPLATE_PATH');
+    return $self->application()->configurationValueForKey('MAIL_TEMPLATE_PATH');
 }
 
 sub blockerClass    { return $_[0]->{blockerClass}  }

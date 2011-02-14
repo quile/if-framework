@@ -7,10 +7,10 @@ use base qw(
 
 sub initValuesWithArray {
     my ($self, $valueArray)  = @_;
-	my $values = {@$valueArray};
-	foreach my $key (keys %$values) {
-		$self->setValueForKey($values->{$key}, $key);
-	}
+    my $values = {@$valueArray};
+    foreach my $key (keys %$values) {
+        $self->setValueForKey($values->{$key}, $key);
+    }
 }
 
 1;

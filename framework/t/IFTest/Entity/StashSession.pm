@@ -28,38 +28,38 @@ use base qw(
 );
 
 sub externalId {
-	my ($self) = @_;
+    my ($self) = @_;
     return $self->id();
 }
 
 sub externalIdRegularExpression {
-	my ($self) = @_;
-	return '\d+';
+    my ($self) = @_;
+    return '\d+';
 }
 
 sub invalidateExternalId {
-	my ($self) = @_;
-	IF::Log::debug("Deleting external sid");
-	delete $self->{_externalId};
+    my ($self) = @_;
+    IF::Log::debug("Deleting external sid");
+    delete $self->{_externalId};
 }
 
 sub _idFromExternalId {
-	my ($className, $externalId) = @_;
+    my ($className, $externalId) = @_;
     return $externalId;
 }
 
 sub sessionWithExternalId {
-	my ($className, $externalId) = @_;
-	my $id = $className->_idFromExternalId($externalId);
-	my $session = $className->instanceWithId($id);
-	return $session;
+    my ($className, $externalId) = @_;
+    my $id = $className->_idFromExternalId($externalId);
+    my $session = $className->instanceWithId($id);
+    return $session;
 }
 
 sub sessionWithExternalIdAndContextNumber {
-	my ($className, $externalId, $contextNumber) = @_;
-	my $session = $className->sessionWithExternalId($externalId);
-	return unless $session && $session->requestContextForContextNumber($contextNumber);
-	return $session;
+    my ($className, $externalId, $contextNumber) = @_;
+    my $session = $className->sessionWithExternalId($externalId);
+    return unless $session && $session->requestContextForContextNumber($contextNumber);
+    return $session;
 }
 
 
@@ -71,8 +71,8 @@ sub save {
     # this is bogus, it should be incremented only when a web transaction
     # completes, so that we don't increment it more than once per transaction
     $self->setContextNumber($self->contextNumber()+1);
-	$self->setLastActiveDate(time);
-	$self->SUPER::save();
+    $self->setLastActiveDate(time);
+    $self->SUPER::save();
 }
 
 sub lastActiveDate    { return $_[0]->{lastActiveDate} }

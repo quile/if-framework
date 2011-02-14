@@ -30,89 +30,89 @@ use base qw(IF::Interface::Cache);
 my $DEFAULT_CACHE_SIZE = 60; # only store 60 entries
 my $DEFAULT_CACHE_TIMEOUT = 3600;
 my %OPTIONS = (
-	create => 'yes',
-	exclusive => 0,
-	mode => 0644,
-	destroy => 'yes', # careful with this
-	size => 64 * 1024, #
+    create => 'yes',
+    exclusive => 0,
+    mode => 0644,
+    destroy => 'yes', # careful with this
+    size => 64 * 1024, #
 );
 my %CACHE;
 my $_cachedKeys = {};
 
 sub init {
-	my $self = shift;
-	$self->setCacheSize($DEFAULT_CACHE_SIZE);
-	$self->setCacheTimeout($DEFAULT_CACHE_TIMEOUT);
-	unless ($self->{NAME}) {
-		IF::Log::error("Cannot connect to un-named cache");
-		return;
-	}
-	IF::Log::debug("Initialising shared memory cache with glue '$self->{NAME}'");
-	tie %CACHE, 'IPC::Shareable', $self->{NAME}, { %OPTIONS } or IF::Log::error("Failed to connect to shared memory cache named $self->{NAME}");
-	return $self;
+    my $self = shift;
+    $self->setCacheSize($DEFAULT_CACHE_SIZE);
+    $self->setCacheTimeout($DEFAULT_CACHE_TIMEOUT);
+    unless ($self->{NAME}) {
+        IF::Log::error("Cannot connect to un-named cache");
+        return;
+    }
+    IF::Log::debug("Initialising shared memory cache with glue '$self->{NAME}'");
+    tie %CACHE, 'IPC::Shareable', $self->{NAME}, { %OPTIONS } or IF::Log::error("Failed to connect to shared memory cache named $self->{NAME}");
+    return $self;
 }
 
 sub hasCachedValueForKey {
-	my $self = shift;
-	my $key = shift;
-	return 1 if $_cachedKeys->{$key};
-	if ($CACHE{$key}) {
-		$_cachedKeys->{$key} = 1;
-		return 1;
-	}
-	return 0;
+    my $self = shift;
+    my $key = shift;
+    return 1 if $_cachedKeys->{$key};
+    if ($CACHE{$key}) {
+        $_cachedKeys->{$key} = 1;
+        return 1;
+    }
+    return 0;
 }
 
 sub cachedValueForKey {
-	my $self = shift;
-	my $key = shift;
-	my $cacheEntry = $CACHE{$key};
-	return unless $cacheEntry;
-	if ($self-> cachedValueForKeyHasExpired($key)) {
-		IF::Log::warning("Accessing stale value for key $key");
-	}
-	$_cachedKeys->{$key} = 1;
-	return $cacheEntry->{VALUE};
+    my $self = shift;
+    my $key = shift;
+    my $cacheEntry = $CACHE{$key};
+    return unless $cacheEntry;
+    if ($self-> cachedValueForKeyHasExpired($key)) {
+        IF::Log::warning("Accessing stale value for key $key");
+    }
+    $_cachedKeys->{$key} = 1;
+    return $cacheEntry->{VALUE};
 }
 
 sub setCachedValueForKey {
-	my $self = shift;
-	return $self->setCachedValueForKeyWithTimeout(@_, $self->cacheTimeout());
+    my $self = shift;
+    return $self->setCachedValueForKeyWithTimeout(@_, $self->cacheTimeout());
 }
 
 sub setCachedValueForKeyWithTimeout {
-	my $self = shift;
-	my $value = shift;
-	my $key = shift;
-	my $timeout = shift;
-	IF::Log::debug("Setting cache value for key $key");
-	$CACHE{$key} = { VALUE => $value, TIMEOUT => $timeout, TIMESTAMP => time };
-	$_cachedKeys->{$key} = 1;
+    my $self = shift;
+    my $value = shift;
+    my $key = shift;
+    my $timeout = shift;
+    IF::Log::debug("Setting cache value for key $key");
+    $CACHE{$key} = { VALUE => $value, TIMEOUT => $timeout, TIMESTAMP => time };
+    $_cachedKeys->{$key} = 1;
 }
 
 sub allKeys {
-	my $self = shift;
-	return [keys %CACHE];
+    my $self = shift;
+    return [keys %CACHE];
 }
 
 sub deleteCachedValueForKey {
-	my $self = shift;
-	my $key = shift;
-	delete $CACHE{$key};
-	delete $_cachedKeys->{$key};
+    my $self = shift;
+    my $key = shift;
+    delete $CACHE{$key};
+    delete $_cachedKeys->{$key};
 }
 
 sub cachedValueForKeyHasExpired {
-	my $self = shift;
-	my $key = shift;
-	my $cacheEntry = $CACHE{$key};
-	return 1 unless $cacheEntry;
-	my $time = time;
-	if ($time - $cacheEntry->{TIMEOUT} > $cacheEntry->{TIMESTAMP}) {
-		IF::Log::debug("Cache entry for $key has expired");
-		return 1;
-	}
-	return 0;
+    my $self = shift;
+    my $key = shift;
+    my $cacheEntry = $CACHE{$key};
+    return 1 unless $cacheEntry;
+    my $time = time;
+    if ($time - $cacheEntry->{TIMEOUT} > $cacheEntry->{TIMESTAMP}) {
+        IF::Log::debug("Cache entry for $key has expired");
+        return 1;
+    }
+    return 0;
 }
 
 1;

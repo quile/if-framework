@@ -25,62 +25,62 @@ package IF::Component::ObjectAsJSON;
 # TODO replace most of this with methods from JSON.pm
 use strict;
 use base qw(
-	IF::Component
+    IF::Component
 );
 
 sub object {
-	my ($self) = @_;
-	return $self->{object};
+    my ($self) = @_;
+    return $self->{object};
 }
 
 sub setObject {
-	my ($self, $value) = @_;
-	$self->{object} = $value;
+    my ($self, $value) = @_;
+    $self->{object} = $value;
 }
 
 sub factory {
-	my ($self) = @_;
-	return $self->{factory} || $self->object()->entityClassDescription()->name();
+    my ($self) = @_;
+    return $self->{factory} || $self->object()->entityClassDescription()->name();
 }
 
 sub setFactory {
-	my ($self, $value) = @_;
-	$self->{factory} = $value;
+    my ($self, $value) = @_;
+    $self->{factory} = $value;
 }
 
 sub keys {
-	my ($self) = @_;
-	return $self->{keys} || $self->object()->entityClassDescription()->attributes();
+    my ($self) = @_;
+    return $self->{keys} || $self->object()->entityClassDescription()->attributes();
 }
 
 sub setKeys {
-	my ($self, $value) = @_;
-	$self->{keys} = $value;
+    my ($self, $value) = @_;
+    $self->{keys} = $value;
 }
 
 # the js parser doesn't like newlines in strings,
 # and we need to be careful with quotes
 sub escape {
-	my ($self, $string) = @_;
-	$string =~ s/'/\\'/go;
-	$string =~ s/\n/\\n/go;
-	$string =~ s/\r/\\r/go;
-	return $self->filterString($string);
+    my ($self, $string) = @_;
+    $string =~ s/'/\\'/go;
+    $string =~ s/\n/\\n/go;
+    $string =~ s/\r/\\r/go;
+    return $self->filterString($string);
 }
 
 sub stripDots {
-	my ($self, $string) = @_;
-	$string =~ s/\./_/go;
-	return $string;
+    my ($self, $string) = @_;
+    $string =~ s/\./_/go;
+    return $string;
 }
 
 sub filterString {
-	my $self = shift;
+    my $self = shift;
     my $string = shift;
-	# replace structural xml chars with their entitiy representation
+    # replace structural xml chars with their entitiy representation
     $string =~ s/([&<>\n\t])/replace($1)/ge;
-	# replace control chars except tab (0x09) new line (0x0A)
-	#  and cr (0x0D)
+    # replace control chars except tab (0x09) new line (0x0A)
+    #  and cr (0x0D)
     $string =~ s/[\x00-\x08\x0B\x0C\x0E-\x1F]/ /ge;
     return $string;
 }
@@ -91,11 +91,11 @@ sub replace {
 }
 
 sub valueForKeyOnObjectInContext {
-	my ($self, $aKey, $object, $context) = @_;
-	if (UNIVERSAL::can($object, $aKey)) {
-		return $object->$aKey($context);
-	}
-	return $object->valueForKey($aKey);
+    my ($self, $aKey, $object, $context) = @_;
+    if (UNIVERSAL::can($object, $aKey)) {
+        return $object->$aKey($context);
+    }
+    return $object->valueForKey($aKey);
 }
 
 1;

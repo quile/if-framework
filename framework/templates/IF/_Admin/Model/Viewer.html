@@ -1,35 +1,35 @@
 <BINDING:WRAPPER>
 
 <table class=content>
-	<tr><td><BINDING:NAVIGATION></td></tr>
-	<tr>
-		<td>
-		<h4>Model &amp; Entity Viewer</h4>
-		Model: <BINDING:MODEL_NAME>
-		<p>
-		<h4>Entities</h4>
+    <tr><td><BINDING:NAVIGATION></td></tr>
+    <tr>
+        <td>
+        <h4>Model &amp; Entity Viewer</h4>
+        Model: <BINDING:MODEL_NAME>
+        <p>
+        <h4>Entities</h4>
 
-		<table cellpadding="0" cellspacing="0" border="0"><tr>
-			<td><table cellpadding="0" cellspacing="1" border="0">
-		<BINDING_LOOP:ENTITY_CLASS_DESCRIPTIONS>
-			<tr>
-			<td align="left" valign="bottom"><BINDING:ENTITY_STRUCTURE_LINK><BINDING:ENTITY_NAME></BINDING:ENTITY_STRUCTURE_LINK>&nbsp;</td>
-			<td align="center" valign="bottom"><font size="1">[<BINDING:ENTITY_ADD_LINK>add</BINDING:ENTITY_ADD_LINK>]&nbsp;</font></td>
-			<td align="center" valign="bottom"><font size="1">[<BINDING:ENTITY_SEARCH_LINK>search</BINDING:ENTITY_SEARCH_LINK>]</font></td>
-			</tr>
+        <table cellpadding="0" cellspacing="0" border="0"><tr>
+            <td><table cellpadding="0" cellspacing="1" border="0">
+        <BINDING_LOOP:ENTITY_CLASS_DESCRIPTIONS>
+            <tr>
+            <td align="left" valign="bottom"><BINDING:ENTITY_STRUCTURE_LINK><BINDING:ENTITY_NAME></BINDING:ENTITY_STRUCTURE_LINK>&nbsp;</td>
+            <td align="center" valign="bottom"><font size="1">[<BINDING:ENTITY_ADD_LINK>add</BINDING:ENTITY_ADD_LINK>]&nbsp;</font></td>
+            <td align="center" valign="bottom"><font size="1">[<BINDING:ENTITY_SEARCH_LINK>search</BINDING:ENTITY_SEARCH_LINK>]</font></td>
+            </tr>
 
-			<BINDING_IF:ADD_COLUMN>
-			</table></td>
-			<td>&nbsp;&nbsp;&nbsp;</td>
-			<td><table cellpadding="0" cellspacing="1" border="0">
-			</BINDING_IF:ADD_COLUMN>
+            <BINDING_IF:ADD_COLUMN>
+            </table></td>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td><table cellpadding="0" cellspacing="1" border="0">
+            </BINDING_IF:ADD_COLUMN>
 
-		</BINDING_LOOP:ENTITY_CLASS_DESCRIPTIONS>
-			</table></td>
-		</tr></table>
+        </BINDING_LOOP:ENTITY_CLASS_DESCRIPTIONS>
+            </table></td>
+        </tr></table>
 
-		</td>
-	</tr>
+        </td>
+    </tr>
 </table>
 
 </BINDING:WRAPPER>

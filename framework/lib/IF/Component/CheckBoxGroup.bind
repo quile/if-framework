@@ -20,52 +20,52 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 {
-	inheritsFrom => "IF::Component::_Default",
-	NAME => {
-		type => "STRING",
-		value => q($self->name()),
-	},
-	LIST => {
-		type => "LOOP",
-		list => q($self->list()),
-		item => "anItem",
-	},
-	VALUE => {
-		type => "STRING",
-		value => q($self->valueForItem($self->{anItem})),
-	},
-	IS_SELECTED => {
-		type => "BOOLEAN",
-		value => q($self->itemIsSelected($self->{anItem})),
-	},
-	DISPLAY_STRING => {
-		type => "STRING",
-		value => q($self->displayStringForItem($self->{anItem})),
-	},
-	SHOULD_ENABLE_CLIENT_SIDE_SCRIPTING => {
-		type => "BOOLEAN",
-		value => q(shouldEnableClientSideScripting),
-	},
-	SHOULD_RENDER_IN_TABLE => {
-		type => "BOOLEAN",
-		value => q(shouldRenderInTable),
-	},
-	INIT_CODE => {
-		type => "STRING",
-		value => q($self->tagAttributeForKey('init')),
-	},
-	HAS_INIT_CODE => {
-		type => "BOOLEAN",
-		value => q($self->tagAttributeForKey('init')),
-	},
+    inheritsFrom => "IF::Component::_Default",
+    NAME => {
+        type => "STRING",
+        value => q($self->name()),
+    },
+    LIST => {
+        type => "LOOP",
+        list => q($self->list()),
+        item => "anItem",
+    },
+    VALUE => {
+        type => "STRING",
+        value => q($self->valueForItem($self->{anItem})),
+    },
+    IS_SELECTED => {
+        type => "BOOLEAN",
+        value => q($self->itemIsSelected($self->{anItem})),
+    },
+    DISPLAY_STRING => {
+        type => "STRING",
+        value => q($self->displayStringForItem($self->{anItem})),
+    },
+    SHOULD_ENABLE_CLIENT_SIDE_SCRIPTING => {
+        type => "BOOLEAN",
+        value => q(shouldEnableClientSideScripting),
+    },
+    SHOULD_RENDER_IN_TABLE => {
+        type => "BOOLEAN",
+        value => q(shouldRenderInTable),
+    },
+    INIT_CODE => {
+        type => "STRING",
+        value => q($self->tagAttributeForKey('init')),
+    },
+    HAS_INIT_CODE => {
+        type => "BOOLEAN",
+        value => q($self->tagAttributeForKey('init')),
+    },
 
-	CHECKBOXES => {
-		type => "REGION",
-		name => "checkboxes",
-	},
+    CHECKBOXES => {
+        type => "REGION",
+        name => "checkboxes",
+    },
 
-	LABELS => {
-		type => "REGION",
-		name => "labels",
-	},
+    LABELS => {
+        type => "REGION",
+        name => "labels",
+    },
 };

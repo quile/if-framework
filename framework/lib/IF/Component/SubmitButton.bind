@@ -20,32 +20,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 {
-	inheritsFrom => "IF::Component::_Default",
+    inheritsFrom => "IF::Component::_Default",
     BUTTON_NAME => {
         type => "STRING",
         value => q(name),
     },
-	HAS_BUTTON_VALUE => {
-		type => "BOOLEAN",
-		value => q( defined($self->value()) ),
-	},
+    HAS_BUTTON_VALUE => {
+        type => "BOOLEAN",
+        value => q( defined($self->value()) ),
+    },
     BUTTON_VALUE => {
         type => "STRING",
         value => q(value),
     },
-	CONTENT => {
-		type => "CONTENT",
-	},
-	IS_SINGLE_CLICK => {
-		type => "BOOLEAN",
-		value => q(canOnlyBeClickedOnce),
-	},
-	ALTERNATE_VALUE => {
-		type => "STRING",
-		value => q(_alternateValue),
-	},
-	SHOULD_VALIDATE_FORM => {
-		type => "BOOLEAN",
-		value => q(shouldValidateForm),
-	},
+    CONTENT => {
+        type => "CONTENT",
+    },
+    IS_SINGLE_CLICK => {
+        type => "BOOLEAN",
+        value => q(canOnlyBeClickedOnce),
+    },
+    ALTERNATE_VALUE => {
+        type => "STRING",
+        value => q(_alternateValue),
+    },
+    SHOULD_VALIDATE_FORM => {
+        type => "BOOLEAN",
+        value => q(shouldValidateForm),
+    },
 };

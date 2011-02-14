@@ -27,36 +27,36 @@ use base qw(IF::File IF::Interface::Stash);
 use IF::Utility::Image ();
 
 sub imageInfo {
-	my ($self) = @_;
+    my ($self) = @_;
 
-	my $info = $self->stashedValueForKey($self->fullPath());
-	unless ($info) {
-		$info = IF::Utility::Image->infoForImage($self);
-		$self->setStashedValueForKey($info, $self->fullPath());
-	}
-	return $info;
+    my $info = $self->stashedValueForKey($self->fullPath());
+    unless ($info) {
+        $info = IF::Utility::Image->infoForImage($self);
+        $self->setStashedValueForKey($info, $self->fullPath());
+    }
+    return $info;
 }
 
 sub hasBeenResizedTo {
-	my ($self, $width, $height) = @_;
-	return $self->stashedValueForKey(join('.',$self->fullPath(),$width,$height));
+    my ($self, $width, $height) = @_;
+    return $self->stashedValueForKey(join('.',$self->fullPath(),$width,$height));
 }
 
 sub setHasBeenResizedTo {
-	my ($self, $width, $height) = @_;
-	return $self->setStashedValueForKey('1', join('.',$self->fullPath(),$width,$height));
+    my ($self, $width, $height) = @_;
+    return $self->setStashedValueForKey('1', join('.',$self->fullPath(),$width,$height));
 }
 
 sub saveAsNumberedUploadToSubdirectoryOfLocationKey {
-	my ($self, $subdirectory, $key) = @_;
+    my ($self, $subdirectory, $key) = @_;
 
-	my $uploadDirectory = $self->application()->configurationValueForKey($key);
+    my $uploadDirectory = $self->application()->configurationValueForKey($key);
 
-	# TODO: system should do this sort of sanity just once, on startup ..
-	# TODO: this sanity check should be extended to ensure folder actually exists
-	unless (IF::Log::assert($uploadDirectory, "Upload directory is ok")) {
-		return;
-	}
+    # TODO: system should do this sort of sanity just once, on startup ..
+    # TODO: this sanity check should be extended to ensure folder actually exists
+    unless (IF::Log::assert($uploadDirectory, "Upload directory is ok")) {
+        return;
+    }
 
     my $upload = $self->SUPER::saveAsNumberedUploadToSubdirectoryOfLocationKey($subdirectory, $key);
     my $fullpath = $self->fullPath();

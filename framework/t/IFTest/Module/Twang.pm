@@ -13,40 +13,40 @@ use base qw(
 );
 
 sub mapRules {
-	return [
-		# Home
-		{
-			outgoing => {
-				language => 'en',
-				targetComponentName => 'Home',
-				directAction => 'default',
-				siteClassifierName => 'root',
-			},
-			incoming => {
-				match => '/ift/h',
-			},
-		},
-	];
+    return [
+        # Home
+        {
+            outgoing => {
+                language => 'en',
+                targetComponentName => 'Home',
+                directAction => 'default',
+                siteClassifierName => 'root',
+            },
+            incoming => {
+                match => '/ift/h',
+            },
+        },
+    ];
 }
 
 sub defaultUrlRoot {
-	return IFTest::Application->application()->configurationValueForKey("URL_ROOT");
+    return IFTest::Application->application()->configurationValueForKey("URL_ROOT");
 }
 
 sub defaultSiteClassifierName {
-	return IFTest::Application->application()->configurationValueForKey("DEFAULT_SITE_CLASSIFIER_NAME");
+    return IFTest::Application->application()->configurationValueForKey("DEFAULT_SITE_CLASSIFIER_NAME");
 }
 
 sub defaultLanguage {
-	return IFTest::Application->application()->configurationValueForKey("DEFAULT_LANGUAGE");
+    return IFTest::Application->application()->configurationValueForKey("DEFAULT_LANGUAGE");
 }
 
 sub defaultTargetComponentName {
-	return "Home";
+    return "Home";
 }
 
 sub defaultDirectAction {
-	return IFTest::Application->application()->configurationValueForKey("DEFAULT_DIRECT_ACTION");
+    return IFTest::Application->application()->configurationValueForKey("DEFAULT_DIRECT_ACTION");
 }
 
 1;

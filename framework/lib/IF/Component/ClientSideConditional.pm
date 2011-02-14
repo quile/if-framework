@@ -26,23 +26,23 @@ use strict;
 use base qw(IF::Component);
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
-	    IF::PageResource->javascript("/if-static/javascript/jquery/jquery-1.2.6.js"),
-	    IF::PageResource->javascript("/if-static/javascript/jquery/plugins/jquery.if.js"),
-	    IF::PageResource->javascript("/if-static/javascript/IF/Component.js"),
+    my ($self) = @_;
+    return [
+        IF::PageResource->javascript("/if-static/javascript/jquery/jquery-1.2.6.js"),
+        IF::PageResource->javascript("/if-static/javascript/jquery/plugins/jquery.if.js"),
+        IF::PageResource->javascript("/if-static/javascript/IF/Component.js"),
         IF::PageResource->javascript("/if-static/javascript/IF/ClientSideConditional.js"),
-	];
+    ];
 }
 
 sub expression {
-	my $self = shift;
-	return $self->{expression};
+    my $self = shift;
+    return $self->{expression};
 }
 
 sub setExpression {
-	my $self = shift;
-	$self->{expression} = shift;
+    my $self = shift;
+    $self->{expression} = shift;
 }
 
 1;

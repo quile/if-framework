@@ -29,46 +29,46 @@ use base qw(
 use IF::Array;
 
 sub new {
-	my $className = shift;
-	my $self = $className->SUPER::new(@_);
-	$self->{LIST} = [];
-	return bless $self, $className;
+    my $className = shift;
+    my $self = $className->SUPER::new(@_);
+    $self->{LIST} = [];
+    return bless $self, $className;
 }
 
 sub _derivedImagePath {  # because we need this outside the LOOP
-	my $self = shift;
-	my $firstMessage = @{ $self->list() }[0];
-	return $firstMessage->imagePath();
+    my $self = shift;
+    my $firstMessage = @{ $self->list() }[0];
+    return $firstMessage->imagePath();
 }
 
 sub css {
-	my ($self) = @_;
-	return $self->{statusMessage}->cssClass() if $self->{statusMessage};
+    my ($self) = @_;
+    return $self->{statusMessage}->cssClass() if $self->{statusMessage};
 }
 
 ############################################
 
 sub list {
-	my $self = shift;
-	return $self->{LIST} if (IF::Array::arrayHasElements($self->{LIST}));
-	return $self->context()->statusMessages() || [];
+    my $self = shift;
+    return $self->{LIST} if (IF::Array::arrayHasElements($self->{LIST}));
+    return $self->context()->statusMessages() || [];
 }
 
 sub errors {
-	my ($self) = @_;
-	return [ grep { $_->type() eq "ERROR" } @{$self->list()} ];
+    my ($self) = @_;
+    return [ grep { $_->type() eq "ERROR" } @{$self->list()} ];
 }
 
 sub setList {
-	my $self = shift;
-	$self->{LIST} = shift;
+    my $self = shift;
+    $self->{LIST} = shift;
 }
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
-		# javascripts to pull in
-		IF::PageResource->javascript("/if-static/javascript/IF/StatusMessagesViewer.js"),
-	];
+    my ($self) = @_;
+    return [
+        # javascripts to pull in
+        IF::PageResource->javascript("/if-static/javascript/IF/StatusMessagesViewer.js"),
+    ];
 }
 1;

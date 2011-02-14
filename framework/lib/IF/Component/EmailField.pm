@@ -24,24 +24,24 @@ package IF::Component::EmailField;
 
 use strict;
 use base qw(
-	IF::Component::TextField
+    IF::Component::TextField
 );
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
+    my ($self) = @_;
+    return [
         IF::PageResource->javascript("/if-static/javascript/IF/EmailField.js"),
-	];
+    ];
 }
 
 sub validEmailRequiredMessage {
-	my ($self) = @_;
-	return $self->{validEmailRequiredMessage} || $self->tagAttributeForKey("validEmailRequiredMessage") || "VALID_EMAIL_REQUIRED";
+    my ($self) = @_;
+    return $self->{validEmailRequiredMessage} || $self->tagAttributeForKey("validEmailRequiredMessage") || "VALID_EMAIL_REQUIRED";
 }
 
 sub setValidEmailRequiredMessage {
-	my ($self, $value) = @_;
-	$self->{validEmailRequiredMessage} = $value;
+    my ($self, $value) = @_;
+    $self->{validEmailRequiredMessage} = $value;
 }
 
 1;

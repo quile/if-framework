@@ -27,66 +27,66 @@ use IF::Component;
 @ISA = qw(IF::Component);
 
 sub takeValuesFromRequest {
-	my ($self, $context) = @_;
-	$self->SUPER::takeValuesFromRequest($context);
-	if ($self->objectHasPrivilege()) {
-		IF::Log::debug("Granting privilege ".$self->privilege()." to ".$self->object());
-		$self->object()->grantPrivilegeTo($self->privilege());
-	} else {
-		IF::Log::debug("Revoking privilege ".$self->privilege()." from ".$self->object());
-		$self->object()->revokePrivilegeTo($self->privilege());
-	}
+    my ($self, $context) = @_;
+    $self->SUPER::takeValuesFromRequest($context);
+    if ($self->objectHasPrivilege()) {
+        IF::Log::debug("Granting privilege ".$self->privilege()." to ".$self->object());
+        $self->object()->grantPrivilegeTo($self->privilege());
+    } else {
+        IF::Log::debug("Revoking privilege ".$self->privilege()." from ".$self->object());
+        $self->object()->revokePrivilegeTo($self->privilege());
+    }
 }
 
 sub appendToResponse {
-	my ($self, $response, $context) = @_;
-	if ($self->object()->hasPrivilegeTo($self->privilege())) {
-		IF::Log::debug("Object has privilege ".$self->privilege());
-		$self->setObjectHasPrivilege("1");
-	} else {
-		$self->setObjectHasPrivilege("0");
-	}
-	return $self->SUPER::appendToResponse($response, $context);
+    my ($self, $response, $context) = @_;
+    if ($self->object()->hasPrivilegeTo($self->privilege())) {
+        IF::Log::debug("Object has privilege ".$self->privilege());
+        $self->setObjectHasPrivilege("1");
+    } else {
+        $self->setObjectHasPrivilege("0");
+    }
+    return $self->SUPER::appendToResponse($response, $context);
 }
 
 sub name {
-	my $self = shift;
-	return $self->{name} || $self->queryKeyNameForPageAndLoopContexts();
+    my $self = shift;
+    return $self->{name} || $self->queryKeyNameForPageAndLoopContexts();
 }
 
 sub setName {
-	my $self = shift;
-	$self->{name} = shift;
+    my $self = shift;
+    $self->{name} = shift;
 }
 
 sub object {
-	my $self = shift;
-	return $self->{object};
+    my $self = shift;
+    return $self->{object};
 }
 
 sub setObject {
-	my $self = shift;
-	$self->{object} = shift;
+    my $self = shift;
+    $self->{object} = shift;
 }
 
 sub privilege {
-	my $self = shift;
-	return $self->{privilege};
+    my $self = shift;
+    return $self->{privilege};
 }
 
 sub setPrivilege {
-	my $self = shift;
-	$self->{privilege} = shift;
+    my $self = shift;
+    $self->{privilege} = shift;
 }
 
 sub objectHasPrivilege {
-	my $self = shift;
-	return $self->{objectHasPrivilege};
+    my $self = shift;
+    return $self->{objectHasPrivilege};
 }
 
 sub setObjectHasPrivilege {
-	my $self = shift;
-	$self->{objectHasPrivilege} = shift;
+    my $self = shift;
+    $self->{objectHasPrivilege} = shift;
 }
 
 1;

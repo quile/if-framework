@@ -24,51 +24,51 @@ package IF::Component::CheckBox;
 
 use strict;
 use base qw (
-	IF::Component
-	IF::Interface::FormComponent
+    IF::Component
+    IF::Interface::FormComponent
 );
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
+    my ($self) = @_;
+    return [
         IF::PageResource->javascript("/if-static/javascript/IF/CheckBox.js"),
-	];
+    ];
 }
 
 sub takeValuesFromRequest {
-	my $self = shift;
-	my $context = shift;
+    my $self = shift;
+    my $context = shift;
 
-	$self->SUPER::takeValuesFromRequest($context);
-	$self->setValue($context->formValueForKey($self->name()));
-	IF::Log::debug("context.formValueForKey(".$self->name().") is ".$context->formValueForKey($self->name()));
-	IF::Log::debug("Value of input field ".$self->name()." is ".$self->value());
+    $self->SUPER::takeValuesFromRequest($context);
+    $self->setValue($context->formValueForKey($self->name()));
+    IF::Log::debug("context.formValueForKey(".$self->name().") is ".$context->formValueForKey($self->name()));
+    IF::Log::debug("Value of input field ".$self->name()." is ".$self->value());
 }
 
 sub name {
-	my $self = shift;
-	my $name = $self->{"NAME"};
-	return $name || $self->queryKeyNameForPageAndLoopContexts();
+    my $self = shift;
+    my $name = $self->{"NAME"};
+    return $name || $self->queryKeyNameForPageAndLoopContexts();
 }
 
 sub setName {
-	my $self = shift;
-	$self->{NAME} = shift;
+    my $self = shift;
+    $self->{NAME} = shift;
 }
 
 sub value {
-	my $self = shift;
-	return $self->{VALUE};
+    my $self = shift;
+    return $self->{VALUE};
 }
 
 sub setValue {
-	my $self = shift;
-	$self->{VALUE} = shift;
+    my $self = shift;
+    $self->{VALUE} = shift;
 }
 
 sub isChecked {
-	my $self = shift;
-	return $self->value();
+    my $self = shift;
+    return $self->value();
 }
 
 1;

@@ -33,38 +33,38 @@ use base qw(
 # static method
 
 sub isHash {
-	my $object = shift;
-	return UNIVERSAL::isa($object, "HASH");
+    my $object = shift;
+    return UNIVERSAL::isa($object, "HASH");
 }
 
 sub setValueForKey {
-	my $self = shift;
-	my $value = shift;
-	my $key = shift;
-	$self->setObjectForKey($value, $key);
+    my $self = shift;
+    my $value = shift;
+    my $key = shift;
+    $self->setObjectForKey($value, $key);
 }
 
 sub initWithQueryString {
-	my ($self, $queryString) = @_;
+    my ($self, $queryString) = @_;
 
-	my @kvPairs = split(/\&/, $queryString);
-	foreach my $kvPair (@kvPairs) {
-		my ($key, $value) = $kvPair =~ /^(.*)=(.*)$/;
-		next unless ($key && $value);
-		$key = URI::Escape::uri_unescape($key);
-		$value = URI::Escape::uri_unescape($value);
-		#IF::Log::debug("$key : $value");
-		my $currentValue = $self->objectForKey($key);
-		if ($currentValue) {
-			$currentValue = IF::Array->arrayFromObject($currentValue);
-			$currentValue->addObject($value);
-		} else {
-			$currentValue = $value;
-		}
-		$self->setObjectForKey($currentValue, $key);
-	}
-	#IF::Log::dump($self);
-	return $self;
+    my @kvPairs = split(/\&/, $queryString);
+    foreach my $kvPair (@kvPairs) {
+        my ($key, $value) = $kvPair =~ /^(.*)=(.*)$/;
+        next unless ($key && $value);
+        $key = URI::Escape::uri_unescape($key);
+        $value = URI::Escape::uri_unescape($value);
+        #IF::Log::debug("$key : $value");
+        my $currentValue = $self->objectForKey($key);
+        if ($currentValue) {
+            $currentValue = IF::Array->arrayFromObject($currentValue);
+            $currentValue->addObject($value);
+        } else {
+            $currentValue = $value;
+        }
+        $self->setObjectForKey($currentValue, $key);
+    }
+    #IF::Log::dump($self);
+    return $self;
 }
 
 1;

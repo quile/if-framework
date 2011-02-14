@@ -22,11 +22,11 @@
 # THE SOFTWARE.
 
 {
-	CONDITION => {
-		type => "BOOLEAN",
-		value => q(evaluatedCondition),
-	},
-	COMPONENT_CONTENT => {
-		type => "CONTENT",
-	},
+    CONDITION => {
+        type => "BOOLEAN",
+        value => q(evaluatedCondition),
+    },
+    COMPONENT_CONTENT => {
+        type => "CONTENT",
+    },
 };

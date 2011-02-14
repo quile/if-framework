@@ -22,11 +22,11 @@
 
 #
 {
-	NAME => {
-		type => "STRING",
-		value => q(name),
-	},
-	TAG_ATTRIBUTES => {
-		type => "ATTRIBUTES",
-	},
+    NAME => {
+        type => "STRING",
+        value => q(name),
+    },
+    TAG_ATTRIBUTES => {
+        type => "ATTRIBUTES",
+    },
 };

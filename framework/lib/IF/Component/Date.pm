@@ -36,69 +36,69 @@ sub resetValues {
 }
 
 sub date {
-	my $self = shift;
-	return $self->{DATE};
+    my $self = shift;
+    return $self->{DATE};
 }
 
 sub setDate {
-	my $self = shift;
-	$self->{DATE} = shift;
-	if ($self->{DATE} =~ /^[0-9]+$/) {
-		# it's a unix time so
-		$self->{DATE} = IF::Utility::sqlDateFromUnixTime($self->{DATE});
-	}
+    my $self = shift;
+    $self->{DATE} = shift;
+    if ($self->{DATE} =~ /^[0-9]+$/) {
+        # it's a unix time so
+        $self->{DATE} = IF::Utility::sqlDateFromUnixTime($self->{DATE});
+    }
 }
 
 sub value {
-	my $self = shift;
-	return $self->date();
+    my $self = shift;
+    return $self->date();
 }
 
 sub setValue {
-	my $self = shift;
-	my $value = shift;
-	$self->setDate($value);
+    my $self = shift;
+    my $value = shift;
+    $self->setDate($value);
 }
 
 sub year {
-	my $self = shift;
-	return substr($self->{DATE}, 0, 4);
+    my $self = shift;
+    return substr($self->{DATE}, 0, 4);
 }
 
 sub month {
-	my $self = shift;
-	return substr($self->{DATE}, 5, 2);
+    my $self = shift;
+    return substr($self->{DATE}, 5, 2);
 }
 
 sub day {
-	my $self = shift;
-	return substr($self->{DATE}, 8, 2);
+    my $self = shift;
+    return substr($self->{DATE}, 8, 2);
 }
 
 sub nameOfDayOfWeek {
-	my $self = shift;
-	my $date = IF::GregorianDate->new($self->date());
-	return _s("DAY_OF_WEEK_".$date->dayOfWeek());
+    my $self = shift;
+    my $date = IF::GregorianDate->new($self->date());
+    return _s("DAY_OF_WEEK_".$date->dayOfWeek());
 }
 
 sub format {
-	my $self = shift;
-	return $self->{FORMAT};
+    my $self = shift;
+    return $self->{FORMAT};
 }
 
 sub setFormat {
-	my $self = shift;
-	$self->{FORMAT} = shift;
+    my $self = shift;
+    $self->{FORMAT} = shift;
 }
 
 sub shouldShowNameOfDayOfWeek {
-	my $self = shift;
-	return $self->{shouldShowNameOfDayOfWeek};
+    my $self = shift;
+    return $self->{shouldShowNameOfDayOfWeek};
 }
 
 sub setShouldShowNameOfDayOfWeek {
-	my $self = shift;
-	$self->{shouldShowNameOfDayOfWeek} = shift;
+    my $self = shift;
+    $self->{shouldShowNameOfDayOfWeek} = shift;
 }
 
 1;

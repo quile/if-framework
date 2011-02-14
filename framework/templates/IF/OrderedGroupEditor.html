@@ -1,15 +1,15 @@
 <!-- ordered group editor -->
 
 <BINDING_UNLESS:BROWSER_SUCKS>
-	<!-- code for good browsers, allows us to create real wizard -->
-	
-	<BINDING_IF:IS_FIRST_TIME_RENDERED>
-	
+    <!-- code for good browsers, allows us to create real wizard -->
+    
+    <BINDING_IF:IS_FIRST_TIME_RENDERED>
+    
 <style type="text/css">
 .ordered-group {
-	border: 1px dotted grey;
-	background: #ffc;
-	padding: 3px;
+    border: 1px dotted grey;
+    background: #ffc;
+    padding: 3px;
 }
 
 </style>
@@ -18,198 +18,198 @@
 
 // Constructor:
 function OrderedGroupEditor(uniqueId) {
-	this.uniqueId = uniqueId;
+    this.uniqueId = uniqueId;
 }
 
 // Instance methods
 
 OrderedGroupEditor.prototype.init = function() {
-	// set up form elements
-	this.registerFormElements();
-	
-	// remove entries from source list
-	this.updateHiddenField();
-	var selectedValues = OrderedGroupEditor.allKeyValuePairsForElement(this.target);
-	OrderedGroupEditor.removeKeyValuePairsFromElement(selectedValues, this.source);
+    // set up form elements
+    this.registerFormElements();
+    
+    // remove entries from source list
+    this.updateHiddenField();
+    var selectedValues = OrderedGroupEditor.allKeyValuePairsForElement(this.target);
+    OrderedGroupEditor.removeKeyValuePairsFromElement(selectedValues, this.source);
 }
 
 OrderedGroupEditor.prototype.registerFormElements = function() {
-	var editorId = this.uniqueId + "-editor";
-	var editor = document.getElementById(editorId);
-	var formElements = jQuery(editor).find(':input');
-	this.hidden = jQuery(editor).find(':hidden')[0];
-	for (var i=0; i<formElements.length; i++) {
-		if (formElements[i].nodeName == "SELECT") {
-			if (this.source) {
-				this.target = formElements[i];
-			} else {
-				this.source = formElements[i];
-			}
-		}
-	}
-	//alert(valuesOfSelect(this.source.id));
+    var editorId = this.uniqueId + "-editor";
+    var editor = document.getElementById(editorId);
+    var formElements = jQuery(editor).find(':input');
+    this.hidden = jQuery(editor).find(':hidden')[0];
+    for (var i=0; i<formElements.length; i++) {
+        if (formElements[i].nodeName == "SELECT") {
+            if (this.source) {
+                this.target = formElements[i];
+            } else {
+                this.source = formElements[i];
+            }
+        }
+    }
+    //alert(valuesOfSelect(this.source.id));
 }
 
 OrderedGroupEditor.prototype.moveRight = function() {
-	var selected = OrderedGroupEditor.selectedKeyValuePairsForElement(this.source);
-	OrderedGroupEditor.addKeyValuePairsToElement(selected, this.target);
-	OrderedGroupEditor.removeKeyValuePairsFromElement(selected, this.source);
-	this.updateHiddenField();
+    var selected = OrderedGroupEditor.selectedKeyValuePairsForElement(this.source);
+    OrderedGroupEditor.addKeyValuePairsToElement(selected, this.target);
+    OrderedGroupEditor.removeKeyValuePairsFromElement(selected, this.source);
+    this.updateHiddenField();
 }
 
 OrderedGroupEditor.prototype.moveLeft = function() {
-	var selected = OrderedGroupEditor.selectedKeyValuePairsForElement(this.target);
-	OrderedGroupEditor.addKeyValuePairsToElement(selected, this.source);
-	OrderedGroupEditor.removeKeyValuePairsFromElement(selected, this.target);
-	this.updateHiddenField();
+    var selected = OrderedGroupEditor.selectedKeyValuePairsForElement(this.target);
+    OrderedGroupEditor.addKeyValuePairsToElement(selected, this.source);
+    OrderedGroupEditor.removeKeyValuePairsFromElement(selected, this.target);
+    this.updateHiddenField();
 }
 
 OrderedGroupEditor.prototype.moveUp = function() {
-	OrderedGroupEditor.moveSelectedValuesUpInElement(this.target);
-	this.updateHiddenField();
+    OrderedGroupEditor.moveSelectedValuesUpInElement(this.target);
+    this.updateHiddenField();
 }
 
 OrderedGroupEditor.prototype.moveDown = function() {
-	OrderedGroupEditor.moveSelectedValuesDownInElement(this.target);
-	this.updateHiddenField();
+    OrderedGroupEditor.moveSelectedValuesDownInElement(this.target);
+    this.updateHiddenField();
 }
 
 OrderedGroupEditor.prototype.updateHiddenField = function() {
-	var allKeyValuePairs = OrderedGroupEditor.allKeyValuePairsForElement(this.target);
-	var keys = new Array();
-	for (var i=0; i<allKeyValuePairs.length; i++) {
-		keys.push(allKeyValuePairs[i].key);
-	}
-	jQuery(this.hidden).val(keys.join(":"));
-	//alert(valueOfFormElement(this.hidden));
+    var allKeyValuePairs = OrderedGroupEditor.allKeyValuePairsForElement(this.target);
+    var keys = new Array();
+    for (var i=0; i<allKeyValuePairs.length; i++) {
+        keys.push(allKeyValuePairs[i].key);
+    }
+    jQuery(this.hidden).val(keys.join(":"));
+    //alert(valueOfFormElement(this.hidden));
 }
 
 
 // Class methods
 
 OrderedGroupEditor.allKeyValuePairsForElement = function (e) {
-	var selectedValues = new Array();
-	for (var i=0; i<e.options.length; i++) {
-		selectedValues[selectedValues.length] = { key: e[i].value, value: e[i].text };
-	}
-	return selectedValues;
+    var selectedValues = new Array();
+    for (var i=0; i<e.options.length; i++) {
+        selectedValues[selectedValues.length] = { key: e[i].value, value: e[i].text };
+    }
+    return selectedValues;
 }
 
 OrderedGroupEditor.selectedKeyValuePairsForElement = function (e) {
-	var selectedValues = new Array();
-	for (var i=0; i<e.options.length; i++) {
-		if (e.options[i].selected) {
-			selectedValues[selectedValues.length] = { key: e[i].value, value: e[i].text };
-		}
-	}
-	return selectedValues;
+    var selectedValues = new Array();
+    for (var i=0; i<e.options.length; i++) {
+        if (e.options[i].selected) {
+            selectedValues[selectedValues.length] = { key: e[i].value, value: e[i].text };
+        }
+    }
+    return selectedValues;
 }
 
 OrderedGroupEditor.addKeyValuePairsToElement = function (s, e) {
-	for (var i=0; i<s.length; i++) {
-		e.options[e.options.length] = new Option(s[i].value, s[i].key);
-	}
+    for (var i=0; i<s.length; i++) {
+        e.options[e.options.length] = new Option(s[i].value, s[i].key);
+    }
 }
 
 OrderedGroupEditor.removeKeyValuePairsFromElement = function (s, e) {
-	for (var i=0; i<s.length; i++) {
-		for (var j=e.options.length-1; j>=0; j--) { 
-			if (e.options[j].value == s[i].key) {
-				e.options[j] = null;
-			}
-		}
-	}
+    for (var i=0; i<s.length; i++) {
+        for (var j=e.options.length-1; j>=0; j--) { 
+            if (e.options[j].value == s[i].key) {
+                e.options[j] = null;
+            }
+        }
+    }
 }
 
 OrderedGroupEditor.moveSelectedValuesUpInElement = function (e) {
-	var newOptions = new Array();
-	
-	for (var j=0; j<e.options.length; j++) { 
-		if (e.options[j].selected && j > 0) {
-			var last = newOptions.pop();
-			newOptions.push(e.options[j]);
-			newOptions.push(last);
-		} else {
-			newOptions.push(e.options[j]);
-		}
-	}
-	
-	e.options.length = 0;
-	
-	for (var i=0; i<newOptions.length; i++) {
-		e.options[i] = newOptions[i];
-	}
+    var newOptions = new Array();
+    
+    for (var j=0; j<e.options.length; j++) { 
+        if (e.options[j].selected && j > 0) {
+            var last = newOptions.pop();
+            newOptions.push(e.options[j]);
+            newOptions.push(last);
+        } else {
+            newOptions.push(e.options[j]);
+        }
+    }
+    
+    e.options.length = 0;
+    
+    for (var i=0; i<newOptions.length; i++) {
+        e.options[i] = newOptions[i];
+    }
 }
 
 OrderedGroupEditor.moveSelectedValuesDownInElement = function (e) {
-	var newOptions = new Array();
-	
-	for (var j=e.options.length-1; j>=0; j--) { 
-		if (e.options[j].selected && j < e.options.length-1) {
-			var last = newOptions.shift();
-			newOptions.unshift(e.options[j]);
-			newOptions.unshift(last);
-		} else {
-			newOptions.unshift(e.options[j]);
-		}
-	}
-	
-	e.options.length = 0;
-	
-	for (var i=0; i<newOptions.length; i++) {
-		e.options[i] = newOptions[i];
-	}
+    var newOptions = new Array();
+    
+    for (var j=e.options.length-1; j>=0; j--) { 
+        if (e.options[j].selected && j < e.options.length-1) {
+            var last = newOptions.shift();
+            newOptions.unshift(e.options[j]);
+            newOptions.unshift(last);
+        } else {
+            newOptions.unshift(e.options[j]);
+        }
+    }
+    
+    e.options.length = 0;
+    
+    for (var i=0; i<newOptions.length; i++) {
+        e.options[i] = newOptions[i];
+    }
 }
 
 // -->
 </script>
-		
-	</BINDING_IF:IS_FIRST_TIME_RENDERED>
-	
+        
+    </BINDING_IF:IS_FIRST_TIME_RENDERED>
+    
 <div id="<BINDING:UNIQUE_ID>-editor" class="ordered-group">
-	<!-- i hate tables but ... -->
-	<input type="hidden" id="<BINDING:UNIQUE_ID>-hidden" name="<BINDING:UNIQUE_ID>-hidden" />
-	<table cellspacing=0 cellpadding=0 border=0>
-		<tr>
-			<td valign=top>
-				<BINDING:SOURCE_LIST>
-			</td>
-			<td valign=center>
-				<input type="button" value="&gt;&gt;" onClick="<BINDING:UNIQUE_ID>.moveRight(); return false;" />
-				<br>
-				<input type="button" value="&lt;&lt;" onClick="<BINDING:UNIQUE_ID>.moveLeft(); return false;" />
-			</td>
-			<td valign=top>
-				<BINDING:TARGET_LIST>
-				<script id="<BINDING:UNIQUE_ID>-target-script">
-					var script = document.getElementById("<BINDING:UNIQUE_ID>-target-script");
-					if (script) {
-						//var target = formElementPriorTo(script);
-						//if (target) {
-							//target.onfocus = function () { <BINDING:UNIQUE_ID>.updateHiddenField(); };
-						//}
-					}
-				</script>
-			</td>
-			<td valign=center>
-				<input type="button" value="&nbsp;^&nbsp;" onClick="<BINDING:UNIQUE_ID>.moveUp(); return false;" />
-				<br>
-				<input type="BUTTON" value="&nbsp;v&nbsp;" onClick="<BINDING:UNIQUE_ID>.moveDown(); return false;" />		
-			</td>
-		</tr>
-	</table>
+    <!-- i hate tables but ... -->
+    <input type="hidden" id="<BINDING:UNIQUE_ID>-hidden" name="<BINDING:UNIQUE_ID>-hidden" />
+    <table cellspacing=0 cellpadding=0 border=0>
+        <tr>
+            <td valign=top>
+                <BINDING:SOURCE_LIST>
+            </td>
+            <td valign=center>
+                <input type="button" value="&gt;&gt;" onClick="<BINDING:UNIQUE_ID>.moveRight(); return false;" />
+                <br>
+                <input type="button" value="&lt;&lt;" onClick="<BINDING:UNIQUE_ID>.moveLeft(); return false;" />
+            </td>
+            <td valign=top>
+                <BINDING:TARGET_LIST>
+                <script id="<BINDING:UNIQUE_ID>-target-script">
+                    var script = document.getElementById("<BINDING:UNIQUE_ID>-target-script");
+                    if (script) {
+                        //var target = formElementPriorTo(script);
+                        //if (target) {
+                            //target.onfocus = function () { <BINDING:UNIQUE_ID>.updateHiddenField(); };
+                        //}
+                    }
+                </script>
+            </td>
+            <td valign=center>
+                <input type="button" value="&nbsp;^&nbsp;" onClick="<BINDING:UNIQUE_ID>.moveUp(); return false;" />
+                <br>
+                <input type="BUTTON" value="&nbsp;v&nbsp;" onClick="<BINDING:UNIQUE_ID>.moveDown(); return false;" />        
+            </td>
+        </tr>
+    </table>
 
 </div>
-	
+    
 <!-- each instance of the wizard needs to do this: -->
 <script type="text/javascript"><!--
-	var <BINDING:UNIQUE_ID> = new OrderedGroupEditor("<BINDING:UNIQUE_ID>");
-	<BINDING:UNIQUE_ID>.init();
+    var <BINDING:UNIQUE_ID> = new OrderedGroupEditor("<BINDING:UNIQUE_ID>");
+    <BINDING:UNIQUE_ID>.init();
 // -->
 </script>
 
 <BINDING_ELSE:BROWSER_SUCKS>
 
-	Hmmmm.
+    Hmmmm.
 
 </BINDING_UNLESS:BROWSER_SUCKS>

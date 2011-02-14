@@ -27,21 +27,21 @@ use base qw(IF::Dictionary);
 use IF::Log;
 
 sub initWithContentsOfFileAtPath {
-	my ($self, $fullPath) = @_;
-	my $b;
-	if (open(B, $fullPath)) {
-		my $unparsedBinding = join("", <B>);
-		close (B);
-		$b = eval $unparsedBinding;
-		#F::Log::debug("~~~~~~~~~~~~~~~ Loaded bindings at $fullPath");
-		unless ($b) {
-			IF::Log::warning("Binding file $fullPath seems empty or may have a parse error in it: $@");
-		}
-		return $self->initWithDictionary($b);
-	} else {
-		#IF::Log::warning("Couldn't open binding file at $fullPath");
-		return undef;
-	}
+    my ($self, $fullPath) = @_;
+    my $b;
+    if (open(B, $fullPath)) {
+        my $unparsedBinding = join("", <B>);
+        close (B);
+        $b = eval $unparsedBinding;
+        #F::Log::debug("~~~~~~~~~~~~~~~ Loaded bindings at $fullPath");
+        unless ($b) {
+            IF::Log::warning("Binding file $fullPath seems empty or may have a parse error in it: $@");
+        }
+        return $self->initWithDictionary($b);
+    } else {
+        #IF::Log::warning("Couldn't open binding file at $fullPath");
+        return undef;
+    }
 
 }
 
@@ -49,20 +49,20 @@ sub initWithContentsOfFileAtPath {
 # and not have to repeat all the verbose perl syntax stuff.
 
 sub String {
-	my ($keyPath) = @_;
-	return {
-		type => "STRING",
-		value => $keyPath,
-	};
+    my ($keyPath) = @_;
+    return {
+        type => "STRING",
+        value => $keyPath,
+    };
 }
 
 sub StringWithFilter {
-	my ($keyPath, $filter) = @_;
-	return {
-		type => "STRING",
-		value => $keyPath,
-		filter => $filter,
-	};
+    my ($keyPath, $filter) = @_;
+    return {
+        type => "STRING",
+        value => $keyPath,
+        filter => $filter,
+    };
 }
 
 sub Boolean {
@@ -74,49 +74,49 @@ sub Boolean {
 }
 
 sub TextField {
-	my ($keyPath) = @_;
-	return SimpleComponentOfTypeForKeyPath("TextField", $keyPath);
+    my ($keyPath) = @_;
+    return SimpleComponentOfTypeForKeyPath("TextField", $keyPath);
 }
 
 sub HiddenField {
-	my ($keyPath) = @_;
-	return SimpleComponentOfTypeForKeyPath("HiddenField", $keyPath);
+    my ($keyPath) = @_;
+    return SimpleComponentOfTypeForKeyPath("HiddenField", $keyPath);
 }
 
 sub Text {
-	my ($keyPath) = @_;
-	return SimpleComponentOfTypeForKeyPath("Text", $keyPath);
+    my ($keyPath) = @_;
+    return SimpleComponentOfTypeForKeyPath("Text", $keyPath);
 }
 
 sub Password {
-	my ($keyPath) = @_;
-	return SimpleComponentOfTypeForKeyPath("Password", $keyPath);
+    my ($keyPath) = @_;
+    return SimpleComponentOfTypeForKeyPath("Password", $keyPath);
 }
 
 sub SimpleComponentOfTypeForKeyPath {
-	my ($type, $keyPath) = @_;
-	return {
-		type => $type,
-		bindings => {
-			value => $keyPath,
-		},
-	};
+    my ($type, $keyPath) = @_;
+    return {
+        type => $type,
+        bindings => {
+            value => $keyPath,
+        },
+    };
 }
 
 sub Form {
-	return {
-		type => "Form",
-	};
+    return {
+        type => "Form",
+    };
 }
 
 sub FormWithAction {
-	my ($action) = @_;
-	return {
-		type => "Form",
-		bindings => {
-			directAction => $action,
-		}
-	};
+    my ($action) = @_;
+    return {
+        type => "Form",
+        bindings => {
+            directAction => $action,
+        }
+    };
 }
 
 1;

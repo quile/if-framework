@@ -21,19 +21,19 @@
 # THE SOFTWARE.
 
 {
-	COMPONENT_ID => {
-		type => "STRING",
-		value => q(componentId),
-	},
-	COMPONENT_TYPE => {
-		type => "STRING",
-		value => q(componentType),
-	},
-	CONTENT => {
-		type => "CONTENT",
-	},
-	IS_FIRST_TIME_LOADED => {
-		type => "BOOLEAN",
-		value => q(isFirstTimeRendered),
-	},
+    COMPONENT_ID => {
+        type => "STRING",
+        value => q(componentId),
+    },
+    COMPONENT_TYPE => {
+        type => "STRING",
+        value => q(componentType),
+    },
+    CONTENT => {
+        type => "CONTENT",
+    },
+    IS_FIRST_TIME_LOADED => {
+        type => "BOOLEAN",
+        value => q(isFirstTimeRendered),
+    },
 }

@@ -22,47 +22,47 @@
 
 #
 {
-	inheritsFrom => "IF::Component::_Default",
-	SELECTION => {
-		type => "Selection",
-		bindings => {
-			LIST => q(list),
-			VALUE => q(value),
-			DISPLAY_STRING => q(displayString),
-			SELECTED_VALUES => q(IF::Array->arrayFromObject($self->selection())),
-			NAME => q(name),
-			shouldIgnoreCase => q(shouldIgnoreCase),
-			shouldIgnoreAccents => q(shouldIgnoreAccents),
-		},
-	},
-	IS_REQUIRED => {
-		type => "BOOLEAN",
-		value => q(isRequired),
-	},
-	DOES_ALLOW_OTHER => {
-		type => "BOOLEAN",
-		value => q(allowsOther),
-	},
-	OTHER_FIELD => {
-		type => "TextField",
-		bindings => {
-			value => q(otherText),
-		},
+    inheritsFrom => "IF::Component::_Default",
+    SELECTION => {
+        type => "Selection",
+        bindings => {
+            LIST => q(list),
+            VALUE => q(value),
+            DISPLAY_STRING => q(displayString),
+            SELECTED_VALUES => q(IF::Array->arrayFromObject($self->selection())),
+            NAME => q(name),
+            shouldIgnoreCase => q(shouldIgnoreCase),
+            shouldIgnoreAccents => q(shouldIgnoreAccents),
+        },
+    },
+    IS_REQUIRED => {
+        type => "BOOLEAN",
+        value => q(isRequired),
+    },
+    DOES_ALLOW_OTHER => {
+        type => "BOOLEAN",
+        value => q(allowsOther),
+    },
+    OTHER_FIELD => {
+        type => "TextField",
+        bindings => {
+            value => q(otherText),
+        },
 
-	},
-	OTHER_LABEL => {
-		type => "STRING",
-		value => q(otherLabel),
-	},
-	OTHER_VALUE => {
-		type => "STRING",
-		value => q(otherValue),
-		filter => q(escapeJavascript),
-	},
-	VALUE => {
-		type => "STRING",
-		value => q(selection),
-		filter => q(escapeJavascript),
-	},
+    },
+    OTHER_LABEL => {
+        type => "STRING",
+        value => q(otherLabel),
+    },
+    OTHER_VALUE => {
+        type => "STRING",
+        value => q(otherValue),
+        filter => q(escapeJavascript),
+    },
+    VALUE => {
+        type => "STRING",
+        value => q(selection),
+        filter => q(escapeJavascript),
+    },
 };
 

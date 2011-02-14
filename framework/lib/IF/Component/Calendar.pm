@@ -28,9 +28,9 @@ use IF::Component;
 @ISA = qw(IF::Component);
 
 sub init {
-	my $self = shift;
-	$self->setEvents([]);
-	$self->SUPER::init();
+    my $self = shift;
+    $self->setEvents([]);
+    $self->SUPER::init();
 }
 
 sub defaultAction {
@@ -40,168 +40,168 @@ sub defaultAction {
 }
 
 sub viewMode {
-	my $self = shift;
-	return $self->{VIEW_MODE};
+    my $self = shift;
+    return $self->{VIEW_MODE};
 }
 
 sub setViewMode {
-	my $self = shift;
-	$self->{VIEW_MODE} = shift;
+    my $self = shift;
+    $self->{VIEW_MODE} = shift;
 }
 
 sub viewSize {
-	my $self = shift;
-	return $self->{VIEW_SIZE};
+    my $self = shift;
+    return $self->{VIEW_SIZE};
 }
 
 sub setViewSize {
-	my $self = shift;
-	$self->{VIEW_SIZE} = shift;
+    my $self = shift;
+    $self->{VIEW_SIZE} = shift;
 }
 
 sub viewFormat {
-	my $self = shift;
-	return $self->{VIEW_FORMAT};
+    my $self = shift;
+    return $self->{VIEW_FORMAT};
 }
 
 sub setViewFormat {
-	my $self = shift;
-	$self->{VIEW_FORMAT} = shift;
+    my $self = shift;
+    $self->{VIEW_FORMAT} = shift;
 }
 
 sub frameWidth {
-	my $self = shift;
-	return $self->{FRAME_WIDTH};
+    my $self = shift;
+    return $self->{FRAME_WIDTH};
 }
 
 sub setFrameWidth {
-	my $self = shift;
-	$self->{FRAME_WIDTH} = shift;
+    my $self = shift;
+    $self->{FRAME_WIDTH} = shift;
 }
 
 sub frameColor {
-	my $self = shift;
-	return $self->{FRAME_COLOR};
+    my $self = shift;
+    return $self->{FRAME_COLOR};
 }
 
 sub setFrameColor {
-	my $self = shift;
-	$self->{FRAME_COLOR} = shift;
+    my $self = shift;
+    $self->{FRAME_COLOR} = shift;
 }
 
 sub headerColor {
-	my $self = shift;
-	return $self->{HEADER_COLOR};
+    my $self = shift;
+    return $self->{HEADER_COLOR};
 }
 
 sub setHeaderColor {
-	my $self = shift;
-	$self->{HEADER_COLOR} = shift;
+    my $self = shift;
+    $self->{HEADER_COLOR} = shift;
 }
 
 sub cellPadding {
-	my $self = shift;
-	return $self->{CELL_PADDING};
+    my $self = shift;
+    return $self->{CELL_PADDING};
 }
 
 sub setCellPadding {
-	my $self = shift;
-	$self->{CELL_PADDING} = shift;
+    my $self = shift;
+    $self->{CELL_PADDING} = shift;
 }
 
 sub backgroundColor {
-	my $self = shift;
-	return $self->{BACKGROUND_COLOR};
+    my $self = shift;
+    return $self->{BACKGROUND_COLOR};
 }
 
 sub setBackgroundColor {
-	my $self = shift;
-	$self->{BACKGROUND_COLOR} = shift;
+    my $self = shift;
+    $self->{BACKGROUND_COLOR} = shift;
 }
 
 sub headerCSSClass {
-	my $self = shift;
-	return $self->{headerCSSClass};
+    my $self = shift;
+    return $self->{headerCSSClass};
 }
 
 sub setHeaderCSSClass {
-	my $self = shift;
-	$self->{headerCSSClass} = shift;
+    my $self = shift;
+    $self->{headerCSSClass} = shift;
 }
 
 sub eventCSSClass {
-	my $self = shift;
-	return $self->{eventCSSClass};
+    my $self = shift;
+    return $self->{eventCSSClass};
 }
 
 sub setEventCSSClass {
-	my $self = shift;
-	$self->{eventCSSClass} = shift;
+    my $self = shift;
+    $self->{eventCSSClass} = shift;
 }
 
 sub noEventCSSClass {
-	my $self = shift;
-	return $self->{noEventCSSClass};
+    my $self = shift;
+    return $self->{noEventCSSClass};
 }
 
 sub setNoEventCSSClass {
-	my $self = shift;
-	$self->{noEventCSSClass} = shift;
+    my $self = shift;
+    $self->{noEventCSSClass} = shift;
 }
 
 sub otherMonthNoEventCSSClass {
-	my $self = shift;
-	return $self->{otherMonthNoEventCSSClass};
+    my $self = shift;
+    return $self->{otherMonthNoEventCSSClass};
 }
 
 sub setOtherMonthNoEventCSSClass {
-	my $self = shift;
-	$self->{otherMonthNoEventCSSClass} = shift;
+    my $self = shift;
+    $self->{otherMonthNoEventCSSClass} = shift;
 }
 
 sub otherMonthEventCSSClass {
-	my $self = shift;
-	return $self->{otherMonthEventCSSClass};
+    my $self = shift;
+    return $self->{otherMonthEventCSSClass};
 }
 
 sub setOtherMonthEventCSSClass {
-	my $self = shift;
-	$self->{otherMonthEventCSSClass} = shift;
+    my $self = shift;
+    $self->{otherMonthEventCSSClass} = shift;
 }
 
 sub eventViewer {
-	my $self = shift;
-	return $self->{eventViewer};
+    my $self = shift;
+    return $self->{eventViewer};
 }
 
 sub setEventViewer {
-	my $self = shift;
-	$self->{eventViewer} = shift;
+    my $self = shift;
+    $self->{eventViewer} = shift;
 }
 
 sub listViewer {
-	my $self = shift;
-	return $self->{LIST_VIEWER};
+    my $self = shift;
+    return $self->{LIST_VIEWER};
 }
 
 sub setListViewer {
-	my $self = shift;
-	$self->{LIST_VIEWER} = shift;
+    my $self = shift;
+    $self->{LIST_VIEWER} = shift;
 }
 
 sub events {
-	my $self = shift;
-	return $self->{EVENTS};
+    my $self = shift;
+    return $self->{EVENTS};
 }
 
 sub setEvents {
-	my $self = shift;
-	$self->{EVENTS} = shift;
+    my $self = shift;
+    $self->{EVENTS} = shift;
 }
 
 sub daysOfWeek {
-	my $self = shift;
-	my $context = shift;
+    my $self = shift;
+    my $context = shift;
 
     # TODO i18n
     return [qw(mon tue wed thu fri sat sun)];
@@ -220,45 +220,45 @@ sub daysOfWeek {
 }
 
 sub days {
-	my $self = shift;
-	return [];
+    my $self = shift;
+    return [];
 }
 
 sub date {
-	my $self = shift;
-	return $self->{DATE};
+    my $self = shift;
+    return $self->{DATE};
 }
 
 sub setDate {
-	my $self = shift;
-	$self->{DATE} = shift;
+    my $self = shift;
+    $self->{DATE} = shift;
 }
 
 sub assignEventsToDays {
-	my $self = shift;
-	my $days = $self->days();
+    my $self = shift;
+    my $days = $self->days();
 
-	my $daysByDate = {};
-	foreach my $day (@$days) {
-		$daysByDate->{$day->sqlDate()} = $day;
-	}
+    my $daysByDate = {};
+    foreach my $day (@$days) {
+        $daysByDate->{$day->sqlDate()} = $day;
+    }
 
-	foreach my $event (@{$self->events()}) {
-		foreach my $date (@{$event->dates()}) {
-			next unless $daysByDate->{$date->sqlDate()};
-			$daysByDate->{$date->sqlDate()}->addEvent($event);
-			#IF::Log::debug("Added event ".$event->name()." to day ".$date->sqlDate());
-		}
-	}
+    foreach my $event (@{$self->events()}) {
+        foreach my $date (@{$event->dates()}) {
+            next unless $daysByDate->{$date->sqlDate()};
+            $daysByDate->{$date->sqlDate()}->addEvent($event);
+            #IF::Log::debug("Added event ".$event->name()." to day ".$date->sqlDate());
+        }
+    }
 }
 
 sub appendToResponse {
-	my $self = shift;
-	my $response = shift;
-	my $context = shift;
+    my $self = shift;
+    my $response = shift;
+    my $context = shift;
 
-	$self->assignEventsToDays();
-	return $self->SUPER::appendToResponse($response, $context);
+    $self->assignEventsToDays();
+    return $self->SUPER::appendToResponse($response, $context);
 
 }
 

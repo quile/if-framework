@@ -28,110 +28,110 @@ use IF::Log;
 use IF::ObjectContext;
 
 sub new {
-	my $className = shift;
-	my $self = {};
-	bless $self, $className;
-	$self->init();
-	return $self;
+    my $className = shift;
+    my $self = {};
+    bless $self, $className;
+    $self->init();
+    return $self;
 }
 
 sub init {
-	my $self = shift;
-	$self->{_arguments} = {};
-	$self->{_fieldMap} = {};
+    my $self = shift;
+    $self->{_arguments} = {};
+    $self->{_fieldMap} = {};
 }
 
 sub initWithQuery {
-	my $self = shift;
-	$self->{_query} = shift;
+    my $self = shift;
+    $self->{_query} = shift;
 }
 
 sub possibleArguments {
-	my $self = shift;
-	return [];
+    my $self = shift;
+    return [];
 }
 
 sub query {
-	my $self = shift;
-	return $self->{_query};
+    my $self = shift;
+    return $self->{_query};
 }
 
 sub begin {
-	my $self = shift;
-	$self->{_dbh} = IF::DB::dbConnection();
+    my $self = shift;
+    $self->{_dbh} = IF::DB::dbConnection();
 
-	unless ($self->{_dbh}) {
-		IF::Log::error("No database handle");
-		exit (1);
-	}
-	$self->{_sth} = $self->{_dbh}->prepare($self->query());
-	unless ($self->{_sth}->execute()) {
-		IF::Log::error($self->{_dbh}->errstr);
-		$self->{_dbh}->disconnect();
-		exit (2);
-	}
+    unless ($self->{_dbh}) {
+        IF::Log::error("No database handle");
+        exit (1);
+    }
+    $self->{_sth} = $self->{_dbh}->prepare($self->query());
+    unless ($self->{_sth}->execute()) {
+        IF::Log::error($self->{_dbh}->errstr);
+        $self->{_dbh}->disconnect();
+        exit (2);
+    }
 }
 
 sub end {
-	my $self = shift;
-	$self->{_sth}->finish();
-	$self->{_dbh}->disconnect();
+    my $self = shift;
+    $self->{_sth}->finish();
+    $self->{_dbh}->disconnect();
 }
 
 sub nextResult {
-	my $self = shift;
-	my $row = $self->{_sth}->fetchrow_hashref();
-	return undef unless $row;
-	foreach my $k (keys %$row) {
-		$row->{uc $k} = $row->{$k};
-		if ($k !~ /^[A-Z0-9_]+$/) {
-			delete $row->{$k};
-		}
-	}
+    my $self = shift;
+    my $row = $self->{_sth}->fetchrow_hashref();
+    return undef unless $row;
+    foreach my $k (keys %$row) {
+        $row->{uc $k} = $row->{$k};
+        if ($k !~ /^[A-Z0-9_]+$/) {
+            delete $row->{$k};
+        }
+    }
 
-	return $row;
+    return $row;
 }
 
 sub addMappedFields {
-	my $self = shift;
-	my $row = shift;
-	foreach my $key (keys %{$self->fieldMap()}) {
-		my $value = $self->fieldMap()->{$key};
-		next unless $value;
-		my $mappedValue = eval $value;
-		$row->{$key} = $mappedValue;
-	}
-	return $row;
+    my $self = shift;
+    my $row = shift;
+    foreach my $key (keys %{$self->fieldMap()}) {
+        my $value = $self->fieldMap()->{$key};
+        next unless $value;
+        my $mappedValue = eval $value;
+        $row->{$key} = $mappedValue;
+    }
+    return $row;
 }
 
 sub setArgumentForKey {
-	my $self = shift;
-	my $argument = shift;
-	my $key = shift;
-	$self->{_arguments}->{$key} = $argument;
+    my $self = shift;
+    my $argument = shift;
+    my $key = shift;
+    $self->{_arguments}->{$key} = $argument;
 }
 
 sub argumentForKey {
-	my $self = shift;
-	my $key = shift;
-	return $self->{_arguments}->{$key};
+    my $self = shift;
+    my $key = shift;
+    return $self->{_arguments}->{$key};
 }
 
 sub setFieldMap {
-	my $self = shift;
-	$self->{_fieldMap} = shift;
+    my $self = shift;
+    $self->{_fieldMap} = shift;
 }
 
 sub fieldMap {
-	my $self = shift;
-	return $self->{_fieldMap};
+    my $self = shift;
+    return $self->{_fieldMap};
 }
 
 sub objectContext {
-	my ($self) = @_;
-	return $self->{_oc} if $self->{_oc};
-	$self->{_oc} = IF::ObjectContext->new();
-	return $self->{_oc};
+    my ($self) = @_;
+    return $self->{_oc} if $self->{_oc};
+    $self->{_oc} = IF::ObjectContext->new();
+    return $self->{_oc};
 }
 
 sub beginTest {}

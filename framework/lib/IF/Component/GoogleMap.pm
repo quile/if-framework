@@ -24,36 +24,36 @@ package IF::Component::GoogleMap;
 
 use strict;
 use base qw(
-	IF::Component
+    IF::Component
 );
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
-		IF::PageResource->javascript("/if-static/javascript/IF/Component.js"),
-		IF::PageResource->javascript("/if-static/javascript/IF/FormComponent.js"),
-		IF::PageResource->javascript("/if-static/javascript/IF/GoogleMap.js"),
-	];
+    my ($self) = @_;
+    return [
+        IF::PageResource->javascript("/if-static/javascript/IF/Component.js"),
+        IF::PageResource->javascript("/if-static/javascript/IF/FormComponent.js"),
+        IF::PageResource->javascript("/if-static/javascript/IF/GoogleMap.js"),
+    ];
 }
 
 sub assets {
-	my ($self) = @_;
-	return $self->{assets};
+    my ($self) = @_;
+    return $self->{assets};
 }
 
 sub setAssets {
-	my ($self, $value) = @_;
-	$self->{assets} = $value;
+    my ($self, $value) = @_;
+    $self->{assets} = $value;
 }
 
 sub onLoadHandler {
-	my ($self) = @_;
-	return $self->{onLoadHandler} || "window";
+    my ($self) = @_;
+    return $self->{onLoadHandler} || "window";
 }
 
 sub setOnLoadHandler {
-	my ($self, $value) = @_;
-	$self->{onLoadHandler} = $value;
+    my ($self, $value) = @_;
+    $self->{onLoadHandler} = $value;
 }
 
 1;

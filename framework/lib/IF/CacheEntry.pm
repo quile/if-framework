@@ -27,61 +27,61 @@ use IF::Log;
 use base qw(IF::Interface::KeyValueCoding);
 
 sub new {
-	my $className = shift;
-	return bless {}, $className;
+    my $className = shift;
+    return bless {}, $className;
 }
 
 sub initWithCacheAndKey {
-	my ($self, $cache, $key) = @_;
-	$self->setKey($key);
-	$self->setCache($cache);
-	return $self;
+    my ($self, $cache, $key) = @_;
+    $self->setKey($key);
+    $self->setCache($cache);
+    return $self;
 }
 
 sub key {
-	my $self = shift;
-	return $self->{key};
+    my $self = shift;
+    return $self->{key};
 }
 
 sub setKey {
-	my ($self, $value) = @_;
-	$self->{key} = $value;
+    my ($self, $value) = @_;
+    $self->{key} = $value;
 }
 
 sub value {
-	my $self = shift;
-	return unless (IF::Log::assert($self->cache(), "Cache exists"));
-	return unless $self->key();
-	return $self->{value} if $self->{value};
-	$self->{value} = $self->cache()->cachedValueForKey($self->key());
-	return $self->{value};
+    my $self = shift;
+    return unless (IF::Log::assert($self->cache(), "Cache exists"));
+    return unless $self->key();
+    return $self->{value} if $self->{value};
+    $self->{value} = $self->cache()->cachedValueForKey($self->key());
+    return $self->{value};
 }
 
 sub setValue {
-	my ($self, $value) = @_;
-	return unless (IF::Log::assert($self->cache(), "Cache exists"));
-	return unless $self->key();
-	$self->{value} = $value;
-	$self->cache()->setCachedValueForKey($value, $self->key());
+    my ($self, $value) = @_;
+    return unless (IF::Log::assert($self->cache(), "Cache exists"));
+    return unless $self->key();
+    $self->{value} = $value;
+    $self->cache()->setCachedValueForKey($value, $self->key());
 }
 
 sub cache {
-	my $self = shift;
-	return $self->{cache};
+    my $self = shift;
+    return $self->{cache};
 }
 
 sub setCache {
-	my ($self, $value) = @_;
-	$self->{cache} = $value;
+    my ($self, $value) = @_;
+    $self->{cache} = $value;
 }
 
 sub registerObjectDependency {
-	my ($self, $object) = @_;
-	IF::CachedObjectManager->registerEntryInCacheWithKeyForObject(
-		$self->cache(),
-		$self->key(),
-		$object,
-	);
+    my ($self, $object) = @_;
+    IF::CachedObjectManager->registerEntryInCacheWithKeyForObject(
+        $self->cache(),
+        $self->key(),
+        $object,
+    );
 }
 
 1;

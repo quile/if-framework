@@ -28,106 +28,106 @@ use IF::Array;
 @ISA = qw(IF::Component);
 
 sub init {
-	my $self = shift;
-	$self->SUPER::init(@_);
-	$self->setSize(10); # default 10? seems ok
+    my $self = shift;
+    $self->SUPER::init(@_);
+    $self->setSize(10); # default 10? seems ok
 }
 
 sub takeValuesFromRequest {
-	my ($self, $context) = @_;
-	$self->SUPER::takeValuesFromRequest($context);
-	my $selectedValues = [split(":", $context->formValueForKey($self->uniqueId()."-hidden"))];
-	my $list;
-	if ($self->shouldUseSessionStore()) {
-		$list = $context->session()->sessionValueForKey($self->uniqueId()."-list");
-	} else {
-		$list = $self->list();
-	}
-	if ($list && IF::Array::isArray($list)) {
-		#IF::Log::dump($self->value());
-		my $selection = [];
-		foreach my $itemValue (@$selectedValues) {
-			foreach my $item (@$list) {
-				#IF::Log::debug("selection is $itemValue, item's value is ".$item->valueForKey($self->value()));
-				if ($item->valueForKey($self->value()) eq $itemValue) {
-					push (@$selection, $item);
-					last;
-				}
-			}
-		}
-		$self->setSelection($selection);
-		if ($self->shouldUseSessionStore()) {
-			$context->session()->setSessionValueForKey(undef, $self->uniqueId."-list");
-		}
-	}
+    my ($self, $context) = @_;
+    $self->SUPER::takeValuesFromRequest($context);
+    my $selectedValues = [split(":", $context->formValueForKey($self->uniqueId()."-hidden"))];
+    my $list;
+    if ($self->shouldUseSessionStore()) {
+        $list = $context->session()->sessionValueForKey($self->uniqueId()."-list");
+    } else {
+        $list = $self->list();
+    }
+    if ($list && IF::Array::isArray($list)) {
+        #IF::Log::dump($self->value());
+        my $selection = [];
+        foreach my $itemValue (@$selectedValues) {
+            foreach my $item (@$list) {
+                #IF::Log::debug("selection is $itemValue, item's value is ".$item->valueForKey($self->value()));
+                if ($item->valueForKey($self->value()) eq $itemValue) {
+                    push (@$selection, $item);
+                    last;
+                }
+            }
+        }
+        $self->setSelection($selection);
+        if ($self->shouldUseSessionStore()) {
+            $context->session()->setSessionValueForKey(undef, $self->uniqueId."-list");
+        }
+    }
 }
 
 sub appendToResponse {
-	my ($self, $response, $context) = @_;
-	if ($self->shouldUseSessionStore()) {
-		$context->session()->setSessionValueForKey($self->list(), $self->uniqueId()."-list");
-	}
-	return $self->SUPER::appendToResponse($response, $context);
+    my ($self, $response, $context) = @_;
+    if ($self->shouldUseSessionStore()) {
+        $context->session()->setSessionValueForKey($self->list(), $self->uniqueId()."-list");
+    }
+    return $self->SUPER::appendToResponse($response, $context);
 }
 
 sub selection {
-	my $self = shift;
-	return $self->{selection};
+    my $self = shift;
+    return $self->{selection};
 }
 
 sub setSelection {
-	my ($self, $value) = @_;
-	$self->{selection} = $value;
+    my ($self, $value) = @_;
+    $self->{selection} = $value;
 }
 
 sub list {
-	my $self = shift;
-	return $self->{list};
+    my $self = shift;
+    return $self->{list};
 }
 
 sub setList {
-	my ($self, $value) = @_;
-	$self->{list} = $value;
+    my ($self, $value) = @_;
+    $self->{list} = $value;
 }
 
 sub displayString {
-	my $self = shift;
-	return $self->{displayString};
+    my $self = shift;
+    return $self->{displayString};
 }
 
 sub setDisplayString {
-	my ($self, $value) = @_;
-	$self->{displayString} = $value;
+    my ($self, $value) = @_;
+    $self->{displayString} = $value;
 }
 
 sub value {
-	my $self = shift;
-	return $self->{value};
+    my $self = shift;
+    return $self->{value};
 }
 
 sub setValue {
-	my ($self, $value) = @_;
-	$self->{value} = $value;
+    my ($self, $value) = @_;
+    $self->{value} = $value;
 }
 
 sub size {
-	my $self = shift;
-	return $self->{size};
+    my $self = shift;
+    return $self->{size};
 }
 
 sub setSize {
-	my ($self, $value) = @_;
-	$self->{size} = $value;
+    my ($self, $value) = @_;
+    $self->{size} = $value;
 }
 
 sub shouldUseSessionStore {
-	my $self = shift;
-	return $self->{shouldUseSessionStore};
+    my $self = shift;
+    return $self->{shouldUseSessionStore};
 }
 
 sub setShouldUseSessionStore {
-	my ($self, $value) = @_;
-	$self->{shouldUseSessionStore} = $value;
+    my ($self, $value) = @_;
+    $self->{shouldUseSessionStore} = $value;
 }
 
 1;

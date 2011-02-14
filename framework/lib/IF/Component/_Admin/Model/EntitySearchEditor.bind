@@ -1,98 +1,98 @@
 #
 {
-	inheritsFrom => "_Admin::Model::EntityFieldEditor",
-	ATTRIBUTE_START_DATE => {
-		type => "DateEditor",
-		bindings => {
-			name => q("incoming-date-start-".$self->fieldNameForAttribute()),
-			value => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME}.":start")),
-			startYear => q("1995"),
-			allowsNoSelection => q("1"),
-			shouldShowTodayLink => q("1"),
-		},
-	},
-	ATTRIBUTE_START_TIME => {
-		type => "TimeEditor",
-		bindings => {
-			name => q("incoming-time-start-".$self->fieldNameForAttribute()),
-			value => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME}.":start")),
-			showSeconds => q("1"),
-			allowsNoSelection => q("1"),
-			startsEmpty => q("1"),
-			shouldShowNowLink => q("1"),
-		},
-	},
-	ATTRIBUTE_END_DATE => {
-		type => "DateEditor",
-		bindings => {
-			name => q("incoming-date-end-".$self->fieldNameForAttribute()),
-			value => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME}.":end")),
-			startYear => q("1995"),
-			allowsNoSelection => q("1"),
-			shouldShowTodayLink => q("1"),
-		},
-	},
-	ATTRIBUTE_END_TIME => {
-		type => "TimeEditor",
-		bindings => {
-			name => q("incoming-time-end-".$self->fieldNameForAttribute()),
-			value => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME}.":end")),
-			showSeconds => q("1"),
-			allowsNoSelection => q("1"),
-			startsEmpty => q("1"),
-			shouldShowNowLink => q("1"),
-		},
-	},
-	ATTRIBUTE_YES_NO => {
-		type => "_Admin::Editor::YesNo",
-		bindings => {
-			value => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME})),
-			name => q(fieldNameForAttribute),
-			allowsNoSelection => q("1"),
-		},
-	},
-	ATTRIBUTE_ENUM => {
-		type => "PopUpMenu",
-		bindings => {
-			name => q(fieldNameForAttribute),
-			list => q(["", @{$self->anAttribute()->{VALUES}}]),
-			selection => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME})),
-		},
-	},
-	ENUM_OPERAND => {
-		type => "PopUpMenu",
-		bindings => {
-			name => q($self->fieldNameForAttribute()."-operand"),
-			list => q([ "is", "is not" ]),
-			selection => q($context->formValueForKey($self->fieldNameForAttribute()."-operand")),
-		},
-	},
-	NUMBER_OPERAND => {
-		type => "PopUpMenu",
-		bindings => {
-			name => q($self->fieldNameForAttribute()."-operand"),
-			list => q([ "equals", "does not equal", ">", "<", "<=", ">=" ]),
-			selection => q($context->formValueForKey($self->fieldNameForAttribute()."-operand")),
-		},
-	},
-	OPERAND => {
-		type => "PopUpMenu",
-		bindings => {
-			name => q($self->fieldNameForAttribute()."-operand"),
-			list => q([ "contains", "starts with", "is", "is not" ]),
-			selection => q($context->formValueForKey($self->fieldNameForAttribute()."-operand")),
-		},
-	},
-	ATTRIBUTE_LANGUAGE_DESIGNATION => {
-		type => "PopUpMenu",
-		bindings => {
-			name => q(fieldNameForAttribute),
+    inheritsFrom => "_Admin::Model::EntityFieldEditor",
+    ATTRIBUTE_START_DATE => {
+        type => "DateEditor",
+        bindings => {
+            name => q("incoming-date-start-".$self->fieldNameForAttribute()),
+            value => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME}.":start")),
+            startYear => q("1995"),
+            allowsNoSelection => q("1"),
+            shouldShowTodayLink => q("1"),
+        },
+    },
+    ATTRIBUTE_START_TIME => {
+        type => "TimeEditor",
+        bindings => {
+            name => q("incoming-time-start-".$self->fieldNameForAttribute()),
+            value => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME}.":start")),
+            showSeconds => q("1"),
+            allowsNoSelection => q("1"),
+            startsEmpty => q("1"),
+            shouldShowNowLink => q("1"),
+        },
+    },
+    ATTRIBUTE_END_DATE => {
+        type => "DateEditor",
+        bindings => {
+            name => q("incoming-date-end-".$self->fieldNameForAttribute()),
+            value => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME}.":end")),
+            startYear => q("1995"),
+            allowsNoSelection => q("1"),
+            shouldShowTodayLink => q("1"),
+        },
+    },
+    ATTRIBUTE_END_TIME => {
+        type => "TimeEditor",
+        bindings => {
+            name => q("incoming-time-end-".$self->fieldNameForAttribute()),
+            value => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME}.":end")),
+            showSeconds => q("1"),
+            allowsNoSelection => q("1"),
+            startsEmpty => q("1"),
+            shouldShowNowLink => q("1"),
+        },
+    },
+    ATTRIBUTE_YES_NO => {
+        type => "_Admin::Editor::YesNo",
+        bindings => {
+            value => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME})),
+            name => q(fieldNameForAttribute),
+            allowsNoSelection => q("1"),
+        },
+    },
+    ATTRIBUTE_ENUM => {
+        type => "PopUpMenu",
+        bindings => {
+            name => q(fieldNameForAttribute),
+            list => q(["", @{$self->anAttribute()->{VALUES}}]),
+            selection => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME})),
+        },
+    },
+    ENUM_OPERAND => {
+        type => "PopUpMenu",
+        bindings => {
+            name => q($self->fieldNameForAttribute()."-operand"),
+            list => q([ "is", "is not" ]),
+            selection => q($context->formValueForKey($self->fieldNameForAttribute()."-operand")),
+        },
+    },
+    NUMBER_OPERAND => {
+        type => "PopUpMenu",
+        bindings => {
+            name => q($self->fieldNameForAttribute()."-operand"),
+            list => q([ "equals", "does not equal", ">", "<", "<=", ">=" ]),
+            selection => q($context->formValueForKey($self->fieldNameForAttribute()."-operand")),
+        },
+    },
+    OPERAND => {
+        type => "PopUpMenu",
+        bindings => {
+            name => q($self->fieldNameForAttribute()."-operand"),
+            list => q([ "contains", "starts with", "is", "is not" ]),
+            selection => q($context->formValueForKey($self->fieldNameForAttribute()."-operand")),
+        },
+    },
+    ATTRIBUTE_LANGUAGE_DESIGNATION => {
+        type => "PopUpMenu",
+        bindings => {
+            name => q(fieldNameForAttribute),
             # TODO grab list of human languages
-			list => q([]),
-			selection => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME})),
-			value => q("VALUE"),
-			displayString => q("KEY"),
-			allowsNoSelection => q("1"),
-		},
-	},
+            list => q([]),
+            selection => q($self->entity()->valueForKey($self->anAttribute()->{ATTRIBUTE_NAME})),
+            value => q("VALUE"),
+            displayString => q("KEY"),
+            allowsNoSelection => q("1"),
+        },
+    },
 }

@@ -47,9 +47,9 @@ my $memcachedPid  = IF::Application->systemConfigurationValueForKey("MEMCACHED_P
 my $args = "-p $memcachedPort -m $memcachedSize";
 
 if ($DEBUG) {
-	$args .= " -vv";
+    $args .= " -vv";
 } else {
-	$args .= " -d -P $memcachedPid ";
+    $args .= " -d -P $memcachedPid ";
 }
 
 $args .= ' -u '.getlogin() unless $>;
@@ -57,9 +57,9 @@ $args .= ' -u '.getlogin() unless $>;
 print STDERR "$memcachedPath $args\n" if $DEBUG;
 
 if ($DEBUG) {
-	system("$memcachedPath $args");
+    system("$memcachedPath $args");
 } else {
-	print `$memcachedPath $args`;
+    print `$memcachedPath $args`;
 }
 
 exit;

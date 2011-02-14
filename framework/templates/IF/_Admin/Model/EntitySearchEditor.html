@@ -1,52 +1,52 @@
-	<table border=0 cellspacing=0 cellpadding=4 class="model-viewer-form">
-		<BINDING:ENTITY_CLASS_NAME>
-		<BINDING_LOOP:ATTRIBUTES>
-			<tr><td class="field-cell">
-			<BINDING:ATTRIBUTE_NICE_NAME>
-			</td><td>			
-				<BINDING_IF:ATTRIBUTE_IS_DATE>
-					Between (or "since")<br>
-					<BINDING:ATTRIBUTE_START_DATE><br>
-					and (or "before")<br>
-					<BINDING:ATTRIBUTE_END_DATE>
-				<BINDING_ELSE:ATTRIBUTE_IS_DATE>
-					<BINDING_IF:ATTRIBUTE_IS_ENUM>
-						<BINDING:ENUM_OPERAND> <BINDING:ATTRIBUTE_ENUM>
-					<BINDING_ELSE:ATTRIBUTE_IS_ENUM>
-						<BINDING_IF:ATTRIBUTE_IS_DATETIME>
-							Between (or "since")<br>
-							<BINDING:ATTRIBUTE_START_DATE><br>
-							<BINDING:ATTRIBUTE_START_TIME><br>
-							and (or "before")<br>
-							<BINDING:ATTRIBUTE_END_DATE><br>
-							<BINDING:ATTRIBUTE_END_TIME>
-						<BINDING_ELSE:ATTRIBUTE_IS_DATETIME>
-							<BINDING_IF:ATTRIBUTE_IS_NUMBER>
-								<BINDING:NUMBER_OPERAND> <BINDING:ATTRIBUTE_NUMBER>
-							<BINDING_ELSE:ATTRIBUTE_IS_NUMBER>
-								<BINDING_IF:ATTRIBUTE_IS_UNIX_TIME>
-							Between  (or "since")<br>
-							<BINDING:ATTRIBUTE_START_DATE><br>
-							<BINDING:ATTRIBUTE_START_TIME><br>
-							and (or "before")<br>
-							<BINDING:ATTRIBUTE_END_DATE><br>
-							<BINDING:ATTRIBUTE_END_TIME>
-								<BINDING_ELSE:ATTRIBUTE_IS_UNIX_TIME>
-									<BINDING_IF:ATTRIBUTE_IS_LANGUAGE_DESIGNATION>
-										<BINDING:ENUM_OPERAND> <BINDING:ATTRIBUTE_LANGUAGE_DESIGNATION>
-									<BINDING_ELSE:ATTRIBUTE_IS_LANGUAGE_DESIGNATION>
-										<BINDING_IF:ATTRIBUTE_IS_YES_NO>
-											<BINDING:ENUM_OPERAND> <BINDING:ATTRIBUTE_YES_NO>
-										<BINDING_ELSE:ATTRIBUTE_IS_YES_NO>											
-												<BINDING:OPERAND> <BINDING:ATTRIBUTE_TEXT>
-										</BINDING_IF:ATTRIBUTE_IS_YES_NO>
-									</BINDING_IF:ATTRIBUTE_IS_LANGUAGE_DESIGNATION>
-								</BINDING_IF:ATTRIBUTE_IS_UNIX_TIME>
-							</BINDING_IF:ATTRIBUTE_IS_NUMBER>
-						</BINDING_IF:ATTRIBUTE_IS_DATETIME>
-					</BINDING_IF:ATTRIBUTE_IS_ENUM>
-				</BINDING_IF:ATTRIBUTE_IS_DATE>
+    <table border=0 cellspacing=0 cellpadding=4 class="model-viewer-form">
+        <BINDING:ENTITY_CLASS_NAME>
+        <BINDING_LOOP:ATTRIBUTES>
+            <tr><td class="field-cell">
+            <BINDING:ATTRIBUTE_NICE_NAME>
+            </td><td>            
+                <BINDING_IF:ATTRIBUTE_IS_DATE>
+                    Between (or "since")<br>
+                    <BINDING:ATTRIBUTE_START_DATE><br>
+                    and (or "before")<br>
+                    <BINDING:ATTRIBUTE_END_DATE>
+                <BINDING_ELSE:ATTRIBUTE_IS_DATE>
+                    <BINDING_IF:ATTRIBUTE_IS_ENUM>
+                        <BINDING:ENUM_OPERAND> <BINDING:ATTRIBUTE_ENUM>
+                    <BINDING_ELSE:ATTRIBUTE_IS_ENUM>
+                        <BINDING_IF:ATTRIBUTE_IS_DATETIME>
+                            Between (or "since")<br>
+                            <BINDING:ATTRIBUTE_START_DATE><br>
+                            <BINDING:ATTRIBUTE_START_TIME><br>
+                            and (or "before")<br>
+                            <BINDING:ATTRIBUTE_END_DATE><br>
+                            <BINDING:ATTRIBUTE_END_TIME>
+                        <BINDING_ELSE:ATTRIBUTE_IS_DATETIME>
+                            <BINDING_IF:ATTRIBUTE_IS_NUMBER>
+                                <BINDING:NUMBER_OPERAND> <BINDING:ATTRIBUTE_NUMBER>
+                            <BINDING_ELSE:ATTRIBUTE_IS_NUMBER>
+                                <BINDING_IF:ATTRIBUTE_IS_UNIX_TIME>
+                            Between  (or "since")<br>
+                            <BINDING:ATTRIBUTE_START_DATE><br>
+                            <BINDING:ATTRIBUTE_START_TIME><br>
+                            and (or "before")<br>
+                            <BINDING:ATTRIBUTE_END_DATE><br>
+                            <BINDING:ATTRIBUTE_END_TIME>
+                                <BINDING_ELSE:ATTRIBUTE_IS_UNIX_TIME>
+                                    <BINDING_IF:ATTRIBUTE_IS_LANGUAGE_DESIGNATION>
+                                        <BINDING:ENUM_OPERAND> <BINDING:ATTRIBUTE_LANGUAGE_DESIGNATION>
+                                    <BINDING_ELSE:ATTRIBUTE_IS_LANGUAGE_DESIGNATION>
+                                        <BINDING_IF:ATTRIBUTE_IS_YES_NO>
+                                            <BINDING:ENUM_OPERAND> <BINDING:ATTRIBUTE_YES_NO>
+                                        <BINDING_ELSE:ATTRIBUTE_IS_YES_NO>                                            
+                                                <BINDING:OPERAND> <BINDING:ATTRIBUTE_TEXT>
+                                        </BINDING_IF:ATTRIBUTE_IS_YES_NO>
+                                    </BINDING_IF:ATTRIBUTE_IS_LANGUAGE_DESIGNATION>
+                                </BINDING_IF:ATTRIBUTE_IS_UNIX_TIME>
+                            </BINDING_IF:ATTRIBUTE_IS_NUMBER>
+                        </BINDING_IF:ATTRIBUTE_IS_DATETIME>
+                    </BINDING_IF:ATTRIBUTE_IS_ENUM>
+                </BINDING_IF:ATTRIBUTE_IS_DATE>
 
-			</td></tr>
-		</BINDING_LOOP:ATTRIBUTES>
-	</table>
+            </td></tr>
+        </BINDING_LOOP:ATTRIBUTES>
+    </table>

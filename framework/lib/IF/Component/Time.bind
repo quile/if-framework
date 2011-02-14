@@ -22,40 +22,40 @@
 
 # bindings for the TimeEditor component
 {
-	IS_TWENTY_FOUR_HOUR => {
-		type => "BOOLEAN",
-		value => q($self->isTwentyFourHour()),
-	},
-	HOURS => {
-		type => "NUMBER",
-		value => q($self->hours()),
-		format =>
-			q($self->isTwentyFourHour()?"%02d":"%d"),
-	},
-	MINUTES => {
-		type => "NUMBER",
-		value => q($self->minutes()),
-		format => q("%02d"),
-	},
-	SECONDS => {
-		type => "NUMBER",
-		value => q($self->seconds()),
-		format => q("%02d"),
-	},
-	AM_PM => {
-		type => "STRING",
-		value => q($self->isTwentyFourHour()?"":$self->ampm()),
-	},
-	SHOW_SECONDS => {
-		type => "BOOLEAN",
-		value => q($self->showSeconds()),
-	},
-	SHOW_TIME_ZONE => {
-		type => "BOOLEAN",
-		value => q(timeZone),
-	},
-	TIME_ZONE => {
-		type => "STRING",
-		value => q(timeZone),
-	},
+    IS_TWENTY_FOUR_HOUR => {
+        type => "BOOLEAN",
+        value => q($self->isTwentyFourHour()),
+    },
+    HOURS => {
+        type => "NUMBER",
+        value => q($self->hours()),
+        format =>
+            q($self->isTwentyFourHour()?"%02d":"%d"),
+    },
+    MINUTES => {
+        type => "NUMBER",
+        value => q($self->minutes()),
+        format => q("%02d"),
+    },
+    SECONDS => {
+        type => "NUMBER",
+        value => q($self->seconds()),
+        format => q("%02d"),
+    },
+    AM_PM => {
+        type => "STRING",
+        value => q($self->isTwentyFourHour()?"":$self->ampm()),
+    },
+    SHOW_SECONDS => {
+        type => "BOOLEAN",
+        value => q($self->showSeconds()),
+    },
+    SHOW_TIME_ZONE => {
+        type => "BOOLEAN",
+        value => q(timeZone),
+    },
+    TIME_ZONE => {
+        type => "STRING",
+        value => q(timeZone),
+    },
 }

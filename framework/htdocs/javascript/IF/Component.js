@@ -3,14 +3,14 @@
 // They still need to set these values themselves.
 
 function IFComponent() {
-	
+    
 };
 
 IFComponent.prototype = {
-	
-	// this stub needs to be here to prevent it all from yacking:
-	initialize: function() {
-		
-	}
-	
+    
+    // this stub needs to be here to prevent it all from yacking:
+    initialize: function() {
+        
+    }
+    
 };

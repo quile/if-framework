@@ -39,26 +39,26 @@ use IF::Entity::UniqueIdentifier;
 #====================================
 
 sub new {
-	my $className = shift;
+    my $className = shift;
 
-	my $self = {};
-	$self->{__storedValues} = {};		# contains representation of DB column values
-	$self->{_wasDeletedFromDataStore} = 0;
-	$self->{__joinRecordForRelationship} = {}; # tracks transient join information to other objects
+    my $self = {};
+    $self->{__storedValues} = {};        # contains representation of DB column values
+    $self->{_wasDeletedFromDataStore} = 0;
+    $self->{__joinRecordForRelationship} = {}; # tracks transient join information to other objects
 
-	my $namespace = $className;
-	$namespace =~ s/::([A-Za-z0-9_]*)$//g;
-	$self->{_entityClassName} = $1;
-	$self->{_namespace} = $namespace;
-	bless $self, $className;
-	$self->initValuesWithArray(\@_);	# inflate the entity if we're initialising it with values
+    my $namespace = $className;
+    $namespace =~ s/::([A-Za-z0-9_]*)$//g;
+    $self->{_entityClassName} = $1;
+    $self->{_namespace} = $namespace;
+    bless $self, $className;
+    $self->initValuesWithArray(\@_);    # inflate the entity if we're initialising it with values
 
-	if (scalar @_ > 0) {
-		$self->awakeFromInflation();
-	} else {
-		$self->init();
-	}
-	return $self;
+    if (scalar @_ > 0) {
+        $self->awakeFromInflation();
+    } else {
+        $self->init();
+    }
+    return $self;
 }
 
 sub newFromDictionary {
@@ -74,37 +74,37 @@ sub newFromDictionary {
 }
 
 sub init {
-	my $self = shift;
+    my $self = shift;
 }
 
 sub awakeFromInflation {
-	my $self = shift;
+    my $self = shift;
 }
 
 
 # dangerous: maybe make this private?
 sub setId {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "id");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "id");
 }
 
 sub id {
-	my $self = shift;
-	return $self->storedValueForKey("id");
+    my $self = shift;
+    return $self->storedValueForKey("id");
 }
 
 sub uniqueIdentifier {
-	my ($self) = @_;
-	return IF::Entity::UniqueIdentifier->newFromEntity($self);
+    my ($self) = @_;
+    return IF::Entity::UniqueIdentifier->newFromEntity($self);
 }
 
 # I want everyone to start using this instead of "id" when vending this
 # goo to the public as part of URLs etc
 sub externalId {
-	my ($self) = @_;
-	return undef unless $self->id();
-	return IF::Utility::externalIdFromId($self->id());
+    my ($self) = @_;
+    return undef unless $self->id();
+    return IF::Utility::externalIdFromId($self->id());
 }
 
 #-----
@@ -115,24 +115,24 @@ sub externalId {
 #  behaviour
 
 sub summaryAttributes {
-	my ($self) = @_;
-	return ['title', 'name'];
+    my ($self) = @_;
+    return ['title', 'name'];
 }
 
 sub asString {
-	my $self = shift;
-	my $separator = shift;  # optional
-	$separator ||= ', ';
-	if (my $summaryAttributes = $self->summaryAttributes()) {
-		my @rawAttrs = map {$self->valueForKey($_)} @$summaryAttributes;
-		my $attrs = [];
-		foreach my $a (@rawAttrs) {
-			push @$attrs, $a if $a;
-		}
-		my $str = join(', ', @$attrs);
-		return $str if $str;
-	}
-	return scalar $self;
+    my $self = shift;
+    my $separator = shift;  # optional
+    $separator ||= ', ';
+    if (my $summaryAttributes = $self->summaryAttributes()) {
+        my @rawAttrs = map {$self->valueForKey($_)} @$summaryAttributes;
+        my $attrs = [];
+        foreach my $a (@rawAttrs) {
+            push @$attrs, $a if $a;
+        }
+        my $str = join(', ', @$attrs);
+        return $str if $str;
+    }
+    return scalar $self;
 }
 
 1;

@@ -28,97 +28,97 @@ use base qw(
 );
 
 sub message {
-	my $self = shift;
-	unless ($self->{_message}) {
-		$self->{_message} = $self->faultEntityForRelationshipNamed("message");
-	}
-	return $self->{_message};
+    my $self = shift;
+    unless ($self->{_message}) {
+        $self->{_message} = $self->faultEntityForRelationshipNamed("message");
+    }
+    return $self->{_message};
 }
 
 sub mailEvent {
-	my $self = shift;
-	return $self->faultEntityForRelationshipNamed("mailEvent");
+    my $self = shift;
+    return $self->faultEntityForRelationshipNamed("mailEvent");
 }
 
 sub fieldValues {
-	my $self = shift;
-	my $fieldValues;
-	my $fv = $self->storedValueForKey("fieldValues");
-	eval $fv; # DANGER! TODO add some guards against exploits
-	return $fieldValues;
+    my $self = shift;
+    my $fieldValues;
+    my $fv = $self->storedValueForKey("fieldValues");
+    eval $fv; # DANGER! TODO add some guards against exploits
+    return $fieldValues;
 }
 
 sub setFieldValues {
-	my $self = shift;
-	my $fieldValues = shift;
-	my $fieldValuesAsString = Data::Dumper->Dump([$fieldValues], [qw($fieldValues)]);
-	$self->setStoredValueForKey($fieldValuesAsString, "fieldValues");
+    my $self = shift;
+    my $fieldValues = shift;
+    my $fieldValuesAsString = Data::Dumper->Dump([$fieldValues], [qw($fieldValues)]);
+    $self->setStoredValueForKey($fieldValuesAsString, "fieldValues");
 }
 
 sub isLastMessage {
-	my $self = shift;
-	return $self->storedValueForKey("isLastMessage");
+    my $self = shift;
+    return $self->storedValueForKey("isLastMessage");
 }
 
 sub setIsLastMessage {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "isLastMessage");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "isLastMessage");
 }
 
 sub email {
-	my $self = shift;
-	return $self->storedValueForKey("email");
+    my $self = shift;
+    return $self->storedValueForKey("email");
 }
 
 sub setEmail {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "email");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "email");
 }
 
 sub sender {
-	my $self = shift;
-	return $self->storedValueForKey("sender");
+    my $self = shift;
+    return $self->storedValueForKey("sender");
 }
 
 sub setSender {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "sender");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "sender");
 }
 
 sub mailMessageId {
-	my $self = shift;
-	return $self->storedValueForKey("mailMessageId");
+    my $self = shift;
+    return $self->storedValueForKey("mailMessageId");
 }
 
 sub setMailMessageId {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "mailMessageId");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "mailMessageId");
 }
 
 sub sendDate {
-	my $self = shift;
-	return $self->storedValueForKey("sendDate");
+    my $self = shift;
+    return $self->storedValueForKey("sendDate");
 }
 
 sub setSendDate {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "sendDate");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "sendDate");
 }
 
 sub mailEventId {
-	my $self = shift;
-	return $self->storedValueForKey("mailEventId");
+    my $self = shift;
+    return $self->storedValueForKey("mailEventId");
 }
 
 sub setMailEventId {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "mailEventId");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "mailEventId");
 }
 
 1;

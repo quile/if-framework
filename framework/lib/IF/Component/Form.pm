@@ -25,125 +25,125 @@ use strict;
 use base 'IF::Component::Hyperlink';
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
+    my ($self) = @_;
+    return [
         IF::PageResource->javascript("/if-static/javascript/jquery/jquery-1.2.6.js"),
-	    IF::PageResource->javascript("/if-static/javascript/jquery/plugins/jquery.if.js"),
+        IF::PageResource->javascript("/if-static/javascript/jquery/plugins/jquery.if.js"),
         IF::PageResource->javascript("/if-static/javascript/IF/Component.js"),
         IF::PageResource->javascript("/if-static/javascript/IF/FormComponent.js"),
         IF::PageResource->javascript("/if-static/javascript/IF/Form.js"),
         IF::PageResource->javascript("/if-static/javascript/IF/Validator.js"),
-	];
+    ];
 }
 
 sub init {
-	my $self = shift;
-	$self->SUPER::init(@_);
-	$self->setMethod("POST");
+    my $self = shift;
+    $self->SUPER::init(@_);
+    $self->setMethod("POST");
 }
 
 sub method {
-	my $self = shift;
-	return $self->{method};
+    my $self = shift;
+    return $self->{method};
 }
 
 sub setMethod {
-	my ($self, $value) = @_;
-	$self->{method} = $value;
+    my ($self, $value) = @_;
+    $self->{method} = $value;
 }
 
 sub shouldEnableClientSideScripting {
-	my $self = shift;
-	return $self->{shouldEnableClientSideScripting};
+    my $self = shift;
+    return $self->{shouldEnableClientSideScripting};
 }
 
 sub setShouldEnableClientSideScripting {
-	my $self = shift;
-	$self->{shouldEnableClientSideScripting} = shift;
+    my $self = shift;
+    $self->{shouldEnableClientSideScripting} = shift;
 }
 
 sub encType {
-	my $self = shift;
-	return $self->{encType};
+    my $self = shift;
+    return $self->{encType};
 }
 
 sub setEncType {
-	my ($self, $value) = @_;
-	$self->{encType} = $value;
+    my ($self, $value) = @_;
+    $self->{encType} = $value;
 }
 
 sub formName {
-	my $self = shift;
-	return $self->name() || $self->queryKeyNameForPageAndLoopContexts();
+    my $self = shift;
+    return $self->name() || $self->queryKeyNameForPageAndLoopContexts();
 }
 
 sub name {
-	my $self = shift;
-	return $self->{name};
+    my $self = shift;
+    return $self->{name};
 }
 
 sub setName {
-	my ($self, $value) = @_;
-	$self->{name} = $value;
+    my ($self, $value) = @_;
+    $self->{name} = $value;
 }
 
 sub canOnlyBeSubmittedOnce {
-	my ($self) = @_;
-	return $self->{canOnlyBeSubmittedOnce};
+    my ($self) = @_;
+    return $self->{canOnlyBeSubmittedOnce};
 }
 
 sub setCanOnlyBeSubmittedOnce {
-	my ($self, $value) = @_;
-	$self->{canOnlyBeSubmittedOnce} = $value;
+    my ($self, $value) = @_;
+    $self->{canOnlyBeSubmittedOnce} = $value;
 }
 
 sub appendToResponse {
-	my ($self, $response, $context) = @_;
+    my ($self, $response, $context) = @_;
 
-	# every form needs to emit the context number so the responding
-	# process knows if it has been called in order.
-	$self->{queryDictionaryAdditions}->addObject(
-				{ NAME => "context-number",
-				  VALUE => $self->context()->session()->contextNumber(),
-				});
-	return $self->SUPER::appendToResponse($response, $context);
+    # every form needs to emit the context number so the responding
+    # process knows if it has been called in order.
+    $self->{queryDictionaryAdditions}->addObject(
+                { NAME => "context-number",
+                  VALUE => $self->context()->session()->contextNumber(),
+                });
+    return $self->SUPER::appendToResponse($response, $context);
 }
 
 # these are just synonyms to help you in bindings files:
 
 sub setEnctype {
-	my ($self, $value) = @_;
-	$self->setEncType($value);
+    my ($self, $value) = @_;
+    $self->setEncType($value);
 }
 
 sub setIsMultipart {
-	my ($self, $value) = @_;
-	if ($value) {
-		$self->setEncType("multipart/form-data");
-	} else {
-		$self->setEncType();
-	}
+    my ($self, $value) = @_;
+    if ($value) {
+        $self->setEncType("multipart/form-data");
+    } else {
+        $self->setEncType();
+    }
 }
 
 sub setIsMultiPart {
-	my ($self, $value) = @_;
-	$self->setIsMultipart($value);
+    my ($self, $value) = @_;
+    $self->setIsMultipart($value);
 }
 
 sub validationErrorMessagesArray {
-	my ($self) = @_;
-	my $h = $self->validationErrorMessages();
-	return [map {'key' => $_, 'value' => $h->{$_} }, keys %$h];
+    my ($self) = @_;
+    my $h = $self->validationErrorMessages();
+    return [map {'key' => $_, 'value' => $h->{$_} }, keys %$h];
 }
 
 sub validationErrorMessages {
-	my ($self) = @_;
-	return $self->{validationErrorMessages} || {};
+    my ($self) = @_;
+    return $self->{validationErrorMessages} || {};
 }
 
 sub setValidationErrorMessages {
-	my ($self, $value) = @_;
-	$self->{validationErrorMessages} = $value;
+    my ($self, $value) = @_;
+    $self->{validationErrorMessages} = $value;
 }
 
 1;

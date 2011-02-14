@@ -26,215 +26,215 @@ use strict;
 use PF::Array;
 
 use overload
-	"." => "_stringByConcatenatingStrings",
-	'""' => "toString",
-	"eq" => "isEqualToString",
-	"==" => "isEqualToNumber",
-	"cmp" => "compareToString",
-	"<=>" => "compareToNumber",
-	;
+    "." => "_stringByConcatenatingStrings",
+    '""' => "toString",
+    "eq" => "isEqualToString",
+    "==" => "isEqualToNumber",
+    "cmp" => "compareToString",
+    "<=>" => "compareToNumber",
+    ;
 
 sub import {
-	shift;
-	return unless @_;
-	die "unknown import: @_" unless @_ == 1 and $_[0] eq ':constant';
-	overload::constant q => sub {
-		my $rawString = shift;
-		my $string = shift;
-		my $type = shift;
-		return PF::String->new($string);
-	};
+    shift;
+    return unless @_;
+    die "unknown import: @_" unless @_ == 1 and $_[0] eq ':constant';
+    overload::constant q => sub {
+        my $rawString = shift;
+        my $string = shift;
+        my $type = shift;
+        return PF::String->new($string);
+    };
 }
 
 sub new {
-	my $className = shift;
-	my $self = { _string => "" };
-	bless $self, $className;
-	$self->init(@_);
-	return $self;
+    my $className = shift;
+    my $self = { _string => "" };
+    bless $self, $className;
+    $self->init(@_);
+    return $self;
 }
 
 sub init {
-	my $self = shift;
-	if (scalar @_ == 1) {
-		if (UNIVERSAL::isa($_[0], "ARRAY")) {
-			$self->initWithArrayOfStrings($_[0]);
-		} else {
-			$self->initWithString($_[0]);
-		}
-	} elsif (scalar @_ > 1) {
-		$self->initWithArrayOfStrings([@_]);
-	}
+    my $self = shift;
+    if (scalar @_ == 1) {
+        if (UNIVERSAL::isa($_[0], "ARRAY")) {
+            $self->initWithArrayOfStrings($_[0]);
+        } else {
+            $self->initWithString($_[0]);
+        }
+    } elsif (scalar @_ > 1) {
+        $self->initWithArrayOfStrings([@_]);
+    }
 }
 
 sub initWithString {
-	my $self = shift;
-	my $string = shift;
-	$self->_setString($string);
-	return $self;
+    my $self = shift;
+    my $string = shift;
+    $self->_setString($string);
+    return $self;
 }
 
 sub initWithArrayOfStrings {
-	my $self = shift;
-	my $array = shift;
-	$self->_setString(join("", @$array));
-	return $self;
+    my $self = shift;
+    my $array = shift;
+    $self->_setString(join("", @$array));
+    return $self;
 }
 
 sub initWithContentsOfFile {
-	my $self = shift;
-	my $filePath = shift;
-	if (open (FILE, $filePath)) {
-		$self->_setString(join("", <FILE>));
-		close (FILE);
-	}
-	return $self;
+    my $self = shift;
+    my $filePath = shift;
+    if (open (FILE, $filePath)) {
+        $self->_setString(join("", <FILE>));
+        close (FILE);
+    }
+    return $self;
 }
 
 sub _setString {
-	my $self = shift;
-	$self->{_string} = shift;
+    my $self = shift;
+    $self->{_string} = shift;
 }
 
 sub _string {
-	my $self = shift;
-	return $self->{_string};
+    my $self = shift;
+    return $self->{_string};
 }
 
 sub toString {
-	my $self = shift;
-	return $self->{_string};
+    my $self = shift;
+    return $self->{_string};
 }
 
 sub _stringByConcatenatingStrings {
-	my $self = shift;
-	my $string = shift;
-	my $reversed = shift;
-	my $stringClass = ref $self;
-	if ($reversed) {
-		return $stringClass->new($string.$self->_string());
-	}
-	return $stringClass->new($self->_string().$string);
+    my $self = shift;
+    my $string = shift;
+    my $reversed = shift;
+    my $stringClass = ref $self;
+    if ($reversed) {
+        return $stringClass->new($string.$self->_string());
+    }
+    return $stringClass->new($self->_string().$string);
 }
 
 sub stringByAppendingString {
-	my $self = shift;
-	my $string = shift;
-	return $self->_newInstanceOfSameClassWithParameters($self->_string().$string);
+    my $self = shift;
+    my $string = shift;
+    return $self->_newInstanceOfSameClassWithParameters($self->_string().$string);
 }
 
 sub length {
-	my $self = shift;
-	return length($self->_string());
+    my $self = shift;
+    return length($self->_string());
 }
 
 sub isEqualTo {
-	my $self = shift;
-	return $self->isEqualToString(@_);
+    my $self = shift;
+    return $self->isEqualToString(@_);
 }
 
 sub isEqualToString {
-	my $self = shift;
-	my $string = shift;
-	return ($self->_string() eq $string);
+    my $self = shift;
+    my $string = shift;
+    return ($self->_string() eq $string);
 }
 
 sub isEqualToNumber {
-	my $self = shift;
-	my $number = shift;
-	return ($self->_string() == $number);
+    my $self = shift;
+    my $number = shift;
+    return ($self->_string() == $number);
 }
 
 sub componentsSeparatedByString {
-	my $self = shift;
-	my $separator = shift;
-	my @components = split(/$separator/, $self->_string());
-	return PF::Array->new(map {$self->_newInstanceOfSameClassWithParameters($_)} @components);
+    my $self = shift;
+    my $separator = shift;
+    my @components = split(/$separator/, $self->_string());
+    return PF::Array->new(map {$self->_newInstanceOfSameClassWithParameters($_)} @components);
 }
 
 sub compareToString {
-	my $self = shift;
-	my $string = shift;
-	my $reversed = shift;
+    my $self = shift;
+    my $string = shift;
+    my $reversed = shift;
 
-	return ($self->_string() cmp $string) unless $reversed;
-	return ($string cmp $self->_string());
+    return ($self->_string() cmp $string) unless $reversed;
+    return ($string cmp $self->_string());
 }
 
 sub compareToNumber {
-	my $self = shift;
-	my $number = shift;
-	my $reversed = shift;
+    my $self = shift;
+    my $number = shift;
+    my $reversed = shift;
 
-	return ($self->_string() <=> $number) unless $reversed;
-	return ($number <=> $self->_string());
+    return ($self->_string() <=> $number) unless $reversed;
+    return ($number <=> $self->_string());
 }
 
 sub startsWith {
-	my $self = shift;
-	my $string = shift;
-	return 1 if ($self->_string() =~ /^$string/);
-	return 0;
+    my $self = shift;
+    my $string = shift;
+    return 1 if ($self->_string() =~ /^$string/);
+    return 0;
 }
 
 sub endsWith {
-	my $self = shift;
-	my $string = shift;
-	return 1 if ($self->_string() =~ /$string$/);
-	return 0;
+    my $self = shift;
+    my $string = shift;
+    return 1 if ($self->_string() =~ /$string$/);
+    return 0;
 }
 
 sub characterAtIndex {
-	my $self = shift;
-	my $index = shift;
-	return '' unless ($index < $self->length());
-	return substr($self->_string(), $index, 1);
+    my $self = shift;
+    my $index = shift;
+    return '' unless ($index < $self->length());
+    return substr($self->_string(), $index, 1);
 }
 
 sub intValue {
-	my $self = shift;
-	return int($self->_string());
+    my $self = shift;
+    return int($self->_string());
 }
 
 sub substringWithRange {
-	my $self = shift;
-	my $start = shift;
-	my $end = shift;
+    my $self = shift;
+    my $start = shift;
+    my $end = shift;
 
-	if ($end < 0) {
-		$end = $self->length() + 1 + $end;
-	}
+    if ($end < 0) {
+        $end = $self->length() + 1 + $end;
+    }
 
-	if ($start < 0) {
-		$start = $self->length() + 1 + $start;
-	}
-	my $substring = $self->_newInstanceOfSameClassWithParameters();
-	return $substring unless ($start < $end);
-	$substring->initWithString(substr($self->_string(), $start, ($end-$start)));
-	return $substring;
+    if ($start < 0) {
+        $start = $self->length() + 1 + $start;
+    }
+    my $substring = $self->_newInstanceOfSameClassWithParameters();
+    return $substring unless ($start < $end);
+    $substring->initWithString(substr($self->_string(), $start, ($end-$start)));
+    return $substring;
 }
 
 sub substringToIndex {
-	my $self = shift;
-	my $index = shift;
-	return $self->substringWithRange(0, $index);
+    my $self = shift;
+    my $index = shift;
+    return $self->substringWithRange(0, $index);
 }
 
 sub substringFromIndex {
-	my $self = shift;
-	my $index = shift;
-	return $self->substringWithRange($index, $self->length());
+    my $self = shift;
+    my $index = shift;
+    return $self->substringWithRange($index, $self->length());
 }
 
 sub copyOfSelf {
-	my $self = shift;
-	return $self->_newInstanceOfSameClassWithParameters($self->_string());
+    my $self = shift;
+    return $self->_newInstanceOfSameClassWithParameters($self->_string());
 }
 
 sub _newInstanceOfSameClassWithParameters {
-	my $self = shift;
-	my $className = ref $self;
-	return $className->new(@_);
+    my $self = shift;
+    my $className = ref $self;
+    return $className->new(@_);
 }
 
 1;

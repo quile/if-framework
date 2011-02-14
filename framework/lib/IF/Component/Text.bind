@@ -21,23 +21,23 @@
 # THE SOFTWARE.
 
 {
-	inheritsFrom => "IF::Component::_Default",
+    inheritsFrom => "IF::Component::_Default",
     NAME => {
         type => "STRING",
         value => q($self->name()),
-		filter => q(escapeDoubleQuotes),
+        filter => q(escapeDoubleQuotes),
     },
-	ROWS => {
-		type => "STRING",
-		value => q($self->rows()),
-	},
-	COLUMNS => {
-		type => "STRING",
-		value => q($self->columns()),
-	},
-	VALUE => {
-		type => "STRING",
-		value => q($self->value()),
-		filter => q(escapeDoubleQuotes),
-	},
+    ROWS => {
+        type => "STRING",
+        value => q($self->rows()),
+    },
+    COLUMNS => {
+        type => "STRING",
+        value => q($self->columns()),
+    },
+    VALUE => {
+        type => "STRING",
+        value => q($self->value()),
+        filter => q(escapeDoubleQuotes),
+    },
 };

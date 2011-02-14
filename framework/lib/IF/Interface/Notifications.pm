@@ -5,31 +5,31 @@ use strict;
 my $_NOTIFICATION_ORDER_FOR_CLASS = {};
 
 sub _notificationOrderForInstanceOfClassNamed {
-	my ($className, $visitedClassnames) = @_;
+    my ($className, $visitedClassnames) = @_;
 
-	$visitedClassnames ||= {};
-	
-	# cache this stuff so we don't need to traverse the @ISA tree every
-	# time a notification is sent.
-	if ($_NOTIFICATION_ORDER_FOR_CLASS->{$className}) {
-		$visitedClassnames->{$className} = 1;
-		return $_NOTIFICATION_ORDER_FOR_CLASS->{$className};
-	}
+    $visitedClassnames ||= {};
+    
+    # cache this stuff so we don't need to traverse the @ISA tree every
+    # time a notification is sent.
+    if ($_NOTIFICATION_ORDER_FOR_CLASS->{$className}) {
+        $visitedClassnames->{$className} = 1;
+        return $_NOTIFICATION_ORDER_FOR_CLASS->{$className};
+    }
 
-	{
-		no strict 'refs';
-		my $i = [@{$className."::ISA"}];
-		return [] unless IF::Log::assert($i && IF::Array::isArray($i), "$className is not an array of class names");
-		$visitedClassnames->{$className} = 1;
-		my $all = [];
-		foreach my $c (@$i) {
-			next if ($visitedClassnames->{$c});
-			push (@$all, @{_notificationOrderForInstanceOfClassNamed($c, $visitedClassnames)});
-		}
-		my $no = [$className, @$all];
-		$_NOTIFICATION_ORDER_FOR_CLASS->{$className} = $no;
-		return $no;
-	}
+    {
+        no strict 'refs';
+        my $i = [@{$className."::ISA"}];
+        return [] unless IF::Log::assert($i && IF::Array::isArray($i), "$className is not an array of class names");
+        $visitedClassnames->{$className} = 1;
+        my $all = [];
+        foreach my $c (@$i) {
+            next if ($visitedClassnames->{$c});
+            push (@$all, @{_notificationOrderForInstanceOfClassNamed($c, $visitedClassnames)});
+        }
+        my $no = [$className, @$all];
+        $_NOTIFICATION_ORDER_FOR_CLASS->{$className} = $no;
+        return $no;
+    }
 }
 
 
@@ -46,25 +46,25 @@ package UNIVERSAL;
 # an object could cause numerous instances of the method call to
 # be executed.
 sub invokeNotificationFromObjectWithArguments {
-	my ($self, $notification, $object, @arguments) = @_;
-	
-	# questions:
-	# * how do we pass $object in effectively?  Right now it
-	#   is required for all notifications.
-	# * do we check if $self respects the Notifications interface?	
-	#   return unless (isa($self, "IF::Interface::Notifications"));
-	
-	my $no = IF::Interface::Notifications::_notificationOrderForInstanceOfClassNamed(ref($self));
-	{
-		no strict 'refs';
-		foreach my $class (@$no) {
-			my $hasMethod = defined &{ ${"${class}::"}{$notification}};
-			next unless $hasMethod;
-			my $method = ${"${class}::"}{$notification};
-			IF::Log::debug("++++++++++>>>>> Sending $notification to parent class $class of $self");
-			$method->($self, $object, @arguments);
-		}
-	}
+    my ($self, $notification, $object, @arguments) = @_;
+    
+    # questions:
+    # * how do we pass $object in effectively?  Right now it
+    #   is required for all notifications.
+    # * do we check if $self respects the Notifications interface?    
+    #   return unless (isa($self, "IF::Interface::Notifications"));
+    
+    my $no = IF::Interface::Notifications::_notificationOrderForInstanceOfClassNamed(ref($self));
+    {
+        no strict 'refs';
+        foreach my $class (@$no) {
+            my $hasMethod = defined &{ ${"${class}::"}{$notification}};
+            next unless $hasMethod;
+            my $method = ${"${class}::"}{$notification};
+            IF::Log::debug("++++++++++>>>>> Sending $notification to parent class $class of $self");
+            $method->($self, $object, @arguments);
+        }
+    }
 }
 
 1;

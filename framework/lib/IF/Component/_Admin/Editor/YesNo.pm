@@ -2,13 +2,13 @@ package IF::Component::_Admin::Editor::YesNo;
 
 use strict;
 use base qw(
-	IF::Component
+    IF::Component
 );
 
 sub init {
-	my ($self) = @_;
-	$self->SUPER::init();
-	$self->setAllowsNoSelection();
+    my ($self) = @_;
+    $self->SUPER::init();
+    $self->setAllowsNoSelection();
 }
 
 sub name    { return $_[0]->{name}  }
@@ -22,51 +22,51 @@ sub setAllowsNoSelection { $_[0]->{allowsNoSelection} = $_[1] }
 
 
 sub negatedValue {
-	my $self = shift;
-	return 0 if $self->{value};
-	return 1;
+    my $self = shift;
+    return 0 if $self->{value};
+    return 1;
 }
 
 sub setNegatedValue {
-	my $self = shift;
-	$self->{value} = !int(shift);
+    my $self = shift;
+    $self->{value} = !int(shift);
 }
 
 
 sub Bindings {
     return {
-    	YES_NO_POPUP => {
-    		type => "PopUpMenu",
-    		bindings => {
-    			list => q([
-    			    { KEY => "1", VALUE => "Yes", },
-    			    { KEY => "0", VALUE => "No", },
-    			]),
-    			displayString => q("VALUE"),
-    			value => q("KEY"),
-    			selection => q(value),
-    			allowsNoSelection => q(allowsNoSelection),
-    			name => q(name),
-    		},
-    	},
-    	IS_NEGATED => {
-    		type => "BOOLEAN",
-    		value => q(isNegated),
-    	},
-    	NO_YES_POPUP => {
-    		type => "PopUpMenu",
-    		bindings => {
-    			list => q(
-    			    { KEY => "1", VALUE => "Yes", },
-    			    { KEY => "0", VALUE => "No", },
-    			),    			
-    			displayString => q("VALUE"),
-    			value => q("KEY"),
-    			selection => q(negatedValue),
-    			allowsNoSelection => q(allowsNoSelection),
-    			name => q(name),
-    		},
-    	},
+        YES_NO_POPUP => {
+            type => "PopUpMenu",
+            bindings => {
+                list => q([
+                    { KEY => "1", VALUE => "Yes", },
+                    { KEY => "0", VALUE => "No", },
+                ]),
+                displayString => q("VALUE"),
+                value => q("KEY"),
+                selection => q(value),
+                allowsNoSelection => q(allowsNoSelection),
+                name => q(name),
+            },
+        },
+        IS_NEGATED => {
+            type => "BOOLEAN",
+            value => q(isNegated),
+        },
+        NO_YES_POPUP => {
+            type => "PopUpMenu",
+            bindings => {
+                list => q(
+                    { KEY => "1", VALUE => "Yes", },
+                    { KEY => "0", VALUE => "No", },
+                ),                
+                displayString => q("VALUE"),
+                value => q("KEY"),
+                selection => q(negatedValue),
+                allowsNoSelection => q(allowsNoSelection),
+                name => q(name),
+            },
+        },
     };
 }
 1;

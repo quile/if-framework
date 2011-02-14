@@ -22,57 +22,57 @@
 
 # bindings for the DateEditor component
 {
-	LOCALIZED_STRING => {
-	   type => "LocalizedString",
-	},
-	YEAR => {
-		type => "Selection",
-		bindings => {
-			NAME => q("SYYYY_".$self->name()),
-			SELECTED_VALUES => q([ $self->year() ]),
-			LIST => q($self->yearsAsStrings()),
-		},
-	},
-	MONTH => {
-		type => "Selection",
-		bindings => {
-			NAME => q("SMM_".$self->name()),
-			SELECTED_VALUES => q([ $self->month() ]),
-			LIST => q($self->monthsAsStrings($context)),
-			DISPLAY_STRING => q("month"),
-			VALUE => q("index"),
-		},
-	},
-	DAY => {
-		type => "Selection",
-		bindings => {
-			NAME => q("SDD_".$self->name()),
-			SELECTED_VALUES => q([ $self->day() ]),
-			LIST => q($self->daysAsStrings()),
-		},
-	},
-	IS_FIRST_TIME_LOADED => {
-		type => "BOOLEAN",
-		value => q(isFirstTimeLoaded),
-	},
-	SHOULD_SHOW_TODAY_LINK => {
-		type => "BOOLEAN",
-		value => q(shouldShowTodayLink),
-	},
-	CURRENT_YEAR => {
-		type => "STRING",
-		value => q(currentYear),
-	},
-	CURRENT_MONTH => {
-		type => "STRING",
-		value => q(currentMonth),
-	},
-	CURRENT_DAY => {
-		type => "STRING",
-		value => q(currentDay),
-	},
-	NAME => {
-		type => "STRING",
-		value => q(name),
-	},
+    LOCALIZED_STRING => {
+       type => "LocalizedString",
+    },
+    YEAR => {
+        type => "Selection",
+        bindings => {
+            NAME => q("SYYYY_".$self->name()),
+            SELECTED_VALUES => q([ $self->year() ]),
+            LIST => q($self->yearsAsStrings()),
+        },
+    },
+    MONTH => {
+        type => "Selection",
+        bindings => {
+            NAME => q("SMM_".$self->name()),
+            SELECTED_VALUES => q([ $self->month() ]),
+            LIST => q($self->monthsAsStrings($context)),
+            DISPLAY_STRING => q("month"),
+            VALUE => q("index"),
+        },
+    },
+    DAY => {
+        type => "Selection",
+        bindings => {
+            NAME => q("SDD_".$self->name()),
+            SELECTED_VALUES => q([ $self->day() ]),
+            LIST => q($self->daysAsStrings()),
+        },
+    },
+    IS_FIRST_TIME_LOADED => {
+        type => "BOOLEAN",
+        value => q(isFirstTimeLoaded),
+    },
+    SHOULD_SHOW_TODAY_LINK => {
+        type => "BOOLEAN",
+        value => q(shouldShowTodayLink),
+    },
+    CURRENT_YEAR => {
+        type => "STRING",
+        value => q(currentYear),
+    },
+    CURRENT_MONTH => {
+        type => "STRING",
+        value => q(currentMonth),
+    },
+    CURRENT_DAY => {
+        type => "STRING",
+        value => q(currentDay),
+    },
+    NAME => {
+        type => "STRING",
+        value => q(name),
+    },
 }

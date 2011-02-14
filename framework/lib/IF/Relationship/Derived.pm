@@ -24,31 +24,31 @@ package IF::Relationship::Derived;
 
 use strict;
 use base qw(
-	IF::Relationship::Modelled
+    IF::Relationship::Modelled
 );
 
 sub newFromFetchSpecificationWithName {
-	my ($className, $fs, $name) = @_;
-	my $self = {
-		_fetchSpecification => $fs,
-	};
-	bless $self, $className;
-	$self->setName($name);
-	return $self;
+    my ($className, $fs, $name) = @_;
+    my $self = {
+        _fetchSpecification => $fs,
+    };
+    bless $self, $className;
+    $self->setName($name);
+    return $self;
 }
 
 sub targetEntity {
-	my ($self) = @_;
-	return $self->fetchSpecification()->entityName();
+    my ($self) = @_;
+    return $self->fetchSpecification()->entityName();
 }
 
 sub targetEntityClassDescription {
-	my ($self) = @_;
-	return $self->fetchSpecification()->entityClassDescription();
+    my ($self) = @_;
+    return $self->fetchSpecification()->entityClassDescription();
 }
 
 sub type {
-	return "TO_MANY";
+    return "TO_MANY";
 }
 
 # These aren't defined because there's no actual
@@ -56,21 +56,21 @@ sub type {
 # separate qualifier
 
 sub sourceAttribute {
-	return undef;
+    return undef;
 }
 
 sub targetAttribute {
-	return undef;
+    return undef;
 }
 
 sub fetchSpecification {
-	my ($self) = @_;
-	return $self->{_fetchSpecification};
+    my ($self) = @_;
+    return $self->{_fetchSpecification};
 }
 
 sub setFetchSpecification {
-	my ($self, $value) = @_;
-	$self->{_fetchSpecification} = $value;
+    my ($self, $value) = @_;
+    $self->{_fetchSpecification} = $value;
 }
 
 1;

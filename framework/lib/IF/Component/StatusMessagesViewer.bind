@@ -21,35 +21,35 @@
 # THE SOFTWARE.
 
 {
-	HAS_MESSAGES => {
-		type => "BOOLEAN",
-		value => q(list.#),
-	},
-	HAS_ERRORS => {
-		type => "BOOLEAN",
-		value => q(errors.#),
-	},
-	LIST => {
-		type => "LOOP",
-		list => q(list),
-		item => q(statusMessage),
-	},
-	# Deprecated
-	IMAGE_PATH => {
-		type => "STRING",
-		value => q(_derivedImagePath),
-	},
-	MESSAGE_CLASS => {
-		type => "STRING",
-		value => q(css),
-	},
-	TEXT => {
-		type => "STRING",
-		value => q(statusMessage.text),
-	},
+    HAS_MESSAGES => {
+        type => "BOOLEAN",
+        value => q(list.#),
+    },
+    HAS_ERRORS => {
+        type => "BOOLEAN",
+        value => q(errors.#),
+    },
+    LIST => {
+        type => "LOOP",
+        list => q(list),
+        item => q(statusMessage),
+    },
+    # Deprecated
+    IMAGE_PATH => {
+        type => "STRING",
+        value => q(_derivedImagePath),
+    },
+    MESSAGE_CLASS => {
+        type => "STRING",
+        value => q(css),
+    },
+    TEXT => {
+        type => "STRING",
+        value => q(statusMessage.text),
+    },
 
-	UNIQUE_ID => {
-		type => "STRING",
-		value => q(uniqueId),
-	}
+    UNIQUE_ID => {
+        type => "STRING",
+        value => q(uniqueId),
+    }
 };

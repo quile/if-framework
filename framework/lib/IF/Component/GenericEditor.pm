@@ -28,60 +28,60 @@ use vars qw(@ISA);
 @ISA = qw(IF::Component);
 
 sub init {
-	my $self = shift;
-	$self->{allowsNoSelection} = 0;
+    my $self = shift;
+    $self->{allowsNoSelection} = 0;
 }
 
 sub takeValuesFromRequest {
-	my $self = shift;
-	my $context = shift;
+    my $self = shift;
+    my $context = shift;
 
-	if ($self->size() > 0) {
-		$self->setValue($context->formValuesForKey($self->name()));
-	} else {
-		$self->setValue($context->formValueForKey($self->name()));
-	}
-	$self->SUPER::takeValuesFromRequest($context);
+    if ($self->size() > 0) {
+        $self->setValue($context->formValuesForKey($self->name()));
+    } else {
+        $self->setValue($context->formValueForKey($self->name()));
+    }
+    $self->SUPER::takeValuesFromRequest($context);
 }
 
 sub allowsNoSelection {
-	my $self = shift;
-	return $self->{allowsNoSelection};
+    my $self = shift;
+    return $self->{allowsNoSelection};
 }
 
 sub setAllowsNoSelection {
-	my $self = shift;
-	$self->{allowsNoSelection} = shift;
+    my $self = shift;
+    $self->{allowsNoSelection} = shift;
 }
 
 sub value {
-	my $self = shift;
-	return $self->{value};
+    my $self = shift;
+    return $self->{value};
 }
 
 sub setValue {
-	my $self = shift;
-	$self->{value} = shift;
+    my $self = shift;
+    $self->{value} = shift;
 }
 
 sub size {
-	my $self = shift;
-	return $self->{size};
+    my $self = shift;
+    return $self->{size};
 }
 
 sub setSize {
-	my $self = shift;
-	$self->{size} = shift;
+    my $self = shift;
+    $self->{size} = shift;
 }
 
 sub name {
-	my $self = shift;
-	return $self->{name} || $self->queryKeyNameForPageAndLoopContexts();
+    my $self = shift;
+    return $self->{name} || $self->queryKeyNameForPageAndLoopContexts();
 }
 
 sub setName {
-	my $self = shift;
-	$self->{name} = shift;
+    my $self = shift;
+    $self->{name} = shift;
 }
 
 1;

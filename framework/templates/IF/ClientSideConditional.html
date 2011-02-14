@@ -2,19 +2,19 @@
 <script type="text/javascript" charset="utf-8">
 
 <BINDING:UNIQUE_ID />Function = function() {
-	var retVal = 0;
-	try {
-		var retVal = (<BINDING:EXPRESSION />); 
-	} catch(err) {
-		console.log('Expression (<BINDING:EXPRESSION />) did not validate');
-	}
-	return retVal;
+    var retVal = 0;
+    try {
+        var retVal = (<BINDING:EXPRESSION />); 
+    } catch(err) {
+        console.log('Expression (<BINDING:EXPRESSION />) did not validate');
+    }
+    return retVal;
 }
 
 jQuery(function() { 
-	var c = new IFClientSideConditional('<BINDING:UNIQUE_ID />', '<BINDING:PARENT_BINDING_NAME />', <BINDING:UNIQUE_ID />Function);
-	IF.controllers.<BINDING:UNIQUE_ID /> = c;
-	c.refresh();
-	IFClientSideConditional.registerConditional(c);
+    var c = new IFClientSideConditional('<BINDING:UNIQUE_ID />', '<BINDING:PARENT_BINDING_NAME />', <BINDING:UNIQUE_ID />Function);
+    IF.controllers.<BINDING:UNIQUE_ID /> = c;
+    c.refresh();
+    IFClientSideConditional.registerConditional(c);
 })
 </script>

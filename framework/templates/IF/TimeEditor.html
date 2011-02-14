@@ -2,47 +2,47 @@
 <script type="text/javascript">
 <!--
 function setTimeSelectionToBlank(selection) {
-	var formElements = selection.form.elements;
-	var regexp = /^S[^_]+_/g;
-	componentName = selection.name.replace(regexp, "");
-	formElements["SHH_"+componentName].selectedIndex = 0;
-	formElements["SMM_"+componentName].selectedIndex = 0;
-	formElements["SSS_"+componentName].selectedIndex = 0;
-	formElements["SAP_"+componentName].selectedIndex = 0;
+    var formElements = selection.form.elements;
+    var regexp = /^S[^_]+_/g;
+    componentName = selection.name.replace(regexp, "");
+    formElements["SHH_"+componentName].selectedIndex = 0;
+    formElements["SMM_"+componentName].selectedIndex = 0;
+    formElements["SSS_"+componentName].selectedIndex = 0;
+    formElements["SAP_"+componentName].selectedIndex = 0;
 }
 function onTimeSelection (selection) {
-	if (selection.options[selection.selectedIndex].value == '') {
-		setTimeSelectionToBlank(selection);
-	}
+    if (selection.options[selection.selectedIndex].value == '') {
+        setTimeSelectionToBlank(selection);
+    }
 }
 function indexOfOptionInSelection(option, selection) {
-	var options = selection.options;
-	for (var i=0; i<options.length; i++) {
-		if (options[i].value == option) {
-			//alert(options[i].value);
-			return i;
-		}
-	}
-	return -1;
+    var options = selection.options;
+    for (var i=0; i<options.length; i++) {
+        if (options[i].value == option) {
+            //alert(options[i].value);
+            return i;
+        }
+    }
+    return -1;
 }
 function parentFormOfElement (element) {
-	var currentElement = element;
-	while (currentElement != null && currentElement.nodeName != "FORM") {
-		currentElement = currentElement.parentNode;
-	}
-	return currentElement;
+    var currentElement = element;
+    while (currentElement != null && currentElement.nodeName != "FORM") {
+        currentElement = currentElement.parentNode;
+    }
+    return currentElement;
 }
 
 function setTimeSelectionWithTime(link, componentName, hour, minute, second, ampm) {
-	var form = parentFormOfElement(link);
-	if (form == null) {
-		return;
-	}
-	var formElements = form.elements;
-	formElements["SHH_"+componentName].options[indexOfOptionInSelection(hour, formElements["SHH_"+componentName])].selected = true;
-	formElements["SMM_"+componentName].options[indexOfOptionInSelection(minute, formElements["SMM_"+componentName])].selected = true;
-	formElements["SSS_"+componentName].options[indexOfOptionInSelection(second, formElements["SSS_"+componentName])].selected = true;
-	formElements["SAP_"+componentName].options[indexOfOptionInSelection(ampm, formElements["SAP_"+componentName])].selected = true;
+    var form = parentFormOfElement(link);
+    if (form == null) {
+        return;
+    }
+    var formElements = form.elements;
+    formElements["SHH_"+componentName].options[indexOfOptionInSelection(hour, formElements["SHH_"+componentName])].selected = true;
+    formElements["SMM_"+componentName].options[indexOfOptionInSelection(minute, formElements["SMM_"+componentName])].selected = true;
+    formElements["SSS_"+componentName].options[indexOfOptionInSelection(second, formElements["SSS_"+componentName])].selected = true;
+    formElements["SAP_"+componentName].options[indexOfOptionInSelection(ampm, formElements["SAP_"+componentName])].selected = true;
 }
 // -->
 </script>

@@ -82,14 +82,14 @@ use IF::ObjectContext;
 
 
 sub test_basic: Test(2) {
-	my ($self) = @_;
+    my ($self) = @_;
 
-	my $basic = IF::Query->new("Root");
-	my $all = $basic->all();
-	ok($all && scalar @$all == 1, "Basic query all() returned correct number");
-	my $basic = IF::Query->new("Branch");
-	my $all = $basic->all();
-	ok($all && scalar @$all == 6, "Basic query all() returned correct number when more than 1 result");
+    my $basic = IF::Query->new("Root");
+    my $all = $basic->all();
+    ok($all && scalar @$all == 1, "Basic query all() returned correct number");
+    my $basic = IF::Query->new("Branch");
+    my $all = $basic->all();
+    ok($all && scalar @$all == 6, "Basic query all() returned correct number when more than 1 result");
 }
 
 sub test_iterate : Test(4) {

@@ -21,35 +21,35 @@
 # THE SOFTWARE.
 
 {
-	TAG_ATTRIBUTES => {
-		type => "ATTRIBUTES",
-	},
-	JAVASCRIPT_ROOT => {
-		type => "STRING",
-		value => q(application.systemConfigurationValueForKey("JAVASCRIPT_ROOT")),
-	},
-	IS_FIRST_TIME_RENDERED => {
-		type => "BOOLEAN",
-		value => q(isFirstTimeRendered),
-	},
-	UNIQUE_ID => {
-		type => "STRING",
-		value => q(uniqueId),
-	},
-	PARENT_BINDING_NAME => {
-		type => "STRING",
-		value => q(nestedBindingPath),
-	},
-	HAS_REQUIRED_MESSAGE => {
-	    type => "BOOLEAN",
-	    value => q(isRequiredMessage),
-	},
-	IS_REQUIRED => {
-		type => "BOOLEAN",
-		value => q(isRequired),
-	},
-	REQUIRED_MESSAGE => {
+    TAG_ATTRIBUTES => {
+        type => "ATTRIBUTES",
+    },
+    JAVASCRIPT_ROOT => {
+        type => "STRING",
+        value => q(application.systemConfigurationValueForKey("JAVASCRIPT_ROOT")),
+    },
+    IS_FIRST_TIME_RENDERED => {
+        type => "BOOLEAN",
+        value => q(isFirstTimeRendered),
+    },
+    UNIQUE_ID => {
+        type => "STRING",
+        value => q(uniqueId),
+    },
+    PARENT_BINDING_NAME => {
+        type => "STRING",
+        value => q(nestedBindingPath),
+    },
+    HAS_REQUIRED_MESSAGE => {
+        type => "BOOLEAN",
+        value => q(isRequiredMessage),
+    },
+    IS_REQUIRED => {
+        type => "BOOLEAN",
+        value => q(isRequired),
+    },
+    REQUIRED_MESSAGE => {
         type => "STRING",
         value => q(isRequiredMessage),
-	},
+    },
 }

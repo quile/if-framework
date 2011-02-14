@@ -35,17 +35,17 @@ use IF::SummaryAttribute;
 sub test_counting : Test(2) {
     my ($self) = @_;
 
-	my $qualifier = IF::Qualifier->key("globules.name = %@", "Globule-2");
+    my $qualifier = IF::Qualifier->key("globules.name = %@", "Globule-2");
 
-	my $ss = IF::SummarySpecification->new('Branch', $qualifier);
-	ok($ss, "Constructed Summary Spec");
+    my $ss = IF::SummarySpecification->new('Branch', $qualifier);
+    ok($ss, "Constructed Summary Spec");
 
-	$ss->restrictFetchToAttributes("globuleCount");
-	my $results = $self->{oc}->resultsForSummarySpecification(
-			$ss->initWithSummaryAttributes([IF::SummaryAttribute->new("globuleCount", "COUNT(distinct %@)", "id")])
-	);
-	my $count = $results->[0]->valueForKey("globuleCount");
-	ok($count == 2, "Found 2 distinct ids for branches with globule-2");
+    $ss->restrictFetchToAttributes("globuleCount");
+    my $results = $self->{oc}->resultsForSummarySpecification(
+            $ss->initWithSummaryAttributes([IF::SummaryAttribute->new("globuleCount", "COUNT(distinct %@)", "id")])
+    );
+    my $count = $results->[0]->valueForKey("globuleCount");
+    ok($count == 2, "Found 2 distinct ids for branches with globule-2");
 }
 
 

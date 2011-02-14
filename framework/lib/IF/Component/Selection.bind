@@ -22,44 +22,44 @@
 
 # bindings for selection component
 {
-	NAME => {
-		type => "STRING",
-		value => q($self->valueForKey("NAME")),
-	},
-	SIZE => {
-		type => "STRING",
-		value => q($self->valueForKey("SIZE") || 1),
-	},
-	IS_MULTIPLE => {
-		type => "BOOLEAN",
-		value => q( $self->valueForKey("SIZE") > 1 ),
-	},
-	LIST => {
-		type => "LOOP",
-		list => q($self->list()),
-		item => "anItem",
-	},
-	VALUE => {
-		type => "STRING",
-		value => q($self->valueForItem($self->{anItem})),
-	},
-	IS_SELECTED => {
-		type => "BOOLEAN",
-		value => q($self->itemIsSelected($self->{anItem})),
-	},
-	DISPLAY_STRING => {
-		type => "STRING",
-		value => q($self->displayStringForItem($self->{anItem})),
-	},
-	TAG_ATTRIBUTES => {
-		type => "ATTRIBUTES",
-	},
-	SHOULD_ENABLE_CLIENT_SIDE_SCRIPTING => {
-		type => "BOOLEAN",
-		value => q(shouldEnableClientSideScripting),
-	},
-	UNIQUE_ID => {
-		type => "STRING",
-		value => q(uniqueId),
-	},
+    NAME => {
+        type => "STRING",
+        value => q($self->valueForKey("NAME")),
+    },
+    SIZE => {
+        type => "STRING",
+        value => q($self->valueForKey("SIZE") || 1),
+    },
+    IS_MULTIPLE => {
+        type => "BOOLEAN",
+        value => q( $self->valueForKey("SIZE") > 1 ),
+    },
+    LIST => {
+        type => "LOOP",
+        list => q($self->list()),
+        item => "anItem",
+    },
+    VALUE => {
+        type => "STRING",
+        value => q($self->valueForItem($self->{anItem})),
+    },
+    IS_SELECTED => {
+        type => "BOOLEAN",
+        value => q($self->itemIsSelected($self->{anItem})),
+    },
+    DISPLAY_STRING => {
+        type => "STRING",
+        value => q($self->displayStringForItem($self->{anItem})),
+    },
+    TAG_ATTRIBUTES => {
+        type => "ATTRIBUTES",
+    },
+    SHOULD_ENABLE_CLIENT_SIDE_SCRIPTING => {
+        type => "BOOLEAN",
+        value => q(shouldEnableClientSideScripting),
+    },
+    UNIQUE_ID => {
+        type => "STRING",
+        value => q(uniqueId),
+    },
 };

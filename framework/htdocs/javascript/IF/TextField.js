@@ -7,9 +7,9 @@
 
 
 IFTextField = IF.extend(IFFormComponent, function(uniqueId, bindingName) {
-	if (! this.register(uniqueId, bindingName)) {
-		console.log("No textfield found with id "+uniqueId);
-	}
+    if (! this.register(uniqueId, bindingName)) {
+        console.log("No textfield found with id "+uniqueId);
+    }
 });
 
 IFTextField.prototype.value = function() {

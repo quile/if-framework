@@ -140,9 +140,9 @@ PerlSetEnv LOG_MASK $log_mask
 
 <IfDefine PERLSMALLPROF>
     <Perl>
-		use APR::Pool ();
-		use Apache::DB ();
-		Apache::DB->init();
+        use APR::Pool ();
+        use Apache::DB ();
+        Apache::DB->init();
     </Perl>
 
     <Location /if>
@@ -151,9 +151,9 @@ PerlSetEnv LOG_MASK $log_mask
 </IfDefine>
 
 <IfDefine PERLDPROF>
-	<Perl>
-		use Apache::DProf ();
-	</Perl>
+    <Perl>
+        use Apache::DProf ();
+    </Perl>
 </IfDefine>
 
 <IfDefine MP2>
@@ -171,7 +171,7 @@ PerlSetEnv LOG_MASK $log_mask
     #PerlSetVar ReloadDebug On
 </IfDefine>
 <IfDefine !MP2>
-	PerlRequire "$framework_path/conf/perlStartup.pl"
+    PerlRequire "$framework_path/conf/perlStartup.pl"
 </IfDefine>
 
 <Location /$app_name>
@@ -207,12 +207,12 @@ PerlTransHandler   IF::WebServer::TransHandler
 
 
 <Location /perl-status>
-	SetHandler perl-script
-	PerlResponseHandler Apache::Status
-	PerlSetVar StatusOptionsAll On
-	PerlSetVar StatusTerse On
-	PerlSetVar StatusTerseSize On
-	PerlSetVar StatusTerseSizeMainSummary On
+    SetHandler perl-script
+    PerlResponseHandler Apache::Status
+    PerlSetVar StatusOptionsAll On
+    PerlSetVar StatusTerse On
+    PerlSetVar StatusTerseSize On
+    PerlSetVar StatusTerseSizeMainSummary On
 
    Order deny,allow
    Allow from all
@@ -225,18 +225,18 @@ RewriteEngine On
 # is the file here? if so we're done
 #  note: matches /images/uploaded as well due to lack of
 #         prefixed ^
-RewriteCond		$root_path/htdocs/%{REQUEST_FILENAME}		-f
-RewriteRule 		/uploaded/.+$					-	[L]
+RewriteCond        $root_path/htdocs/%{REQUEST_FILENAME}        -f
+RewriteRule         /uploaded/.+$                    -    [L]
 # proxy it to our uploaded source peer if the
 # env var is set (see perlStartup.pl)
 # the query string addition in used to make sure this doesn't loop
-RewriteCond		%{QUERY_STRING} 		  !perl
-RewriteCond		%{ENV:UPLOAD_SOURCE_PEER} .+
-RewriteRule		^(.*)/uploaded/(.+)$		http://%{ENV:UPLOAD_SOURCE_PEER}$1/uploaded/$2?orig-h=%{SERVER_NAME}	[P,L]
+RewriteCond        %{QUERY_STRING}           !perl
+RewriteCond        %{ENV:UPLOAD_SOURCE_PEER} .+
+RewriteRule        ^(.*)/uploaded/(.+)$        http://%{ENV:UPLOAD_SOURCE_PEER}$1/uploaded/$2?orig-h=%{SERVER_NAME}    [P,L]
 
 # TODO: set expires header on js lib
 
-</Macro>	# ModPerl
+</Macro>    # ModPerl
 
 
 
@@ -270,9 +270,9 @@ Alias /if-static/ $framework_path/htdocs/
   #CustomLog $framework_path/logs/access_log.Cache combined
 #</IfDefine>
 
-ProxyRequests 	off
-ProxyPass	 /$application/ 			http://$backend_addy:$backend_port/$application/
-ProxyPassReverse /$application/ 		http://$backend_addy:$backend_port/$application/
+ProxyRequests     off
+ProxyPass     /$application/             http://$backend_addy:$backend_port/$application/
+ProxyPassReverse /$application/         http://$backend_addy:$backend_port/$application/
 
 # rewrite stuff
 RewriteEngine On
@@ -298,9 +298,9 @@ RewriteLogLevel 2
 # RewriteMap languageIsKnown        txt:$root_path/conf/rewriteMaps/languages.map
 
 # dummy rules set env vars for proxy host info
-#	these can be over-written by the direct rule
-RewriteRule	^.*		-		[E=BACKEND_ADDR:$backend_addy]
-RewriteRule	^.*		-		[E=BACKEND_PORT:$backend_port]
+#    these can be over-written by the direct rule
+RewriteRule    ^.*        -        [E=BACKEND_ADDR:$backend_addy]
+RewriteRule    ^.*        -        [E=BACKEND_PORT:$backend_port]
 
 Include "$root_path/conf/ACTIVE/rewrite.conf"
 

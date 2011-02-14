@@ -2,45 +2,45 @@
 <script type="text/javascript">
 <!--
 function setDateSelectionToBlank(selection) {
-	var formElements = selection.form.elements;
-	var regexp = /^S[^_]+_/g;
-	componentName = selection.name.replace(regexp, "");
-	formElements["SYYYY_"+componentName].selectedIndex = 0;
-	formElements["SMM_"+componentName].selectedIndex = 0;
-	formElements["SDD_"+componentName].selectedIndex = 0;
+    var formElements = selection.form.elements;
+    var regexp = /^S[^_]+_/g;
+    componentName = selection.name.replace(regexp, "");
+    formElements["SYYYY_"+componentName].selectedIndex = 0;
+    formElements["SMM_"+componentName].selectedIndex = 0;
+    formElements["SDD_"+componentName].selectedIndex = 0;
 }
 function onDateSelection (selection) {
-	if (selection.options[selection.selectedIndex].value == '') {
-		setDateSelectionToBlank(selection);
-	}
+    if (selection.options[selection.selectedIndex].value == '') {
+        setDateSelectionToBlank(selection);
+    }
 }
 function indexOfOptionInSelection(option, selection) {
-	var options = selection.options;
-	for (var i=0; i<options.length; i++) {
-		if (options[i].value == option) {
-			//alert(options[i].value);
-			return i;
-		}
-	}
-	return -1;
+    var options = selection.options;
+    for (var i=0; i<options.length; i++) {
+        if (options[i].value == option) {
+            //alert(options[i].value);
+            return i;
+        }
+    }
+    return -1;
 }
 function parentFormOfElement (element) {
-	var currentElement = element;
-	while (currentElement != null && currentElement.nodeName != "FORM") {
-		currentElement = currentElement.parentNode;
-	}
-	return currentElement;
+    var currentElement = element;
+    while (currentElement != null && currentElement.nodeName != "FORM") {
+        currentElement = currentElement.parentNode;
+    }
+    return currentElement;
 }
 function setDateSelectionWithDate(link, componentName, year, month, day) {
-	var form = parentFormOfElement(link);
-	if (form == null) {
-		//alert("where's the beef?");
-		return;
-	}
-	var formElements = form.elements;
-	formElements["SYYYY_"+componentName].options[indexOfOptionInSelection(year, formElements["SYYYY_"+componentName])].selected = true;
-	formElements["SMM_"+componentName].options[indexOfOptionInSelection(month, formElements["SMM_"+componentName])].selected = true;
-	formElements["SDD_"+componentName].options[indexOfOptionInSelection(day, formElements["SDD_"+componentName])].selected = true;
+    var form = parentFormOfElement(link);
+    if (form == null) {
+        //alert("where's the beef?");
+        return;
+    }
+    var formElements = form.elements;
+    formElements["SYYYY_"+componentName].options[indexOfOptionInSelection(year, formElements["SYYYY_"+componentName])].selected = true;
+    formElements["SMM_"+componentName].options[indexOfOptionInSelection(month, formElements["SMM_"+componentName])].selected = true;
+    formElements["SDD_"+componentName].options[indexOfOptionInSelection(day, formElements["SDD_"+componentName])].selected = true;
 }
 // -->
 </script>

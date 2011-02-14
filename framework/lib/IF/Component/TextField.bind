@@ -21,27 +21,27 @@
 # THE SOFTWARE.
 
 {
-	inheritsFrom => "IF::Component::_Default",
+    inheritsFrom => "IF::Component::_Default",
     NAME => {
         type => "STRING",
         value => q($self->name()),
-		filter => q(escapeDoubleQuotes),
+        filter => q(escapeDoubleQuotes),
     },
-	SIZE => {
-		type => "STRING",
-		value => q($self->size()),
-	},
-	MAX_LENGTH => {
-		type => "STRING",
-		value => q($self->maxLength()),
-	},
-	VALUE => {
-		type => "STRING",
-		value => q($self->value()),
-		filter => q(escapeDoubleQuotes),
-	},
-	SHOULD_ENABLE_CLIENT_SIDE_SCRIPTING => {
-		type => "BOOLEAN",
-		value => q(shouldEnableClientSideScripting),
-	},
+    SIZE => {
+        type => "STRING",
+        value => q($self->size()),
+    },
+    MAX_LENGTH => {
+        type => "STRING",
+        value => q($self->maxLength()),
+    },
+    VALUE => {
+        type => "STRING",
+        value => q($self->value()),
+        filter => q(escapeDoubleQuotes),
+    },
+    SHOULD_ENABLE_CLIENT_SIDE_SCRIPTING => {
+        type => "BOOLEAN",
+        value => q(shouldEnableClientSideScripting),
+    },
 };

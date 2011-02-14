@@ -26,18 +26,18 @@ use strict;
 use IF::Log;
 
 sub exitCodeAndOutputForShellCommand {
-	my $command = shift;
-	my $includeStdErr = shift;
+    my $command = shift;
+    my $includeStdErr = shift;
 
-	$command .= " 2>&1" if $includeStdErr;
-	open(CMD_FH,"$command |") or do {
-		IF::Log::error("error running $command: $!");
-		return (undef,undef);
-	};
-	my $output = join("",<CMD_FH>);
-	close(CMD_FH) or IF::Log::warning("error closing file handle: $!");
-	# check return code from command
-	return ($?,$output);
+    $command .= " 2>&1" if $includeStdErr;
+    open(CMD_FH,"$command |") or do {
+        IF::Log::error("error running $command: $!");
+        return (undef,undef);
+    };
+    my $output = join("",<CMD_FH>);
+    close(CMD_FH) or IF::Log::warning("error closing file handle: $!");
+    # check return code from command
+    return ($?,$output);
 }
 
 

@@ -30,18 +30,18 @@ use Apache::Cookie ();
 # constructor necessitating this.
 # See perldoc Apache::Request for details
 sub new {
-	my($classname, @args) = @_;
-	my $req = bless { r => Apache::Request->new(@args) }, $classname;
-	$req->{_cookies} = Apache::Cookie->fetch();
-	return $req;
+    my($classname, @args) = @_;
+    my $req = bless { r => Apache::Request->new(@args) }, $classname;
+    $req->{_cookies} = Apache::Cookie->fetch();
+    return $req;
 }
 
 sub applicationName {
-	my $self = shift;
-	return $self->{_applicationName} if $self->{_applicationName};
-	my $dirConfigAppNameName = $self->dir_config()->get("Application");
-	return $dirConfigAppNameName if $dirConfigAppNameName;
-	return $self->SUPER::applicationName();
+    my $self = shift;
+    return $self->{_applicationName} if $self->{_applicationName};
+    my $dirConfigAppNameName = $self->dir_config()->get("Application");
+    return $dirConfigAppNameName if $dirConfigAppNameName;
+    return $self->SUPER::applicationName();
 }
 
 sub internalRedirect {
@@ -51,16 +51,16 @@ sub internalRedirect {
 }
 
 sub dropCookie {
-	my $self = shift;
-	my $cookie = Apache::Cookie->new($self, @_);
-	$cookie->bake;
-	return $cookie;
+    my $self = shift;
+    my $cookie = Apache::Cookie->new($self, @_);
+    $cookie->bake;
+    return $cookie;
 }
 
 sub cookieValueForKey {
-	my ($self, $key) = @_;
-	my $c = $self->{_cookies}->{$key};
-	return $c;
+    my ($self, $key) = @_;
+    my $c = $self->{_cookies}->{$key};
+    return $c;
 }
 
 1;

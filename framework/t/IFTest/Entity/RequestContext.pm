@@ -28,7 +28,7 @@ use base qw(
 
 use IF::Behaviour::ModelFu;
 sub Model {
-	belongsTo('Session')
+    belongsTo('Session')
 };
 
 # this is just for testing purposes

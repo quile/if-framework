@@ -22,26 +22,26 @@
 
 # bindings for Tree component
 {
-	BROWSE_VALUES => {
-		type => "LOOP",
-		list => q($self->{BROWSE_VALUES}),
-		item => q(anItem),
-		index => q(anIndex),
-	},
-	NEW_COLUMN => {
-		type => "BOOLEAN",
-		value => q($self->newColumn()),
-	},
-	INDEX => {
-		type => "NUMBER",
-		value => q($self->{anIndex}),
-	},
-	SHOW_NUMBERS => {
-		type => "BOOLEAN",
-		value => q($self->{SHOW_NUMBERS}) || 1,
-	},
-	COLUMN_SPACE => {
-		type => "NUMBER",
-		value => q($self->{COLUMN_SPACE} || 0),
-	},
+    BROWSE_VALUES => {
+        type => "LOOP",
+        list => q($self->{BROWSE_VALUES}),
+        item => q(anItem),
+        index => q(anIndex),
+    },
+    NEW_COLUMN => {
+        type => "BOOLEAN",
+        value => q($self->newColumn()),
+    },
+    INDEX => {
+        type => "NUMBER",
+        value => q($self->{anIndex}),
+    },
+    SHOW_NUMBERS => {
+        type => "BOOLEAN",
+        value => q($self->{SHOW_NUMBERS}) || 1,
+    },
+    COLUMN_SPACE => {
+        type => "NUMBER",
+        value => q($self->{COLUMN_SPACE} || 0),
+    },
 }

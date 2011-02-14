@@ -25,22 +25,22 @@ package IF::Component::LocalizedString;
 # This is just a place-holder; it won't actually work.
 use strict;
 use base qw(
-	IF::Component
+    IF::Component
 );
 
 use IF::I18N;
 
 sub init {
-	my ($self) = @_;
-	$self->SUPER::init();
-	delete $self->{_language};
-	delete $self->{_value};
-	delete $self->{_key};
-	delete $self->{_hash};
+    my ($self) = @_;
+    $self->SUPER::init();
+    delete $self->{_language};
+    delete $self->{_value};
+    delete $self->{_key};
+    delete $self->{_hash};
 }
 
 sub stringValue {
-	my ($self) = @_;
+    my ($self) = @_;
 
     IF::Log::debug("Looking for string for ".$self->key());
     if ($self->key()) {
@@ -49,19 +49,19 @@ sub stringValue {
     if ($self->value()) {
         return _s($self->value());
     }
-	return "MISSING STRING LITERAL";
+    return "MISSING STRING LITERAL";
 }
 
 sub hasCompiledResponse {
-	my $self = shift;
-	return 1;
+    my $self = shift;
+    return 1;
 }
 
 sub appendToResponse {
-	my ($self, $response, $context) = @_;
+    my ($self, $response, $context) = @_;
 
-	$response->setContent($self->stringValue());
-	return;
+    $response->setContent($self->stringValue());
+    return;
 }
 
 sub language {
@@ -95,13 +95,13 @@ sub setKey {
 }
 
 sub value {
-	my $self = shift;
-	return $self->{_value};
+    my $self = shift;
+    return $self->{_value};
 }
 
 sub setValue {
-	my ($self, $value) = @_;
-	$self->{_value} = $value;
+    my ($self, $value) = @_;
+    $self->{_value} = $value;
 }
 
 1;

@@ -128,22 +128,22 @@ sub accessTokenAndSecret {
 
 sub userInfoFromTwitter {
     my ($self, $accessToken, $accessSecret) = @_;
-	my $request = Net::OAuth->request("protected resource")->new(
-	    %{$self->defaults()},
-	    request_method => "GET",
-	    request_url => $RESOURCE_URL,
-	    token => $accessToken,
-	    token_secret => $accessSecret,
-	);
-	$request->sign();
+    my $request = Net::OAuth->request("protected resource")->new(
+        %{$self->defaults()},
+        request_method => "GET",
+        request_url => $RESOURCE_URL,
+        token => $accessToken,
+        token_secret => $accessSecret,
+    );
+    $request->sign();
 
-	my $ua = LWP::UserAgent->new;
-	my $res = $ua->request(GET($request->request_url, Authorization => $request->to_authorization_header));
+    my $ua = LWP::UserAgent->new;
+    my $res = $ua->request(GET($request->request_url, Authorization => $request->to_authorization_header));
 
-	if (!$res->is_success) {
-	    die 'Could not get feed: ' . $res->status_line . ' ' . $res->content;
-	}
-	return from_json($res->decoded_content);
+    if (!$res->is_success) {
+        die 'Could not get feed: ' . $res->status_line . ' ' . $res->content;
+    }
+    return from_json($res->decoded_content);
 }
 
 sub authenticationUrl {

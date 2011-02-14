@@ -77,10 +77,10 @@ sub test_basic : Test(6) {
 
     $fs->addDerivedDataSourceWithNameAndQualifier($dfs2, "BendyElastics",
                                     IF::Qualifier->and([
-    								    IF::Qualifier->key("BendyElastics.sourceId = id"),
-    								    IF::Qualifier->key("BendyElastics.sourceType = 'Trunk'")
-    								]),
-    							);
+                                        IF::Qualifier->key("BendyElastics.sourceId = id"),
+                                        IF::Qualifier->key("BendyElastics.sourceType = 'Trunk'")
+                                    ]),
+                                );
     my $r = $self->{oc}->entitiesMatchingFetchSpecification($fs);
     ok(scalar @$r == 1, "Found one trunk");
     diag @$r;

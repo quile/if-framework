@@ -124,38 +124,38 @@ sub fetchSpecification {
 sub _execute {
     my ($self) = @_;
     my $fs = $self->fetchSpecification();
-	return unless $fs;
-	$self->{_fs} = $fs;
-	$self->{_sth} = $self->_statementHandleForSQLExpressionWithBindings($fs->toSQLFromExpression());
+    return unless $fs;
+    $self->{_fs} = $fs;
+    $self->{_sth} = $self->_statementHandleForSQLExpressionWithBindings($fs->toSQLFromExpression());
 }
 
 # This is mostly duplicated from IF::DB; it should
 # get folded back in there ultimately.
 sub _statementHandleForSQLExpressionWithBindings {
     my ($self, $sqlExpression) = @_;
-	my $sql = $sqlExpression->{SQL};
+    my $sql = $sqlExpression->{SQL};
 
-	my $bindValues = $sqlExpression->{BIND_VALUES} || [];
-	# In-place filter them to change undefs into empty strings.
-	foreach my $bv (@$bindValues) {
-	    if (!defined($bv)) {
-	        $bv = '';
-	    }
-	}
-	IF::Log::database("[".$sql."]\n with bindings [".join(", ", @{$bindValues})."]\n");
-	my $sth = $self->{_dbh}->prepare($sql);
-	unless ($sth) {
-		IF::Log::error(ref($self)." failed to prepare query: $sql");
-		return undef;
-	}
+    my $bindValues = $sqlExpression->{BIND_VALUES} || [];
+    # In-place filter them to change undefs into empty strings.
+    foreach my $bv (@$bindValues) {
+        if (!defined($bv)) {
+            $bv = '';
+        }
+    }
+    IF::Log::database("[".$sql."]\n with bindings [".join(", ", @{$bindValues})."]\n");
+    my $sth = $self->{_dbh}->prepare($sql);
+    unless ($sth) {
+        IF::Log::error(ref($self)." failed to prepare query: $sql");
+        return undef;
+    }
 
     #IF::Log::dump($bindValues);
-	if (my $rv = $sth->execute(@$bindValues)) {
-		#IF::Log::error("RV: $rv SQL: ".substr($sql, 0, 30));
-		return $sth;
-	}
-	IF::Log::warning("Failed to execute query $sql");
-	return undef;
+    if (my $rv = $sth->execute(@$bindValues)) {
+        #IF::Log::error("RV: $rv SQL: ".substr($sql, 0, 30));
+        return $sth;
+    }
+    IF::Log::warning("Failed to execute query $sql");
+    return undef;
 }
 
 sub _close {
@@ -296,14 +296,14 @@ sub _readRow {
        # we're at the end of the fetch so close it out
        $self->_close();
        return undef;
-	}
+    }
    foreach my $k (keys %$row) {
-		$row->{uc $k} = $row->{$k};
-		if ($k !~ /^[A-Z0-9_]+$/) {
-			delete $row->{$k};
-		}
-	}
-	return $row;
+        $row->{uc $k} = $row->{$k};
+        if ($k !~ /^[A-Z0-9_]+$/) {
+            delete $row->{$k};
+        }
+    }
+    return $row;
 }
 
 1;

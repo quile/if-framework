@@ -22,24 +22,24 @@
 
 #
 {
-	DATE => {
-		type => "DateEditor",
-		bindings => {
-			value => q(theDate),
-			startYear => q(startYear),
-			endYear => q(endYear),
-			allowsNoSelection => q(allowsNoSelection),
-			shouldShowTodayLink => q(shouldShowClientSideControls),
-		},
-	},
-	TIME => {
-		type => "TimeEditor",
-		bindings => {
-			value => q(theTime),
-			allowsNoSelection => q(allowsNoSelection),
-			startsEmpty => q(timeStartsEmpty),
-			showSeconds => q(shouldShowSeconds),
-			shouldShowNowLink => q(shouldShowClientSideControls),
-		},
-	},
+    DATE => {
+        type => "DateEditor",
+        bindings => {
+            value => q(theDate),
+            startYear => q(startYear),
+            endYear => q(endYear),
+            allowsNoSelection => q(allowsNoSelection),
+            shouldShowTodayLink => q(shouldShowClientSideControls),
+        },
+    },
+    TIME => {
+        type => "TimeEditor",
+        bindings => {
+            value => q(theTime),
+            allowsNoSelection => q(allowsNoSelection),
+            startsEmpty => q(timeStartsEmpty),
+            showSeconds => q(shouldShowSeconds),
+            shouldShowNowLink => q(shouldShowClientSideControls),
+        },
+    },
 };

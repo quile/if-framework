@@ -1,126 +1,126 @@
 # IF::Component::_Admin::Model::EntityFieldEditor bindings
 {
-	HIDDEN_ATTRIBUTES => {
-		type => "LOOP",
-		list => q(hiddenAttributes),
-		item => "anAttribute",
-	},
-	HIDDEN_ATTRIBUTE => {
-		type => "HiddenField",
-		bindings => {
-			name => q(fieldNameForAttribute),
-			value => q(entityValueForAttribute),
-		},
-	},
-	ATTRIBUTES => {
-		type => "LOOP",
-		list => q(attributes),
-		item => "anAttribute",
-	},
-	ENTITY_CLASS_NAME => {
-		type => "HiddenField",
-		bindings => {
-			value => q(entityClassName),
-		},
-	},
-	ATTRIBUTE_NICE_NAME => {
-		type => "STRING",
-		value => q(anAttribute.ATTRIBUTE_NAME),
-	},
-	ATTRIBUTE_IS_TEXTAREA => {
-		type => "BOOLEAN",
-		value => q(attributeIsTextArea),
-	},
-	ATTRIBUTE_IS_DATE => {
-		type => "BOOLEAN",
-		value => q(attributeIsDate),
-	},
-	ATTRIBUTE_IS_DATETIME => {
-		type => "BOOLEAN",
-		value => q(attributeIsDateTime),
-	},
-	ATTRIBUTE_IS_NUMBER => {
-		type => "BOOLEAN",
-		value => q(attributeIsNumber),
-	},
-	ATTRIBUTE_IS_UNIX_TIME => {
-		type => "BOOLEAN",
-		value => q(attributeIsUnixTime),
-	},
-	ATTRIBUTE_IS_ENUM => {
-		type => "BOOLEAN",
-		value => q(attributeIsEnum),
-	},
-	ATTRIBUTE_IS_LANGUAGE_DESIGNATION => {
-		type => "BOOLEAN",
-		value => q(attributeIsLanguageDesignation),
-	},
-	ATTRIBUTE_IS_YES_NO => {
-		type => "BOOLEAN",
-		value => q(attributeIsYesNo),
-	},
-	ATTRIBUTE_IS_CUSTOM_CHOOSER => {
-		type => "BOOLEAN",
-		value => q(attributeIsCustomChooser),
-	},
-	ATTRIBUTE_LANGUAGE_DESIGNATION => {
-		type => "PopUpMenu",
-		bindings => {
-			name => q(fieldNameForAttribute),
-			list => q([
-			    { VALUE => "en", KEY => "English", },
-			    { VALUE => "es", KEY => "Spanish", },
-			    { VALUE => "fr", KEY => "French", },
-			    { VALUE => "pt", KEY => "Portuguese", },
-			]),
-			selection => q(entityValueForAttribute),
-			value => q("VALUE"),
-			displayString => q("KEY"),
-		},
-	},
-	ATTRIBUTE_TEXTAREA => {
-		type => "Text",
-		bindings => {
-			name => q(fieldNameForAttribute),
-			value => q(entityValueForAttribute),
-		},
-	},
-	ATTRIBUTE_TEXT => {
-		type => "TextField",
-		bindings => {
-			name => q(fieldNameForAttribute),
-			value => q(entityValueForAttribute),
-			maxLength => q(maxLengthForAttribute),
-			size => q(sizeForAttribute),
-		},
-	},
-	ATTRIBUTE_DATE => {
-		type => "DateEditor",
-		bindings => {
-			name => q("incoming-date-".$self->fieldNameForAttribute()),
-			value => q(entityValueForAttribute),
-			startYear => q("1995"),
-			shouldShowTodayLink => q("1"),
-			allowsNoSelection => q("1"),
-		},
-	},
-	ATTRIBUTE_TIME => {
-		type => "TimeEditor",
-		bindings => {
-			name => q("incoming-time-".$self->fieldNameForAttribute()),
-			value => q(entityValueForAttribute),
-			showSeconds => q("1"),
-			shouldShowNowLink => q("1"),
-			allowsNoSelection => q("1"),
-		},
-	},
-	ATTRIBUTE_YES_NO => {
-		type => "CheckBox",
-		bindings => {
-			value => q(entityValueForAttribute),
-			name => q(fieldNameForAttribute),
-		},
-	},
+    HIDDEN_ATTRIBUTES => {
+        type => "LOOP",
+        list => q(hiddenAttributes),
+        item => "anAttribute",
+    },
+    HIDDEN_ATTRIBUTE => {
+        type => "HiddenField",
+        bindings => {
+            name => q(fieldNameForAttribute),
+            value => q(entityValueForAttribute),
+        },
+    },
+    ATTRIBUTES => {
+        type => "LOOP",
+        list => q(attributes),
+        item => "anAttribute",
+    },
+    ENTITY_CLASS_NAME => {
+        type => "HiddenField",
+        bindings => {
+            value => q(entityClassName),
+        },
+    },
+    ATTRIBUTE_NICE_NAME => {
+        type => "STRING",
+        value => q(anAttribute.ATTRIBUTE_NAME),
+    },
+    ATTRIBUTE_IS_TEXTAREA => {
+        type => "BOOLEAN",
+        value => q(attributeIsTextArea),
+    },
+    ATTRIBUTE_IS_DATE => {
+        type => "BOOLEAN",
+        value => q(attributeIsDate),
+    },
+    ATTRIBUTE_IS_DATETIME => {
+        type => "BOOLEAN",
+        value => q(attributeIsDateTime),
+    },
+    ATTRIBUTE_IS_NUMBER => {
+        type => "BOOLEAN",
+        value => q(attributeIsNumber),
+    },
+    ATTRIBUTE_IS_UNIX_TIME => {
+        type => "BOOLEAN",
+        value => q(attributeIsUnixTime),
+    },
+    ATTRIBUTE_IS_ENUM => {
+        type => "BOOLEAN",
+        value => q(attributeIsEnum),
+    },
+    ATTRIBUTE_IS_LANGUAGE_DESIGNATION => {
+        type => "BOOLEAN",
+        value => q(attributeIsLanguageDesignation),
+    },
+    ATTRIBUTE_IS_YES_NO => {
+        type => "BOOLEAN",
+        value => q(attributeIsYesNo),
+    },
+    ATTRIBUTE_IS_CUSTOM_CHOOSER => {
+        type => "BOOLEAN",
+        value => q(attributeIsCustomChooser),
+    },
+    ATTRIBUTE_LANGUAGE_DESIGNATION => {
+        type => "PopUpMenu",
+        bindings => {
+            name => q(fieldNameForAttribute),
+            list => q([
+                { VALUE => "en", KEY => "English", },
+                { VALUE => "es", KEY => "Spanish", },
+                { VALUE => "fr", KEY => "French", },
+                { VALUE => "pt", KEY => "Portuguese", },
+            ]),
+            selection => q(entityValueForAttribute),
+            value => q("VALUE"),
+            displayString => q("KEY"),
+        },
+    },
+    ATTRIBUTE_TEXTAREA => {
+        type => "Text",
+        bindings => {
+            name => q(fieldNameForAttribute),
+            value => q(entityValueForAttribute),
+        },
+    },
+    ATTRIBUTE_TEXT => {
+        type => "TextField",
+        bindings => {
+            name => q(fieldNameForAttribute),
+            value => q(entityValueForAttribute),
+            maxLength => q(maxLengthForAttribute),
+            size => q(sizeForAttribute),
+        },
+    },
+    ATTRIBUTE_DATE => {
+        type => "DateEditor",
+        bindings => {
+            name => q("incoming-date-".$self->fieldNameForAttribute()),
+            value => q(entityValueForAttribute),
+            startYear => q("1995"),
+            shouldShowTodayLink => q("1"),
+            allowsNoSelection => q("1"),
+        },
+    },
+    ATTRIBUTE_TIME => {
+        type => "TimeEditor",
+        bindings => {
+            name => q("incoming-time-".$self->fieldNameForAttribute()),
+            value => q(entityValueForAttribute),
+            showSeconds => q("1"),
+            shouldShowNowLink => q("1"),
+            allowsNoSelection => q("1"),
+        },
+    },
+    ATTRIBUTE_YES_NO => {
+        type => "CheckBox",
+        bindings => {
+            value => q(entityValueForAttribute),
+            name => q(fieldNameForAttribute),
+        },
+    },
     ATTRIBUTE_DATETIME => {
         type => "DateTimeEditor",
         bindings => {
@@ -128,14 +128,14 @@
             value => q(entityValueForAttribute),
         },
     },
-	ATTRIBUTE_NUMBER => {
-		type => "TextField",
-		bindings => {
-			name => q(fieldNameForAttribute),
-			value => q(entityValueForAttribute),
-			size => q($self->anAttribute()->{SIZE}),
-		},
-	},
+    ATTRIBUTE_NUMBER => {
+        type => "TextField",
+        bindings => {
+            name => q(fieldNameForAttribute),
+            value => q(entityValueForAttribute),
+            size => q($self->anAttribute()->{SIZE}),
+        },
+    },
     ATTRIBUTE_UNIX_TIME => {
         type => "DateTimeEditor",
         bindings => {
@@ -146,22 +146,22 @@
             shouldShowSeconds => q("1"),
         },
     },
-	ATTRIBUTE_ENUM => {
-		type => "PopUpMenu",
-		bindings => {
-			name => q(fieldNameForAttribute),
-			list => q(anAttribute.VALUES),
-			selection => q(entityValueForAttribute),
-		},
-	},
-	ATTRIBUTE_CUSTOM_CHOOSER => {
+    ATTRIBUTE_ENUM => {
+        type => "PopUpMenu",
+        bindings => {
+            name => q(fieldNameForAttribute),
+            list => q(anAttribute.VALUES),
+            selection => q(entityValueForAttribute),
+        },
+    },
+    ATTRIBUTE_CUSTOM_CHOOSER => {
        type => "SwitchComponent",
         bindings => {
             switchComponentName => q(attributeCustomChooserClass),
-			name => q(fieldNameForAttribute),
+            name => q(fieldNameForAttribute),
             value => q(entityValueForAttribute),
-			relationship => q(relationship),
-			sourceEntity => q(entity),
+            relationship => q(relationship),
+            sourceEntity => q(entity),
         },
-	},
+    },
 };

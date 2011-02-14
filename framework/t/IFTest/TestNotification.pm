@@ -31,10 +31,10 @@ use Test::More;
 sub test_basic : Test(2) {
     my ($self) = @_;
 
-	my $x = IFTest::Entity::Foo->new();
-	my $inh = $x->invokeNotificationFromObjectWithArguments("didFooBar", undef);
-	ok($x->name() eq "Foo", "First notification was received");
-	ok($x->email() eq "Bar", "Second notification was received");
+    my $x = IFTest::Entity::Foo->new();
+    my $inh = $x->invokeNotificationFromObjectWithArguments("didFooBar", undef);
+    ok($x->name() eq "Foo", "First notification was received");
+    ok($x->email() eq "Bar", "Second notification was received");
 };
 
 # Set up some fake notifications that we can test.  I love perl.
@@ -47,14 +47,14 @@ sub setName  { $_[0]->{name} = $_[1] }
 sub email    { return $_[0]->{email} }
 sub setEmail { $_[0]->{email} = $_[1] }
 sub didFooBar {
-	my ($self, @arguments) = @_;
-	$self->setName("Foo");
+    my ($self, @arguments) = @_;
+    $self->setName("Foo");
 }
 
 package IF::Interface::KeyValueCoding;
 sub didFooBar {
-	my ($self, @arguments) = @_;
-	$self->setEmail("Bar");
+    my ($self, @arguments) = @_;
+    $self->setEmail("Bar");
 }
 
 1;

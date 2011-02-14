@@ -22,39 +22,39 @@
 
 #
 {
-	SRC => {
-		type => "STRING",
-		value => q(src),
-	},
-	HAS_HEIGHT => {
-		type => "BOOLEAN",
-		value => q(height),
-	},
-	HAS_WIDTH => {
-		type => "BOOLEAN",
-		value => q(width),
-	},
-	HEIGHT => {
-		type => "NUMBER",
-		value => q(height),
-	},
-	WIDTH => {
-		type => "NUMBER",
-		value => q(width),
-	},
-	TAG_ATTRIBUTES => {
-		type => "ATTRIBUTES",
-	},
-	HAS_SRC_PATH => {
-		type => "BOOLEAN",
-		value => q(src),
-	},
-	UNIQUE_ID => {
-		type => "STRING",
-		value => q(uniqueId),
-	},
-	HAS_UNIQUE_ID => {
-		type => "BOOLEAN",
-		value => q(uniqueId),
-	},
+    SRC => {
+        type => "STRING",
+        value => q(src),
+    },
+    HAS_HEIGHT => {
+        type => "BOOLEAN",
+        value => q(height),
+    },
+    HAS_WIDTH => {
+        type => "BOOLEAN",
+        value => q(width),
+    },
+    HEIGHT => {
+        type => "NUMBER",
+        value => q(height),
+    },
+    WIDTH => {
+        type => "NUMBER",
+        value => q(width),
+    },
+    TAG_ATTRIBUTES => {
+        type => "ATTRIBUTES",
+    },
+    HAS_SRC_PATH => {
+        type => "BOOLEAN",
+        value => q(src),
+    },
+    UNIQUE_ID => {
+        type => "STRING",
+        value => q(uniqueId),
+    },
+    HAS_UNIQUE_ID => {
+        type => "BOOLEAN",
+        value => q(uniqueId),
+    },
 }

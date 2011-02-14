@@ -21,28 +21,28 @@
 # THE SOFTWARE.
 
 {
-	inheritsFrom => "IF::Component::_Default",
-	CONTENT => {
-		type => "CONTENT",
-	},
-	EXPRESSION => {
-		type => "STRING",
-		value => q(expression),
-	},
-	UNIQUE_ID => {
-		type => "STRING",
-		value => q(uniqueId),
-	},
-	USE_COUNT_INCREMENTED => {
-		type => "STRING",
-		value => q(incrementedUseCounter),
-	},
-	USE_COUNT => {
-		type => "STRING",
-		value => q(useCounter),
-	},
-	IS_HIDDEN => {
-		type => "BOOLEAN",
-		value => q(isHidden),
-	},
+    inheritsFrom => "IF::Component::_Default",
+    CONTENT => {
+        type => "CONTENT",
+    },
+    EXPRESSION => {
+        type => "STRING",
+        value => q(expression),
+    },
+    UNIQUE_ID => {
+        type => "STRING",
+        value => q(uniqueId),
+    },
+    USE_COUNT_INCREMENTED => {
+        type => "STRING",
+        value => q(incrementedUseCounter),
+    },
+    USE_COUNT => {
+        type => "STRING",
+        value => q(useCounter),
+    },
+    IS_HIDDEN => {
+        type => "BOOLEAN",
+        value => q(isHidden),
+    },
 };

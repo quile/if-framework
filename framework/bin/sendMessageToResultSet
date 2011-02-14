@@ -50,27 +50,27 @@ my $shouldTest = 0;
 my $commandLine = join(" ", $0, @ARGV);
 my $result = GetOptions( "application=s" => \$applicationName,
             "email-field=s" => \$emailField,
-			"query=s" => \$query,
-			"iterator-class=s" => \$iteratorClass,
-			"message-file=s" => \$messageFile,
-			"subject=s" => \$subject,
-			"from=s" => \$from,
-			"limit=s" => \$limit,
-			"job-emails-to=s" => \$jobEmailsTo,
-			"no-mail" => \$noMail,
-			"debug" => \$debug,
-			"test" => \$shouldTest,
-			"argument=s" => $arguments,
-			"map=s" => $fieldMap);
+            "query=s" => \$query,
+            "iterator-class=s" => \$iteratorClass,
+            "message-file=s" => \$messageFile,
+            "subject=s" => \$subject,
+            "from=s" => \$from,
+            "limit=s" => \$limit,
+            "job-emails-to=s" => \$jobEmailsTo,
+            "no-mail" => \$noMail,
+            "debug" => \$debug,
+            "test" => \$shouldTest,
+            "argument=s" => $arguments,
+            "map=s" => $fieldMap);
 
 usage() unless ($result && $applicationName && $emailField && $messageFile && $from && $jobEmailsTo);
 
 # app loading gunk.  I wish I could abstract this away somewhere nice.
 my $applicationClass = $applicationName."::Application";
 if ($applicationName eq "IFTest") {
-	unshift @INC, "t";
+    unshift @INC, "t";
 } else {
-	unshift @INC, "../applications/$applicationName";
+    unshift @INC, "../applications/$applicationName";
 }
 
 print "Loading app config...\n";
@@ -84,62 +84,62 @@ require "AppControl/Perl5Lib.pl";
 
 eval "use $applicationClass;";
 if ($@) {
-	IF::Log::error($@);
-	exit(1);
+    IF::Log::error($@);
+    exit(1);
 }
 # ---- blech ----
 
 
 if ($shouldTest) {
-	$debug = 1;
+    $debug = 1;
 }
 if ($debug) {
-	IF::Log::setLogMask(0xffff);
+    IF::Log::setLogMask(0xffff);
 } else {
-	IF::Log::setLogMask(0);
+    IF::Log::setLogMask(0);
 }
 
 if ($debug && !$limit) {
-	IF::Log::error("You cannot run in debug mode without a limit, or you will send all the generated messages to $jobEmailsTo, and they probably won't appreciate it.");
-	exit(1);
+    IF::Log::error("You cannot run in debug mode without a limit, or you will send all the generated messages to $jobEmailsTo, and they probably won't appreciate it.");
+    exit(1);
 }
 unless ($subject) {
-	IF::Log::warning("No subject set for outgoing message.  If it's not set in the message, you will get a blank subject");
+    IF::Log::warning("No subject set for outgoing message.  If it's not set in the message, you will get a blank subject");
 }
 
 # import the iterator class:
 eval "use $iteratorClass;";
 if ($@) {
-	IF::Log::error($@);
-	exit (3);
+    IF::Log::error($@);
+    exit (3);
 }
 my $iterator = $iteratorClass->new();
 unless ($iterator) {
-	IF::Log::error("Couldn't create iterator");
-	exit (4);
+    IF::Log::error("Couldn't create iterator");
+    exit (4);
 }
 $iterator->initWithQuery($query);
 
 # push any arguments into the iterator
 foreach my $argument (@{$iterator->possibleArguments()}) {
-	if ($arguments->{$argument}) {
-		$iterator->setArgumentForKey($arguments->{$argument}, $argument);
-	}
+    if ($arguments->{$argument}) {
+        $iterator->setArgumentForKey($arguments->{$argument}, $argument);
+    }
 }
 
 my $messageContents;
 
 if (open (MESSAGE, $messageFile)) {
-	$messageContents = join("", <MESSAGE>);
-	IF::Log::debug($messageContents);
-	close (MESSAGE);
+    $messageContents = join("", <MESSAGE>);
+    IF::Log::debug($messageContents);
+    close (MESSAGE);
 } else {
-	IF::Log::error("No such file $messageFile");
-	exit(2);
+    IF::Log::error("No such file $messageFile");
+    exit(2);
 }
 
 if ($shouldTest) {
-	$iterator->beginTest();
+    $iterator->beginTest();
 }
 $iterator->setFieldMap($fieldMap);
 $iterator->begin();
@@ -148,16 +148,16 @@ my $sendCount = 0;
 my $message = IF::Mailer::createMailMessage($subject, $messageContents, "text/plain", {}) unless ($noMail);
 my $job = IF::Mailer::startMailJob($subject." - ".$commandLine, $jobEmailsTo) unless ($noMail);
 while (my $row = $iterator->nextResult()) {
-	$row = $iterator->addMappedFields($row);
-	IF::Mailer::addMailQueueEntry( ($debug? $jobEmailsTo : $row->{$emailField}),
-										$from,
-										$message,
-										$row,
-										time,
-										$job,
-										) unless ($noMail);
-	$sendCount++;
-	last if ($limit && $sendCount > $limit);
+    $row = $iterator->addMappedFields($row);
+    IF::Mailer::addMailQueueEntry( ($debug? $jobEmailsTo : $row->{$emailField}),
+                                        $from,
+                                        $message,
+                                        $row,
+                                        time,
+                                        $job,
+                                        ) unless ($noMail);
+    $sendCount++;
+    last if ($limit && $sendCount > $limit);
 }
 IF::Mailer::endMailJob($job) unless ($noMail);
 IF::Log::info("Added $sendCount messages to the mail queue\n");
@@ -165,11 +165,11 @@ IF::Log::info("Added $sendCount messages to the mail queue\n");
 $iterator->end();
 
 if ($shouldTest) {
-	$iterator->endTest();
+    $iterator->endTest();
 }
 
 sub usage {
-	print <<EOU;
+    print <<EOU;
 usage: sendMessageToResultSet --application=<application>
             <--email-field=<EMAIL>>
             <--message-file=<FILE>>
@@ -188,6 +188,6 @@ test: if your MailIterator implements beginTest() and endTest()
       then they will be called first and last. It automatically
       enables --debug too, to prevent any bad mistakes.
 EOU
-	exit(0);
+    exit(0);
 }
 

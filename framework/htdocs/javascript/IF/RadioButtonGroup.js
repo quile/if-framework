@@ -6,15 +6,15 @@
 
 
 IFRadioButtonGroup = IF.extend(IFFormComponent,function(uniqueId, bindingName, name) {
-	if (! this.register(uniqueId, bindingName)) {
-		console.log("No checkbox group found with id "+uniqueId);
-	}	
+    if (! this.register(uniqueId, bindingName)) {
+        console.log("No checkbox group found with id "+uniqueId);
+    }    
 });
 
 IFRadioButtonGroup.prototype.value = function() {
-	return jQuery(this.element).find(':radio:checked').val();
+    return jQuery(this.element).find(':radio:checked').val();
 };
-	
+    
 IFRadioButtonGroup.prototype.setValue = function(value) {
-	jQuery(this.element).find(':radio').val([value]).size() 
+    jQuery(this.element).find(':radio').val([value]).size() 
 };

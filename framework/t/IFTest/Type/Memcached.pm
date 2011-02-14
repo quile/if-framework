@@ -46,8 +46,8 @@ sub _setUp {
 
     IF::Log::setLogMask(0x20);
     if ($self->{debug}) {
-    	IF::Log::setLogMask(0xffff);
-    	$memcachedFlags .= " -vv ";
+        IF::Log::setLogMask(0xffff);
+        $memcachedFlags .= " -vv ";
     }
 
     # -------
@@ -56,13 +56,13 @@ sub _setUp {
     diag("Firing up memcached at $memcachedPath on port $self->{port}");
     $self->{pid} = fork();
     if (not defined $self->{pid}) {
-    	print "fork failed.\n";
+        print "fork failed.\n";
     } elsif ($self->{pid} == 0) {
-    	# child
-    	exec("$memcachedPath $memcachedFlags")
+        # child
+        exec("$memcachedPath $memcachedFlags")
                            or die "Can’t start memcached: $!";
-    	print "Should not get here!\n";
-    	exit(0);
+        print "Should not get here!\n";
+        exit(0);
     } else {
         ok(1, "forked off memcached process");
         # sleep(4);
@@ -76,9 +76,9 @@ sub _setUp {
 sub _tearDown {
     my ($self) = @_;
 
-	kill 15, $self->{pid};
-	waitpid($self->{pid}, 0);
-	ok(1, "Memcached shut down");
+    kill 15, $self->{pid};
+    waitpid($self->{pid}, 0);
+    ok(1, "Memcached shut down");
 }
 
 1;

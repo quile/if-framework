@@ -26,69 +26,69 @@ use strict;
 use IF::RenderState;
 
 sub new {
-	my $className = shift;
-	my $self = bless {
-					_params => {},
-					_contentList => [""],
-					_renderState => IF::RenderState->new(),
-					}, $className;
-	$self->setContent("");
-	return $self;
+    my $className = shift;
+    my $self = bless {
+                    _params => {},
+                    _contentList => [""],
+                    _renderState => IF::RenderState->new(),
+                    }, $className;
+    $self->setContent("");
+    return $self;
 }
 
 sub setTemplate {
-	my $self = shift;
-	$self->{_template} = shift;
+    my $self = shift;
+    $self->{_template} = shift;
 }
 
 sub template {
-	my $self = shift;
-	return $self->{_template};
+    my $self = shift;
+    return $self->{_template};
 }
 
 # This shit is for compatibility with crappy old
 # templates
 sub param {
-	my $self = shift;
-	my $key = shift;
-	my $value = shift;
-	if ($value) {
-		$self->{_params}->{$key} = $value;
-		return;
-	}
-	if ($key) {
-		return $self->{_params}->{$key};
-	}
-	return $self->template()->namedBindings();
+    my $self = shift;
+    my $key = shift;
+    my $value = shift;
+    if ($value) {
+        $self->{_params}->{$key} = $value;
+        return;
+    }
+    if ($key) {
+        return $self->{_params}->{$key};
+    }
+    return $self->template()->namedBindings();
 }
 
 sub params {
-	my $self = shift;
-	return $self->{_params};
+    my $self = shift;
+    return $self->{_params};
 }
 
 sub setParams {
-	my $self = shift;
-	my $params = shift;
-	$self->{_params} = $params;
+    my $self = shift;
+    my $params = shift;
+    $self->{_params} = $params;
 }
 
 sub query {
-	my $self = shift;
-	return keys %{$self->params()};
+    my $self = shift;
+    return keys %{$self->params()};
 }
 
 sub appendContentString {
-	push @{$_[0]->{_contentList}}, $_[1];
+    push @{$_[0]->{_contentList}}, $_[1];
 }
 
 sub setContent {
-	$_[0]->{_contentList} = [$_[1]];
+    $_[0]->{_contentList} = [$_[1]];
 }
 
 sub content {
-	my $self = shift;
-	return join('', @{$self->{_contentList}});
+    my $self = shift;
+    return join('', @{$self->{_contentList}});
 }
 
 sub renderState    { return $_[0]->{_renderState} }
@@ -96,13 +96,13 @@ sub setRenderState { $_[0]->{_renderState} = $_[1] }
 
 # we'll use these to flush content out as it's generated
 sub setContentIsBuffered {
-	my $self = shift;
-	$self->{_contentIsBuffered} = shift;
+    my $self = shift;
+    $self->{_contentIsBuffered} = shift;
 }
 
 sub contentIsBuffered {
-	my $self = shift;
-	return $self->{_contentIsBuffered};
+    my $self = shift;
+    return $self->{_contentIsBuffered};
 }
 
 # how dumb is it that this wasn't on the response?

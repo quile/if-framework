@@ -28,45 +28,45 @@ use Time::HiRes;
 # ++++ class ++++
 
 sub new {
-	my ($className) = @_;
-	my $self = bless {}, $className;
+    my ($className) = @_;
+    my $self = bless {}, $className;
 }
 
 sub initWithCurrentTime {
-	my ($self) = @_;
-	$self->start();
-	return $self;
+    my ($self) = @_;
+    $self->start();
+    return $self;
 }
 
 sub start {
-	my ($self) = @_;
-	$self->_setTimer([Time::HiRes::gettimeofday()]);
+    my ($self) = @_;
+    $self->_setTimer([Time::HiRes::gettimeofday()]);
 }
 
 sub stop {
-	my ($self) = @_;
-	$self->_setElapsedTime(Time::HiRes::tv_interval($self->_timer()));
+    my ($self) = @_;
+    $self->_setElapsedTime(Time::HiRes::tv_interval($self->_timer()));
 }
 
 sub elapsedTime {
-	my ($self) = @_;
-	return $self->{_elapsedTime} ||
-		Time::HiRes::tv_interval($self->_timer());
+    my ($self) = @_;
+    return $self->{_elapsedTime} ||
+        Time::HiRes::tv_interval($self->_timer());
 }
 
 sub _setElapsedTime {
-	my ($self, $value) = @_;
-	$self->{_elapsedTime} = $value;
+    my ($self, $value) = @_;
+    $self->{_elapsedTime} = $value;
 }
 
 sub _timer {
-	my $self = shift;
-	return $self->{_timer};
+    my $self = shift;
+    return $self->{_timer};
 }
 
 sub _setTimer {
-	my ($self, $value) = @_;
-	$self->{_timer} = $value;
+    my ($self, $value) = @_;
+    $self->{_timer} = $value;
 }
 
 1;

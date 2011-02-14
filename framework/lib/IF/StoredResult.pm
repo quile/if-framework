@@ -25,43 +25,43 @@ use strict;
 use base qw(IF::FetchSpecification);
 
 sub summaryQualifier {
-	my $self = shift;
-	return $self->{summaryQualifier};
+    my $self = shift;
+    return $self->{summaryQualifier};
 }
 
 sub setSummaryQualifier {
-	my ($self, $value) = @_;
-	if ($value) {
-		$value->setEntity($self->entityName());
-	}
-	$self->{summaryQualifier} = $value;
+    my ($self, $value) = @_;
+    if ($value) {
+        $value->setEntity($self->entityName());
+    }
+    $self->{summaryQualifier} = $value;
 }
 
 sub summaryTable {
-	my $self = shift;
-	return $self->{summaryTable};
+    my $self = shift;
+    return $self->{summaryTable};
 }
 
 sub setSummaryTable {
-	my ($self, $value) = @_;
-	$self->{summaryTable} = $value;
+    my ($self, $value) = @_;
+    $self->{summaryTable} = $value;
 }
 
 sub qualifier {
-	my ($self) = @_;
-	if ($self->summaryQualifier()) {
-		return IF::Qualifier->and([$self->summaryQualifier(), $self->SUPER::qualifier()]);
-	}
-	return $self->SUPER::qualifier();
+    my ($self) = @_;
+    if ($self->summaryQualifier()) {
+        return IF::Qualifier->and([$self->summaryQualifier(), $self->SUPER::qualifier()]);
+    }
+    return $self->SUPER::qualifier();
 }
 
 # wow, the first destructor in our entire system
 sub DESTROY {
-	my ($self) = @_;
-	if ($self->summaryTable()) {
-		IF::DB::executeArbitrarySQL("DROP TABLE IF EXISTS ".$self->summaryTable());
-	}
-	$self->SUPER::DESTROY();
+    my ($self) = @_;
+    if ($self->summaryTable()) {
+        IF::DB::executeArbitrarySQL("DROP TABLE IF EXISTS ".$self->summaryTable());
+    }
+    $self->SUPER::DESTROY();
 }
 
 1;

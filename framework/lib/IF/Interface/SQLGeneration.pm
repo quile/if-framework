@@ -8,13 +8,13 @@ package IF::Interface::SQLGeneration;
 use strict;
 
 sub translateConditionIntoSQLExpressionForModel {
-	my ($self, $sqlExpression, $model) = @_;
-	IF::Log::warning("$self - unimplemented method: translateConditionIntoSQLExpressionForModel");
+    my ($self, $sqlExpression, $model) = @_;
+    IF::Log::warning("$self - unimplemented method: translateConditionIntoSQLExpressionForModel");
 }
 
 sub translateIntoHavingSQLExpressionForModel {
-	my ($self, $sqlExpression, $model) = @_;
-	IF::Log::warning("$self - unimplemented method: translateIntoHavingSQLExpressionForModel");	
+    my ($self, $sqlExpression, $model) = @_;
+    IF::Log::warning("$self - unimplemented method: translateIntoHavingSQLExpressionForModel");    
 }
 
 1;

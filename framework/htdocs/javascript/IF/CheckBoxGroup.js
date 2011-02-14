@@ -6,15 +6,15 @@
 
 
 IFCheckBoxGroup = IF.extend(IFFormComponent, function(uniqueId, bindingName, name) {
-	if (! this.register(uniqueId, bindingName)) {
-		console.log("No checkbox group found with id "+uniqueId);
-	}
+    if (! this.register(uniqueId, bindingName)) {
+        console.log("No checkbox group found with id "+uniqueId);
+    }
 });
-	
+    
 IFCheckBoxGroup.prototype.value = function() {
-	return IFForm.valuesOfCheckBoxGroup(this.element);
+    return IFForm.valuesOfCheckBoxGroup(this.element);
 };
-	
+    
 IFCheckBoxGroup.prototype.setValue = function(value) {
-	IFForm.setValuesOfCheckBoxGroup(value, this.element);
+    IFForm.setValuesOfCheckBoxGroup(value, this.element);
 };

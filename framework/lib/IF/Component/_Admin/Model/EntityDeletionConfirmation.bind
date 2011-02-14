@@ -1,62 +1,62 @@
 #
 {
-	WRAPPER => {
-		type => "_Admin::Model::PageWrapper",
-		bindings => {
-			controller => q(controller),
-		},
-	},
-	NAVIGATION => {
-		type => "_Admin::Model::Navigation",
-		bindings => {
-			entityClassName => q(entityClassDescription.name),
-			rootEntity => q(rootEntity),
-			controller => q(controller),
-		},
-	},
-	ITEMS_SCHEDULED_FOR_DELETION => {
-		type => "LOOP",
-		list => q(itemsScheduledForDeletion),
-		item => q(anItem),
-		index => q(anItemIndex),
-	},
-	ROW_CLASS => {
-		type => "STRING",
-		value => q($self->{anItemIndex} % 2 == 0? "entity-search-results-even-rows" : "entity-search-results-odd-rows"),
-	},
-	ITEM_NAME => {
-		type => "STRING",
-		value => q(itemName),
-	},
-	ITEM_ENTITY_CLASS => {
-		type => "STRING",
-		value => q(anItem.entityClassDescription.name),
-	},	
-	DELETION_CONFIRMATION_FORM => {
-		type => "Form",
-		bindings => {
-			targetComponentName => q("_Admin::Model::EntityEditor"),
-			queryDictionary => q({
-				"entity-id" => q(entity.id),
-				"entity-class-name" => q(entity.entityClassDescription.name),
-				"root-entity-id" => q(rootEntity.id),
-				"root-entity-class-name" => q(rootEntity.entityClassDescription.name),
-				"relationship-name" => q($context->formValueForKey("relationship-name")),
-				"controller-class" => q(controller.controllerClass),
-				"return-target-component" => q(returnTargetComponent),
-			}),
-		},
-	},
-	DELETE_BUTTON => {
-		type => "SubmitButton",
-		bindings => {
-			directAction => q("delete"),
-		},
-	},
-	CANCEL_BUTTON => {
-		type => "SubmitButton",
-		bindings => {
-			directAction => q("default"),
-		},
-	},
+    WRAPPER => {
+        type => "_Admin::Model::PageWrapper",
+        bindings => {
+            controller => q(controller),
+        },
+    },
+    NAVIGATION => {
+        type => "_Admin::Model::Navigation",
+        bindings => {
+            entityClassName => q(entityClassDescription.name),
+            rootEntity => q(rootEntity),
+            controller => q(controller),
+        },
+    },
+    ITEMS_SCHEDULED_FOR_DELETION => {
+        type => "LOOP",
+        list => q(itemsScheduledForDeletion),
+        item => q(anItem),
+        index => q(anItemIndex),
+    },
+    ROW_CLASS => {
+        type => "STRING",
+        value => q($self->{anItemIndex} % 2 == 0? "entity-search-results-even-rows" : "entity-search-results-odd-rows"),
+    },
+    ITEM_NAME => {
+        type => "STRING",
+        value => q(itemName),
+    },
+    ITEM_ENTITY_CLASS => {
+        type => "STRING",
+        value => q(anItem.entityClassDescription.name),
+    },    
+    DELETION_CONFIRMATION_FORM => {
+        type => "Form",
+        bindings => {
+            targetComponentName => q("_Admin::Model::EntityEditor"),
+            queryDictionary => q({
+                "entity-id" => q(entity.id),
+                "entity-class-name" => q(entity.entityClassDescription.name),
+                "root-entity-id" => q(rootEntity.id),
+                "root-entity-class-name" => q(rootEntity.entityClassDescription.name),
+                "relationship-name" => q($context->formValueForKey("relationship-name")),
+                "controller-class" => q(controller.controllerClass),
+                "return-target-component" => q(returnTargetComponent),
+            }),
+        },
+    },
+    DELETE_BUTTON => {
+        type => "SubmitButton",
+        bindings => {
+            directAction => q("delete"),
+        },
+    },
+    CANCEL_BUTTON => {
+        type => "SubmitButton",
+        bindings => {
+            directAction => q("default"),
+        },
+    },
 }

@@ -30,95 +30,95 @@ use strict;
 use JSON;
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
-		@{$self->SUPER::requiredPageResources()},
-		IF::PageResource->javascript("/if-static/javascript/IF/Component.js"),
-		IF::PageResource->javascript("/if-static/javascript/IF/TimeDifference.js"),
-	];
+    my ($self) = @_;
+    return [
+        @{$self->SUPER::requiredPageResources()},
+        IF::PageResource->javascript("/if-static/javascript/IF/Component.js"),
+        IF::PageResource->javascript("/if-static/javascript/IF/TimeDifference.js"),
+    ];
 }
 
 sub startDate {
-	my ($self) = @_;
-	return $self->{startDate};
+    my ($self) = @_;
+    return $self->{startDate};
 }
 
 sub setStartDate {
-	my ($self, $value) = @_;
-	$self->{startDate} = $value;
+    my ($self, $value) = @_;
+    $self->{startDate} = $value;
 }
 
 sub displayStyle {
-	my ($self) = @_;
-	return $self->{displayStyle} || 'STANDARD';
+    my ($self) = @_;
+    return $self->{displayStyle} || 'STANDARD';
 }
 
 sub setDisplayStyle {
-	my ($self, $value) = @_;
-	$self->{displayStyle} = $value;
+    my ($self, $value) = @_;
+    $self->{displayStyle} = $value;
 }
 
 sub template {
-	my ($self) = @_;
-	return $self->{template};
+    my ($self) = @_;
+    return $self->{template};
 }
 
 sub setTemplate {
-	my ($self, $value) = @_;
-	$self->{template} = $value;
+    my ($self, $value) = @_;
+    $self->{template} = $value;
 }
 
 sub maximumNumberOfMilliseconds {
-	my ($self) = @_;
-	return $self->{maximumNumberOfMilliseconds};
+    my ($self) = @_;
+    return $self->{maximumNumberOfMilliseconds};
 }
 
 sub setMaximumNumberOfMilliseconds {
-	my ($self, $value) = @_;
-	$self->{maximumNumberOfMilliseconds} = $value;
+    my ($self, $value) = @_;
+    $self->{maximumNumberOfMilliseconds} = $value;
 }
 
 sub maximumNumberOfDays {
-	my ($self) = @_;
-	return $self->{maximumNumberOfDays};
+    my ($self) = @_;
+    return $self->{maximumNumberOfDays};
 }
 
 sub setMaximumNumberOfDays {
-	my ($self, $value) = @_;
-	$self->setMaximumNumberOfMilliseconds($value * (24 * 60 * 60 * 1000));
-	$self->{maximumNumberOfDays} = $value;
+    my ($self, $value) = @_;
+    $self->setMaximumNumberOfMilliseconds($value * (24 * 60 * 60 * 1000));
+    $self->{maximumNumberOfDays} = $value;
 }
 
 sub maximumNumberOfMinutes {
-	my ($self) = @_;
-	return $self->{maximumNumberOfMinutes};
+    my ($self) = @_;
+    return $self->{maximumNumberOfMinutes};
 }
 
 sub setMaximumNumberOfMinutes {
-	my ($self, $value) = @_;
-	$self->setMaximumNumberOfMilliseconds($value * (60 * 60 * 1000));
-	$self->{maximumNumberOfMinutes} = $value;
+    my ($self, $value) = @_;
+    $self->setMaximumNumberOfMilliseconds($value * (60 * 60 * 1000));
+    $self->{maximumNumberOfMinutes} = $value;
 }
 
 sub propertiesAsJSON {
-	my ($self) = @_;
-	return $self->{propertiesAsJSON} if $self->{propertiesAsJSON};
-	my $props = {
-		displayStyle => $self->displayStyle(),
-		template => $self->template(),
-		maximumNumberOfMilliseconds => $self->maximumNumberOfMilliseconds(),
-	};
-	return $self->{propertiesAsJSON} = to_json($props);
+    my ($self) = @_;
+    return $self->{propertiesAsJSON} if $self->{propertiesAsJSON};
+    my $props = {
+        displayStyle => $self->displayStyle(),
+        template => $self->template(),
+        maximumNumberOfMilliseconds => $self->maximumNumberOfMilliseconds(),
+    };
+    return $self->{propertiesAsJSON} = to_json($props);
 }
 
 sub clientSideName {
-	my ($self) = @_;
-	return $self->{clientSideName} || $self->parentBindingName();
+    my ($self) = @_;
+    return $self->{clientSideName} || $self->parentBindingName();
 }
 
 sub setClientSideName {
-	my ($self, $value) = @_;
-	$self->{clientSideName} = $value;
+    my ($self, $value) = @_;
+    $self->{clientSideName} = $value;
 }
 
 1;

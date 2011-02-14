@@ -53,16 +53,16 @@ our $_regeneratedHttpdConf;
 my $appConfigClassName = AppControl::Utility::loadAppConfig($application, $appConfigPath);
 
 my $VALID_CMDS = {stop=>1, start=>1, restart=>1, running=>1,
-		checkconfig=> 1, debug=>1, 'rebuild-model'=>1, 'build-js-lib'=>1};
+        checkconfig=> 1, debug=>1, 'rebuild-model'=>1, 'build-js-lib'=>1};
 
 my $PROCNAME_TO_HTTPD_DEFINES = {
-								'ApacheModPerl' => '-DPERL -DMOD_PERL -DLOCAL_LOGGING',
-								'ApacheCache' => '-DCACHE -DLOCAL_LOGGING',
-								'ApacheAdmin' => '-DADMIN -DMOD_PERL -DLOCAL_LOGGING',
+                                'ApacheModPerl' => '-DPERL -DMOD_PERL -DLOCAL_LOGGING',
+                                'ApacheCache' => '-DCACHE -DLOCAL_LOGGING',
+                                'ApacheAdmin' => '-DADMIN -DMOD_PERL -DLOCAL_LOGGING',
                             };
 my $extraDefines = ' ';
 if (`uname` =~ /Linux/ ) {
-	$extraDefines .= '-DLINUX ';
+    $extraDefines .= '-DLINUX ';
 }
 
 my $ALWAYS_REBUILD_MODEL = 1;
@@ -71,23 +71,23 @@ my $PROCNAMES_DEPENDENT_ON_MODEL = { 'ApacheModPerl' => 1, 'ApacheAdmin' => 1 };
 my $HTTPD_GEN_SCRIPT_PATH = AppControl::Utility::configurationValueForKey('FRAMEWORK_ROOT')."/bin/genHttpdConf --application $application ";
 
 if (AppControl::Utility::configurationValueForKey('MP2')) {
-	$extraDefines .= ' -DMP2';
-	$HTTPD_GEN_SCRIPT_PATH .= ' --apache22';
+    $extraDefines .= ' -DMP2';
+    $HTTPD_GEN_SCRIPT_PATH .= ' --apache22';
 }
 
 my $DEBUG_ARGS = {
-	memcached => ' --debug',
+    memcached => ' --debug',
 };
 
 my $CMD_LINE_ARGS = {
     memcached => ' --application='.$application,
 };
 my $NEEDS_PID_FILE = {
-	mailQueue => 1,
+    mailQueue => 1,
 };
 
 if ((scalar @ARGV < 1) || (scalar @ARGV > 2)) {
-	usage();
+    usage();
 }
 
 my $cmd = shift;
@@ -99,11 +99,11 @@ my @procs = split(/ /, AppControl::Utility::configurationValueForKey('PROCS_TO_R
 my %procsToRun = map { $_ => 1 } @procs;
 
 if ($proc) {
-	if (! $procsToRun{$proc}) {
-		print "Error: $proc is not listed in PROCS_TO_RUN in IF.conf\n";
-		exit;
-	}
-	@procs = ($proc);
+    if (! $procsToRun{$proc}) {
+        print "Error: $proc is not listed in PROCS_TO_RUN in IF.conf\n";
+        exit;
+    }
+    @procs = ($proc);
 }
 
 my $rootPath = AppControl::Utility::configurationValueForKey('APP_ROOT');
@@ -118,138 +118,138 @@ require "AppControl/Perl5Lib.pl";
 
 
 foreach my $procName (@procs) {
-	my  $pobj;
+    my  $pobj;
     my $pidPath = $procName eq "ApacheModPerl" ? AppControl::Utility::configurationValueForKey('PID_FILE_ROOT') || "$rootPath/logs" : $frameworkPath."/logs";
 
     if (defined $PROCNAME_TO_HTTPD_DEFINES->{$procName}) {
-		# apache writes the pid way at the end of startup which sucks, so we write our
-		# own to better keep track of what's going on.
+        # apache writes the pid way at the end of startup which sucks, so we write our
+        # own to better keep track of what's going on.
 
-		my $defines = $PROCNAME_TO_HTTPD_DEFINES->{$procName} . $extraDefines;
+        my $defines = $PROCNAME_TO_HTTPD_DEFINES->{$procName} . $extraDefines;
 
-		my $stdArgs = "-f $rootPath/conf/ACTIVE/_httpd.conf $defines";
-		my $debugArgs = $stdArgs." -D PERLDB -X";
-		$debugArgs .= ' -D PERLDB_EPIC' if $interactive;
+        my $stdArgs = "-f $rootPath/conf/ACTIVE/_httpd.conf $defines";
+        my $debugArgs = $stdArgs." -D PERLDB -X";
+        $debugArgs .= ' -D PERLDB_EPIC' if $interactive;
 
-		$pobj = IF::System::Process->new(
-			{
-			  'name' =>	$procName,
-			  'bin' => 	AppControl::Utility::configurationValueForKey('HTTPD_PATH'),
-			  'args' =>	$stdArgs,
-			  'debugArgs' => $debugArgs,
-			  'configTestArgs' => ' -t',
-			  'pidPath' =>	$pidPath,
-		} );
-	} else {
-		$pobj = IF::System::Process->new(
-			{
-			  'name' =>		$procName,
-			  'bin' => 	($procName eq "memcached"? $frameworkPath : $rootPath)."/bin/".$procName,
-			  'args' =>	$CMD_LINE_ARGS->{$procName},
-			  'debugArgs' => $DEBUG_ARGS->{$procName},
-			  'configTestArgs' => ($procName eq "memcached"? "" : ' -t'),
-			  'pidPath' =>	$pidPath,
-			  'writePidFile' =>	$NEEDS_PID_FILE->{$procName},
-		} );
-	}
+        $pobj = IF::System::Process->new(
+            {
+              'name' =>    $procName,
+              'bin' =>     AppControl::Utility::configurationValueForKey('HTTPD_PATH'),
+              'args' =>    $stdArgs,
+              'debugArgs' => $debugArgs,
+              'configTestArgs' => ' -t',
+              'pidPath' =>    $pidPath,
+        } );
+    } else {
+        $pobj = IF::System::Process->new(
+            {
+              'name' =>        $procName,
+              'bin' =>     ($procName eq "memcached"? $frameworkPath : $rootPath)."/bin/".$procName,
+              'args' =>    $CMD_LINE_ARGS->{$procName},
+              'debugArgs' => $DEBUG_ARGS->{$procName},
+              'configTestArgs' => ($procName eq "memcached"? "" : ' -t'),
+              'pidPath' =>    $pidPath,
+              'writePidFile' =>    $NEEDS_PID_FILE->{$procName},
+        } );
+    }
 
-	next unless $pobj;
+    next unless $pobj;
 
-	SWITCH: for ($cmd) {
-		/^start/		&& do {
-								# regenerate apache config
-								regenerateHttpdConf();
-								regenerateModel() if shouldRegenerateModelForProcName($procName);
-								generateJavascriptLibrary();
-								exit(1) unless $pobj->checkConfig();
-								# do sanity checks and generate model in here...
-								#
-								# run it
-								$pobj->run(); last;
-							};
-		/^stop/		&& do { $pobj->halt(); last; };
-		/^restart/	&& do { $pobj->halt();
-								# regenerate apache config
-								regenerateHttpdConf();
-								regenerateModel() if shouldRegenerateModelForProcName($procName);
-								generateJavascriptLibrary();
-								exit(1) unless $pobj->checkConfig();
-								# do sanity checks and generate model in here...
-								#
-								# run it
-								$pobj->run(); last;
-							};
-		/^running/	&& do { $pobj->isRunning(); last; };
-		/^checkconfig/ && do { $pobj->checkConfig(1); last; };
-	}
-	$cmd =~ /^debug/	&& do { $pobj->debug(); last; };
-	$cmd =~ /^rebuild-model/  && do { regenerateModel(1); last; };
-	$cmd =~ /^build-js-lib/  && do { generateJavascriptLibrary(); last; };
+    SWITCH: for ($cmd) {
+        /^start/        && do {
+                                # regenerate apache config
+                                regenerateHttpdConf();
+                                regenerateModel() if shouldRegenerateModelForProcName($procName);
+                                generateJavascriptLibrary();
+                                exit(1) unless $pobj->checkConfig();
+                                # do sanity checks and generate model in here...
+                                #
+                                # run it
+                                $pobj->run(); last;
+                            };
+        /^stop/        && do { $pobj->halt(); last; };
+        /^restart/    && do { $pobj->halt();
+                                # regenerate apache config
+                                regenerateHttpdConf();
+                                regenerateModel() if shouldRegenerateModelForProcName($procName);
+                                generateJavascriptLibrary();
+                                exit(1) unless $pobj->checkConfig();
+                                # do sanity checks and generate model in here...
+                                #
+                                # run it
+                                $pobj->run(); last;
+                            };
+        /^running/    && do { $pobj->isRunning(); last; };
+        /^checkconfig/ && do { $pobj->checkConfig(1); last; };
+    }
+    $cmd =~ /^debug/    && do { $pobj->debug(); last; };
+    $cmd =~ /^rebuild-model/  && do { regenerateModel(1); last; };
+    $cmd =~ /^build-js-lib/  && do { generateJavascriptLibrary(); last; };
 }
 
 sub regenerateHttpdConf {
-	return if $_regeneratedHttpdConf;
-	print "Regenerating httpd.conf with $HTTPD_GEN_SCRIPT_PATH\n";
-	print `$HTTPD_GEN_SCRIPT_PATH`;
-	$_regeneratedHttpdConf = 1;
-	# avoid race condition with os x
-	sleep 2;
+    return if $_regeneratedHttpdConf;
+    print "Regenerating httpd.conf with $HTTPD_GEN_SCRIPT_PATH\n";
+    print `$HTTPD_GEN_SCRIPT_PATH`;
+    $_regeneratedHttpdConf = 1;
+    # avoid race condition with os x
+    sleep 2;
 }
 
 sub regenerateModel {
-	my $force = shift;
-	my $projectRoot = AppControl::Utility::configurationValueForKey('APP_ROOT');
-	my $modelPath = $projectRoot."/$application";
-	my $modelBaseFile = $modelPath.'/Model.pmodel';
-	my $modelCompleteFile = $modelPath.'/ModelWithAttributes.pmodel';
-	my $apacheUser = AppControl::Utility::configurationValueForKey('APACHE_USER') || getlogin();
+    my $force = shift;
+    my $projectRoot = AppControl::Utility::configurationValueForKey('APP_ROOT');
+    my $modelPath = $projectRoot."/$application";
+    my $modelBaseFile = $modelPath.'/Model.pmodel';
+    my $modelCompleteFile = $modelPath.'/ModelWithAttributes.pmodel';
+    my $apacheUser = AppControl::Utility::configurationValueForKey('APACHE_USER') || getlogin();
 
 
-	unless ($ALWAYS_REBUILD_MODEL) {
-		return if !$force && -f $modelCompleteFile &&
-			   (-M $modelCompleteFile < -M $modelBaseFile);
-	}
+    unless ($ALWAYS_REBUILD_MODEL) {
+        return if !$force && -f $modelCompleteFile &&
+               (-M $modelCompleteFile < -M $modelBaseFile);
+    }
 
-	my $genCmd = "bin/populateModel --application=$application --input-model $modelBaseFile ";
-	$genCmd .= "--output-model $modelCompleteFile && ";
-	$genCmd .= "chown $apacheUser $modelCompleteFile";
-	print $genCmd;
-	print `$genCmd`;
+    my $genCmd = "bin/populateModel --application=$application --input-model $modelBaseFile ";
+    $genCmd .= "--output-model $modelCompleteFile && ";
+    $genCmd .= "chown $apacheUser $modelCompleteFile";
+    print $genCmd;
+    print `$genCmd`;
 
-	print "Generated Model: $modelCompleteFile \n";
-	# avoid race condition with os x
-	sleep 2;
+    print "Generated Model: $modelCompleteFile \n";
+    # avoid race condition with os x
+    sleep 2;
 }
 
 sub generateJavascriptLibrary {
-	my $projectRoot = AppControl::Utility::configurationValueForKey('APP_ROOT');
-	my $usesJavascriptLibrary = AppControl::Utility::configurationValueForKey('USE_JAVASCRIPT_LIBRARY');
+    my $projectRoot = AppControl::Utility::configurationValueForKey('APP_ROOT');
+    my $usesJavascriptLibrary = AppControl::Utility::configurationValueForKey('USE_JAVASCRIPT_LIBRARY');
 
-	return unless $usesJavascriptLibrary;
+    return unless $usesJavascriptLibrary;
 
-	my $genCmd = "cd $projectRoot && ";
-	$genCmd .= "./bin/genJSLib";
+    my $genCmd = "cd $projectRoot && ";
+    $genCmd .= "./bin/genJSLib";
 
-	print `$genCmd`;
+    print `$genCmd`;
 
-	print "Generated Javascript Library\n";
-	# avoid race condition with os x
-	sleep 2;
+    print "Generated Javascript Library\n";
+    # avoid race condition with os x
+    sleep 2;
 }
 
 sub shouldRegenerateModelForProcName {
-	my $pname = shift;
-	return defined $PROCNAMES_DEPENDENT_ON_MODEL->{$pname};
+    my $pname = shift;
+    return defined $PROCNAMES_DEPENDENT_ON_MODEL->{$pname};
 }
 
 sub usage {
-	my $procs = AppControl::Utility::configurationValueForKey('PROCS_TO_RUN');
-	$procs =~ s/ /\|/g;
+    my $procs = AppControl::Utility::configurationValueForKey('PROCS_TO_RUN');
+    $procs =~ s/ /\|/g;
 
-	print "\nappCtl --application <app> [stop/start/restart/checkconfig/debug/running] [procname]\n";
-	print "\nappCtl [rebuild-model/build-js-lib]\n\n";
-	print "\tvalid procnames: [$procs]\n";
-	print "\twhen procname is omitted, cmd applies to all\n\n";
+    print "\nappCtl --application <app> [stop/start/restart/checkconfig/debug/running] [procname]\n";
+    print "\nappCtl [rebuild-model/build-js-lib]\n\n";
+    print "\tvalid procnames: [$procs]\n";
+    print "\twhen procname is omitted, cmd applies to all\n\n";
 
-	exit();
+    exit();
 }

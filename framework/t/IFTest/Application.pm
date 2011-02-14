@@ -24,7 +24,7 @@ package IFTest::Application;
 
 use strict;
 use base qw(
-	IF::Default::Application
+    IF::Default::Application
 );
 
 use IF::Application;
@@ -86,23 +86,23 @@ sub emailAddressIsSafe {
 
 my $_application;
 sub application {
-	my $className = shift;
-	unless ($_application) {
-		$_application = IF::Application->applicationInstanceWithName("IFTest");
-	}
-	return $_application;
+    my $className = shift;
+    unless ($_application) {
+        $_application = IF::Application->applicationInstanceWithName("IFTest");
+    }
+    return $_application;
 }
 
 #--------- this is not a method... it is executed when this
 #--------- is loaded outside of mod_perl...!!!
 
 unless ($ENV{'MOD_PERL'}) {
-	#my $oldMask = IF::Log::logMask();
-	#IF::Log::setLogMask(0x0000);
-	IF::Log::debug("Loading test application");
-	IF::Application->applicationInstanceWithName("IFTest");
+    #my $oldMask = IF::Log::logMask();
+    #IF::Log::setLogMask(0x0000);
+    IF::Log::debug("Loading test application");
+    IF::Application->applicationInstanceWithName("IFTest");
 } else {
-	IF::Application->applicationInstanceWithName("IFTest");
+    IF::Application->applicationInstanceWithName("IFTest");
 }
 
 1;

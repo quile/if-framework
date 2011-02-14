@@ -33,27 +33,27 @@ use Apache2::Const qw(:common);
 # constructor necessitating this.
 # See perldoc Apache::Request for details
 sub new {
-	my($classname, @args) = @_;
-	my $req = bless { r => Apache2::Request->new(@args) }, $classname;
- 	my $j = Apache2::Cookie::Jar->new($req->{r});
-	if ($j->status() == APR::Const::SUCCESS) {
-		$req->{_cookieJar} = $j;
-		IF::Log::debug("Cookie names: ".join(' ',$j->cookies()));
-	} else {
-		IF::Log::debug("Cookie jar status: ".$j->status());
-	}
-	return $req;
+    my($classname, @args) = @_;
+    my $req = bless { r => Apache2::Request->new(@args) }, $classname;
+     my $j = Apache2::Cookie::Jar->new($req->{r});
+    if ($j->status() == APR::Const::SUCCESS) {
+        $req->{_cookieJar} = $j;
+        IF::Log::debug("Cookie names: ".join(' ',$j->cookies()));
+    } else {
+        IF::Log::debug("Cookie jar status: ".$j->status());
+    }
+    return $req;
 }
 
 sub applicationName {
-	my $self = shift;
-	return $self->{_applicationName} if $self->{_applicationName};
-	my $dirConfigAppNameName = $self->dir_config()->get("Application");
-	if ($dirConfigAppNameName) {
-		$self->{_applicationName} = $dirConfigAppNameName;
-		return $dirConfigAppNameName ;
-	}
-	return $self->SUPER::applicationName();
+    my $self = shift;
+    return $self->{_applicationName} if $self->{_applicationName};
+    my $dirConfigAppNameName = $self->dir_config()->get("Application");
+    if ($dirConfigAppNameName) {
+        $self->{_applicationName} = $dirConfigAppNameName;
+        return $dirConfigAppNameName ;
+    }
+    return $self->SUPER::applicationName();
 }
 
 
@@ -65,23 +65,23 @@ sub internalRedirect {
 }
 
 sub dropCookie {
-	my $self = shift;
-	my $cookie = Apache2::Cookie->new($self, @_);
-	unless ($cookie) {
-	    IF::Log::error("Failed to create cookie ".join(", ", @_));
+    my $self = shift;
+    my $cookie = Apache2::Cookie->new($self, @_);
+    unless ($cookie) {
+        IF::Log::error("Failed to create cookie ".join(", ", @_));
         return;
     }
-	$cookie->bake($self);
-	return $cookie;
+    $cookie->bake($self);
+    return $cookie;
 }
 
 sub cookieValueForKey {
-	my ($self, $key) = @_;
-	IF::Log::debug(__PACKAGE__."->cookieValueForKey($key) on ".$self->{_cookieJar});
-	return unless $self->{_cookieJar};
-	my $c = $self->{_cookieJar}->cookies($key);
-	IF::Log::debug(__PACKAGE__."->cookieValueForKey($key) returns $c");
-	return $c;
+    my ($self, $key) = @_;
+    IF::Log::debug(__PACKAGE__."->cookieValueForKey($key) on ".$self->{_cookieJar});
+    return unless $self->{_cookieJar};
+    my $c = $self->{_cookieJar}->cookies($key);
+    IF::Log::debug(__PACKAGE__."->cookieValueForKey($key) returns $c");
+    return $c;
 }
 
 sub upload {

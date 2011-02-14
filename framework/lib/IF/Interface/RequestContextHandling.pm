@@ -9,72 +9,72 @@ package IF::Interface::RequestContextHandling;
 use strict;
 
 sub addRenderedComponent {
-	my $self = shift;
-	my $component = shift;
-	my $pageContextNumber = $component->renderContextNumber();
-	my $componentName = $component->componentName();
-	$self->{_renderedComponents}->{$componentName}->{$pageContextNumber}++;
-	$self->{_renderedPageContextNumbers}->{$pageContextNumber}++;
+    my $self = shift;
+    my $component = shift;
+    my $pageContextNumber = $component->renderContextNumber();
+    my $componentName = $component->componentName();
+    $self->{_renderedComponents}->{$componentName}->{$pageContextNumber}++;
+    $self->{_renderedPageContextNumbers}->{$pageContextNumber}++;
 }
 
 sub didRenderComponentWithPageContextNumber {
-	my ($self, $pcn) = @_;
-	#IF::Log::debug("Checking if we rendered component with context number $pcn");
+    my ($self, $pcn) = @_;
+    #IF::Log::debug("Checking if we rendered component with context number $pcn");
     if ($self->{_renderedPageContextNumbers}->{$pcn} > 0) {
         #IF::Log::debug(" .........----> Yep.");
         return 1;
     }
-	my $keys = [keys %{$self->{_renderedPageContextNumbers}}];
-	my $re = $pcn.'L[0-9_]+$';
-	
-	foreach my $k (@$keys) {
-		if ($k =~ /^$re/) {
-		    #IF::Log::debug(" .........----> Yep, $k");
-		    return 1;
-		}
-	}
-	#IF::Log::debug(" .......-----> Nope.");
-	#IF::Log::dump($self->{_renderedPageContextNumbers});
-	return 0;
+    my $keys = [keys %{$self->{_renderedPageContextNumbers}}];
+    my $re = $pcn.'L[0-9_]+$';
+    
+    foreach my $k (@$keys) {
+        if ($k =~ /^$re/) {
+            #IF::Log::debug(" .........----> Yep, $k");
+            return 1;
+        }
+    }
+    #IF::Log::debug(" .......-----> Nope.");
+    #IF::Log::dump($self->{_renderedPageContextNumbers});
+    return 0;
 }
 
 sub didRenderComponentWithName {
-	my $self = shift;
-	my $componentName = shift;
-	#IF::Log::debug("Checking if we rendered component with name $componentName");
-	my $n = $self->{_renderedComponents}->{$componentName};
-	if ($n) {
-	    #IF::Log::debug(" .....-----> Yep.");
-	    return 1;
-	}
-	#IF::Log::debug(" ......-----> Nope.");
-	$self->dumpRenderedComponents();
-	return 0;
+    my $self = shift;
+    my $componentName = shift;
+    #IF::Log::debug("Checking if we rendered component with name $componentName");
+    my $n = $self->{_renderedComponents}->{$componentName};
+    if ($n) {
+        #IF::Log::debug(" .....-----> Yep.");
+        return 1;
+    }
+    #IF::Log::debug(" ......-----> Nope.");
+    $self->dumpRenderedComponents();
+    return 0;
 }
 
 sub pageContextNumbersForComponentWithName {
-	my ($self, $componentName) = @_;
-	return $self->{_renderedComponents}->{$componentName};
+    my ($self, $componentName) = @_;
+    return $self->{_renderedComponents}->{$componentName};
 }
 
 sub pageContextNumberForCallingComponentInContext {
-	my $self = shift;
-	my $componentName = shift;
-	my $context = shift;
-	return undef unless $self->didRenderComponentWithName($componentName);
-	foreach my $pageContextNumber (keys %{$self->{_renderedComponents}->{$componentName}}) {
-		#IF::Log::debug("Rendered $componentName with number $pageContextNumber");
-		foreach my $key ($context->formKeys()) {
-			next unless $key =~ /^[0-9_]+$/;
-			return $pageContextNumber if ($key =~ /^$pageContextNumber/);
-		}
-	}
-	return undef;
+    my $self = shift;
+    my $componentName = shift;
+    my $context = shift;
+    return undef unless $self->didRenderComponentWithName($componentName);
+    foreach my $pageContextNumber (keys %{$self->{_renderedComponents}->{$componentName}}) {
+        #IF::Log::debug("Rendered $componentName with number $pageContextNumber");
+        foreach my $key ($context->formKeys()) {
+            next unless $key =~ /^[0-9_]+$/;
+            return $pageContextNumber if ($key =~ /^$pageContextNumber/);
+        }
+    }
+    return undef;
 }
 
 sub dumpRenderedComponents {
-	my $self = shift;
-	IF::Log::dump($self->{_renderedComponents});
+    my $self = shift;
+    IF::Log::dump($self->{_renderedComponents});
 }
 
 1;

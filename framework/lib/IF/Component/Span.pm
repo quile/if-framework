@@ -26,40 +26,40 @@ use strict;
 use base qw(IF::Component);
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
+    my ($self) = @_;
+    return [
         IF::PageResource->javascript("/if-static/javascript/IF/Span.js"),
-	];
+    ];
 }
 
 sub expression {
-	my $self = shift;
-	return $self->{expression};
+    my $self = shift;
+    return $self->{expression};
 }
 
 sub setExpression {
-	my $self = shift;
-	$self->{expression} = shift;
+    my $self = shift;
+    $self->{expression} = shift;
 }
 
 sub incrementedUseCounter {
-	my $self = shift;
-	return ++$self->{_useCounter};
+    my $self = shift;
+    return ++$self->{_useCounter};
 }
 
 sub useCounter {
-	my $self = shift;
-	return $self->{_useCounter};
+    my $self = shift;
+    return $self->{_useCounter};
 }
 
 sub isHidden {
-	my $self = shift;
-	return $self->{_isHidden};
+    my $self = shift;
+    return $self->{_isHidden};
 }
 
 sub setIsHidden {
-	my $self = shift;
-	$self->{_isHidden} = 1;
+    my $self = shift;
+    $self->{_isHidden} = 1;
 }
 
 1;

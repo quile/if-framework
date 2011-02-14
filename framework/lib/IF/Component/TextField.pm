@@ -25,90 +25,90 @@ package IF::Component::TextField;
 use strict;
 use vars qw($DEFAULT_SIZE $DEFAULT_MAX_LENGTH);
 use base qw(
-	IF::Component
-	IF::Interface::FormComponent
+    IF::Component
+    IF::Interface::FormComponent
 );
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
+    my ($self) = @_;
+    return [
         IF::PageResource->javascript("/if-static/javascript/IF/TextField.js"),
-	];
+    ];
 }
 
 sub resetValues {
-	my ($self) = @_;
-	delete $self->{NAME};
-	delete $self->{SIZE};
-	delete $self->{MAX_LENGTH};
-	delete $self->{VALUE};
+    my ($self) = @_;
+    delete $self->{NAME};
+    delete $self->{SIZE};
+    delete $self->{MAX_LENGTH};
+    delete $self->{VALUE};
 }
 
 sub takeValuesFromRequest {
-	my $self = shift;
-	my $context = shift;
+    my $self = shift;
+    my $context = shift;
 
-	$self->SUPER::takeValuesFromRequest($context);
-	$self->setValue($context->formValueForKey($self->name()));
-	IF::Log::debug("Value of input field ".$self->name()." is ".$self->value());
+    $self->SUPER::takeValuesFromRequest($context);
+    $self->setValue($context->formValueForKey($self->name()));
+    IF::Log::debug("Value of input field ".$self->name()." is ".$self->value());
 }
 
 sub name {
-	my $self = shift;
-	my $name = $self->{NAME};
-	return $name || $self->queryKeyNameForPageAndLoopContexts();
+    my $self = shift;
+    my $name = $self->{NAME};
+    return $name || $self->queryKeyNameForPageAndLoopContexts();
 }
 
 sub setName {
-	my $self = shift;
-	$self->{NAME} = shift;
+    my $self = shift;
+    $self->{NAME} = shift;
 }
 
 sub size {
-	my $self = shift;
-	return $self->{SIZE};
+    my $self = shift;
+    return $self->{SIZE};
 }
 
 sub setSize {
-	my $self = shift;
-	$self->{SIZE} = shift;
+    my $self = shift;
+    $self->{SIZE} = shift;
 }
 
 sub maxLength {
-	my $self = shift;
-	return $self->{MAX_LENGTH};
+    my $self = shift;
+    return $self->{MAX_LENGTH};
 }
 
 sub setMaxLength {
-	my $self = shift;
-	$self->{MAX_LENGTH} = shift;
+    my $self = shift;
+    $self->{MAX_LENGTH} = shift;
 }
 
 sub value {
-	my $self = shift;
-	return $self->{VALUE};
+    my $self = shift;
+    return $self->{VALUE};
 }
 
 sub setValue {
-	my $self = shift;
-	$self->{VALUE} = shift;
+    my $self = shift;
+    $self->{VALUE} = shift;
 }
 
 sub escapeDoubleQuotes {
-	my $self = shift;
-	my $string = shift;
-	$string =~ s/"/\&quot\;/g; #"
-	return $string;
+    my $self = shift;
+    my $string = shift;
+    $string =~ s/"/\&quot\;/g; #"
+    return $string;
 }
 
 sub shouldEnableClientSideScripting {
-	my $self = shift;
-	return $self->{shouldEnableClientSideScripting};
+    my $self = shift;
+    return $self->{shouldEnableClientSideScripting};
 }
 
 sub setShouldEnableClientSideScripting {
-	my $self = shift;
-	$self->{shouldEnableClientSideScripting} = shift;
+    my $self = shift;
+    $self->{shouldEnableClientSideScripting} = shift;
 }
 
 1;

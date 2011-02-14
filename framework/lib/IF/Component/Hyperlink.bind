@@ -22,15 +22,15 @@
 
 #
 {
-	inheritsFrom => "IF::Component::URL",
-	TAG_ATTRIBUTES => {
-		type => "ATTRIBUTES",
-	},
-	TOOLTIP => {
-		type => "STRING",
-		value => q(_tooltipHtml),
-	},
-	CONTENT => {
-		type => "CONTENT",
-	},
+    inheritsFrom => "IF::Component::URL",
+    TAG_ATTRIBUTES => {
+        type => "ATTRIBUTES",
+    },
+    TOOLTIP => {
+        type => "STRING",
+        value => q(_tooltipHtml),
+    },
+    CONTENT => {
+        type => "CONTENT",
+    },
 };

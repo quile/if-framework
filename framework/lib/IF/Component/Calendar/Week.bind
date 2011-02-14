@@ -1,69 +1,69 @@
 # IF::Component::Calendar::Week bindings
 # $Id: Week.bind,v 1.3 2004/03/31 00:44:53 kyle Exp $
 {
-	VIEW_SIZE_IS_SMALL => {
-		type => "BOOLEAN",
-		value => q($self->viewSize() eq "SMALL"),
-	},
-	FORMAT_IS_HORIZONTAL => {
-		type => "BOOLEAN",
-		value => q($self->viewFormat() eq "HORIZONTAL"),
-	},
-	FORMAT_IS_VERTICAL => {
-		type => "BOOLEAN",
-		value => q($self->viewFormat() eq "VERTICAL"),
-	},
-	FRAME_WIDTH => {
-		type => "NUMBER",
-		value => q(frameWidth),
-	},
-	CELL_PADDING => {
-		type => "NUMBER",
-		value => q(cellPadding),
-	},
-	FRAME_COLOR => {
-		type => "STRING",
-		value => q(frameColor),
-	},
-	BACKGROUND_COLOR => {
-		type => "STRING",
-		value => q(backgroundColor),
-	},
-	HEADER_COLOR => {
-		type => "STRING",
-		value => q(headerColor),
-	},
-	DAY_NAMES => {
-		type => "LOOP",
-		list => q($self->daysOfWeek($context)),
-		item => q(aDayOfWeek),
-	},
-	LONG_DAY_NAME => {
-		type => "STRING",
-		value => q($self->{aDayOfWeek}->{LONG_NAME}),
-	},
-	SHORT_DAY_NAME => {
-		type => "STRING",
-		value => q($self->{aDayOfWeek}->{SHORT_NAME}),
-	},
-	DAYS => {
-		type => "LOOP",
-		list => q(days),
-		item => q(aDay),
-	},
-	DATE => {
-		type => "Date",
-		bindings => {
-			date => q(aDay.sqlDate),
-		},
-	},
-	EVENTS => {
-		type => "LOOP",
-		list => q(aDay.events),
-		item => q(anEvent),
-	},
-	EVENT_NAME => {
-		type => "STRING",
-		value => q(anEvent.name),
-	},
+    VIEW_SIZE_IS_SMALL => {
+        type => "BOOLEAN",
+        value => q($self->viewSize() eq "SMALL"),
+    },
+    FORMAT_IS_HORIZONTAL => {
+        type => "BOOLEAN",
+        value => q($self->viewFormat() eq "HORIZONTAL"),
+    },
+    FORMAT_IS_VERTICAL => {
+        type => "BOOLEAN",
+        value => q($self->viewFormat() eq "VERTICAL"),
+    },
+    FRAME_WIDTH => {
+        type => "NUMBER",
+        value => q(frameWidth),
+    },
+    CELL_PADDING => {
+        type => "NUMBER",
+        value => q(cellPadding),
+    },
+    FRAME_COLOR => {
+        type => "STRING",
+        value => q(frameColor),
+    },
+    BACKGROUND_COLOR => {
+        type => "STRING",
+        value => q(backgroundColor),
+    },
+    HEADER_COLOR => {
+        type => "STRING",
+        value => q(headerColor),
+    },
+    DAY_NAMES => {
+        type => "LOOP",
+        list => q($self->daysOfWeek($context)),
+        item => q(aDayOfWeek),
+    },
+    LONG_DAY_NAME => {
+        type => "STRING",
+        value => q($self->{aDayOfWeek}->{LONG_NAME}),
+    },
+    SHORT_DAY_NAME => {
+        type => "STRING",
+        value => q($self->{aDayOfWeek}->{SHORT_NAME}),
+    },
+    DAYS => {
+        type => "LOOP",
+        list => q(days),
+        item => q(aDay),
+    },
+    DATE => {
+        type => "Date",
+        bindings => {
+            date => q(aDay.sqlDate),
+        },
+    },
+    EVENTS => {
+        type => "LOOP",
+        list => q(aDay.events),
+        item => q(anEvent),
+    },
+    EVENT_NAME => {
+        type => "STRING",
+        value => q(anEvent.name),
+    },
 };

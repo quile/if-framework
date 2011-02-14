@@ -21,10 +21,10 @@
 # THE SOFTWARE.
 
 {
-	YES_NO_EDITOR => {
-		type => "ReusableComponent::YesNoEditor",
-		bindings => {
-			value => q(objectHasPrivilege),
-		},
-	},
+    YES_NO_EDITOR => {
+        type => "ReusableComponent::YesNoEditor",
+        bindings => {
+            value => q(objectHasPrivilege),
+        },
+    },
 };

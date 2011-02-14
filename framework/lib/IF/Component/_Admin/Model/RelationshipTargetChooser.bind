@@ -1,22 +1,22 @@
 # IF::Component::_Admin::Model::RelationshipTargetChooser bindings
 {
-	IS_TO_ONE => {
-		type => "BOOLEAN",
-		value => q(relationship.isToOne),
-	},
-	TO_ONE_SELECTION => {
-		type => "PopUpMenu",
-		bindings => {
-			name => q(name), 
-			list => q(list),
-			value => q('VALUE'),
-			displayString => q('DISPLAY_STRING'),
-			selection => q(value),
-			allowsNoSelection => q("0"),
-		},
-	},
-	RELATIONSHIP_NAME => {
-		type => "STRING",
-		value => q(relationship.name),
-	},
+    IS_TO_ONE => {
+        type => "BOOLEAN",
+        value => q(relationship.isToOne),
+    },
+    TO_ONE_SELECTION => {
+        type => "PopUpMenu",
+        bindings => {
+            name => q(name), 
+            list => q(list),
+            value => q('VALUE'),
+            displayString => q('DISPLAY_STRING'),
+            selection => q(value),
+            allowsNoSelection => q("0"),
+        },
+    },
+    RELATIONSHIP_NAME => {
+        type => "STRING",
+        value => q(relationship.name),
+    },
 };

@@ -30,130 +30,130 @@ use IF::GregorianDate;
 @ISA = qw(IF::Component);
 
 sub init {
-	my $self = shift;
-	$self->setDateTime($IF::GregorianDate::ZERO_DATE_STRING);
-	return $self->SUPER::init();
+    my $self = shift;
+    $self->setDateTime($IF::GregorianDate::ZERO_DATE_STRING);
+    return $self->SUPER::init();
 }
 
 sub takeValuesFromRequest {
-	my $self = shift;
-	my $context = shift;
-	$self->SUPER::takeValuesFromRequest($context);
-	IF::Log::debug("Value of date-time is ".$self->dateTime());
+    my $self = shift;
+    my $context = shift;
+    $self->SUPER::takeValuesFromRequest($context);
+    IF::Log::debug("Value of date-time is ".$self->dateTime());
 }
 
 sub setDateTime {
-	my $self = shift;
-	my $dateTime = shift;
-	if ($dateTime =~ /^[0-9]+$/) {
-		$dateTime = IF::Utility::sqlDateTimeFromUnixTime($dateTime);
-	}
-	IF::Log::debug("Date time is set to $dateTime");
-	$self->{dateTime} = $dateTime;
+    my $self = shift;
+    my $dateTime = shift;
+    if ($dateTime =~ /^[0-9]+$/) {
+        $dateTime = IF::Utility::sqlDateTimeFromUnixTime($dateTime);
+    }
+    IF::Log::debug("Date time is set to $dateTime");
+    $self->{dateTime} = $dateTime;
 }
 
 sub dateTime {
-	my $self = shift;
-	if ($self->isUnixTimeFormat() && $self->{dateTime}) {
-		return IF::Utility::unixTimeFromSQLDateAndTime(substr($self->{dateTime}, 0, 10), substr($self->{dateTime}, 11, 8));
-	}
-	return $self->{dateTime};
+    my $self = shift;
+    if ($self->isUnixTimeFormat() && $self->{dateTime}) {
+        return IF::Utility::unixTimeFromSQLDateAndTime(substr($self->{dateTime}, 0, 10), substr($self->{dateTime}, 11, 8));
+    }
+    return $self->{dateTime};
 }
 
 sub value {
-	my $self = shift;
-	return $self->dateTime();
+    my $self = shift;
+    return $self->dateTime();
 }
 
 sub setValue {
-	my $self = shift;
-	my $value = shift;
-	$self->setDateTime($value);
+    my $self = shift;
+    my $value = shift;
+    $self->setDateTime($value);
 }
 
 sub theDate {
-	my $self = shift;
-	return substr($self->{dateTime}, 0, 10);
+    my $self = shift;
+    return substr($self->{dateTime}, 0, 10);
 }
 
 sub setTheDate {
-	my $self = shift;
-	my $date = shift;
-	my $time = $self->theTime();
-	IF::Log::debug("Setting TheDate to ".$date);
-	$self->setDateTime("$date $time");
-	IF::Log::debug("date-time is now ".$self->dateTime());
+    my $self = shift;
+    my $date = shift;
+    my $time = $self->theTime();
+    IF::Log::debug("Setting TheDate to ".$date);
+    $self->setDateTime("$date $time");
+    IF::Log::debug("date-time is now ".$self->dateTime());
 }
 
 sub theTime {
-	my $self = shift;
-	return substr($self->{dateTime}, 11, 8);
+    my $self = shift;
+    return substr($self->{dateTime}, 11, 8);
 }
 
 sub setTheTime {
-	my $self = shift;
-	my $time = shift;
-	my $date = $self->theDate();
-	if (length($date) < 10) {
-		$date = "0000-00-00";
-	}
-	$self->setDateTime("$date $time");
+    my $self = shift;
+    my $time = shift;
+    my $date = $self->theDate();
+    if (length($date) < 10) {
+        $date = "0000-00-00";
+    }
+    $self->setDateTime("$date $time");
 }
 
 sub startYear {
-	my $self = shift;
-	return $self->{startYear};
+    my $self = shift;
+    return $self->{startYear};
 }
 
 sub setStartYear {
-	my $self = shift;
-	$self->{startYear} = shift;
+    my $self = shift;
+    $self->{startYear} = shift;
 }
 
 sub endYear {
-	my $self = shift;
-	return $self->{endYear};
+    my $self = shift;
+    return $self->{endYear};
 }
 
 sub setEndYear {
-	my $self = shift;
-	$self->{endYear} = shift;
+    my $self = shift;
+    $self->{endYear} = shift;
 }
 
 sub timeStartsEmpty {
-	my $self = shift;
-	return 1 if $self->dateTime() eq $IF::GregorianDate::ZERO_DATE_STRING;
-	return 0;
+    my $self = shift;
+    return 1 if $self->dateTime() eq $IF::GregorianDate::ZERO_DATE_STRING;
+    return 0;
 }
 
 sub isUnixTimeFormat {
-	my $self = shift;
-	return $self->{isUnixTimeFormat};
+    my $self = shift;
+    return $self->{isUnixTimeFormat};
 }
 
 sub setIsUnixTimeFormat {
-	my $self = shift;
-	$self->{isUnixTimeFormat} = shift;
+    my $self = shift;
+    $self->{isUnixTimeFormat} = shift;
 }
 
 sub shouldShowSeconds {
-	my $self = shift;
-	return $self->{shouldShowSeconds};
+    my $self = shift;
+    return $self->{shouldShowSeconds};
 }
 
 sub setShouldShowSeconds {
-	my $self = shift;
-	$self->{shouldShowSeconds} = shift;
+    my $self = shift;
+    $self->{shouldShowSeconds} = shift;
 }
 
 sub shouldShowClientSideControls {
-	my $self = shift;
-	return $self->{_shouldShowClientSideControls};
+    my $self = shift;
+    return $self->{_shouldShowClientSideControls};
 }
 
 sub setShouldShowClientSideControls {
-	my $self = shift;
-	$self->{_shouldShowClientSideControls} = shift;
+    my $self = shift;
+    $self->{_shouldShowClientSideControls} = shift;
 }
 
 1;

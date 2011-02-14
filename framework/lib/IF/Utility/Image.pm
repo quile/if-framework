@@ -35,55 +35,55 @@ my $NCONVERT = IF::Application->systemConfigurationValueForKey("NCONVERT_BINARY"
 # should conform to some interface...?
 
 sub resizedImageAtPathWithWidthAndHeightFromImage {
-	my ($className, $targetPath, $width, $height, $image, $shouldRunSynchronously) = @_;
+    my ($className, $targetPath, $width, $height, $image, $shouldRunSynchronously) = @_;
 
-	IF::Log::debug("... resizing to $targetPath with width $width and height $height");
-	return unless ($width + $height);
-	my $sourcePath = $image->fullPath();
-#	my $sourceInfo = $className->infoForImage($image);
-#	unless ($sourceInfo) {
-#		IF::Log::error("Couldn't get info from image ".$image->fullPath());
-#		return;
-#	}
+    IF::Log::debug("... resizing to $targetPath with width $width and height $height");
+    return unless ($width + $height);
+    my $sourcePath = $image->fullPath();
+#    my $sourceInfo = $className->infoForImage($image);
+#    unless ($sourceInfo) {
+#        IF::Log::error("Couldn't get info from image ".$image->fullPath());
+#        return;
+#    }
 
-	# figure out the resize info
-	unless ($width) {
-		$width = "0";
-	}
-	unless ($height) {
-		$height = "0";
-	}
+    # figure out the resize info
+    unless ($width) {
+        $width = "0";
+    }
+    unless ($height) {
+        $height = "0";
+    }
 
-	my $resizeCommand = "$NCONVERT -quiet -ratio -resize $width $height -o $targetPath $sourcePath";
-	# There's really no reason to wait around while the images get resized,
-	# especially since we're just ignoring the output
-	if ($shouldRunSynchronously) {
+    my $resizeCommand = "$NCONVERT -quiet -ratio -resize $width $height -o $targetPath $sourcePath";
+    # There's really no reason to wait around while the images get resized,
+    # especially since we're just ignoring the output
+    if ($shouldRunSynchronously) {
         my $out = `$resizeCommand`;
     } else {
-	    system("$resizeCommand > /dev/null &");
-	}
-	return IF::File::Image->new()->initWithFullPath($targetPath);
+        system("$resizeCommand > /dev/null &");
+    }
+    return IF::File::Image->new()->initWithFullPath($targetPath);
 }
 
 sub infoForImage {
-	my ($className, $image) = @_;
+    my ($className, $image) = @_;
 
-	my $sourcePath = $image->fullPath();
-	my $resizeCommand = "$NCONVERT -quiet -info $sourcePath";
-	my $output = `$resizeCommand`;
-	if ($@) {
-		IF::Log::error($@);
-		return undef;
-	}
-	my $info = IF::Dictionary->new();
-	foreach my $line (split("\n", $output)) {
-		next unless $line =~ /^\s*(.*)\s*: (.*)$/;
-		my ($key, $value) = ($1, $2);
-		$key =~ s/\s*$//;
-		$info->setObjectForKey($value, lc($key));
-	}
-	#IF::Log::dump($info);
-	return $info;
+    my $sourcePath = $image->fullPath();
+    my $resizeCommand = "$NCONVERT -quiet -info $sourcePath";
+    my $output = `$resizeCommand`;
+    if ($@) {
+        IF::Log::error($@);
+        return undef;
+    }
+    my $info = IF::Dictionary->new();
+    foreach my $line (split("\n", $output)) {
+        next unless $line =~ /^\s*(.*)\s*: (.*)$/;
+        my ($key, $value) = ($1, $2);
+        $key =~ s/\s*$//;
+        $info->setObjectForKey($value, lc($key));
+    }
+    #IF::Log::dump($info);
+    return $info;
 }
 
 1;

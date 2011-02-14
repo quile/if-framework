@@ -28,54 +28,54 @@ use IF::Component;
 @ISA = qw(IF::Component);
 
 sub takeValuesFromRequest {
-	my $self = shift;
-	my $context = shift;
+    my $self = shift;
+    my $context = shift;
 
-	$self->SUPER::takeValuesFromRequest($context);
-	$self->setValueForKey($context->formValueForKey($self->name()), "VALUE");
-	IF::Log::debug("Value of input field ".$self->name()." is ".$self->value());
+    $self->SUPER::takeValuesFromRequest($context);
+    $self->setValueForKey($context->formValueForKey($self->name()), "VALUE");
+    IF::Log::debug("Value of input field ".$self->name()." is ".$self->value());
 }
 
 sub name {
-	my $self = shift;
-	my $name = $self->{"NAME"};
-	return $name || $self->queryKeyNameForPageAndLoopContexts();
+    my $self = shift;
+    my $name = $self->{"NAME"};
+    return $name || $self->queryKeyNameForPageAndLoopContexts();
 }
 
 sub setName {
-	my $self = shift;
-	$self->{NAME} = shift;
+    my $self = shift;
+    $self->{NAME} = shift;
 }
 
 sub value {
-	my $self = shift;
-	return $self->{VALUE};
+    my $self = shift;
+    return $self->{VALUE};
 }
 
 sub setValue {
-	my $self = shift;
-	$self->{VALUE} = shift;
+    my $self = shift;
+    $self->{VALUE} = shift;
 }
 
 sub isChecked {
-	my $self = shift;
-	return (!$self->{IS_CHECKED}) if $self->isNegated();
-	return $self->{IS_CHECKED};
+    my $self = shift;
+    return (!$self->{IS_CHECKED}) if $self->isNegated();
+    return $self->{IS_CHECKED};
 }
 
 sub setIsChecked {
-	my $self = shift;
-	$self->{IS_CHECKED} = shift;
+    my $self = shift;
+    $self->{IS_CHECKED} = shift;
 }
 
 sub isNegated {
-	my $self = shift;
-	return $self->{isNegated};
+    my $self = shift;
+    return $self->{isNegated};
 }
 
 sub setIsNegated {
-	my $self = shift;
-	$self->{isNegated} = shift;
+    my $self = shift;
+    $self->{isNegated} = shift;
 }
 
 1;

@@ -60,186 +60,186 @@ my $GOOGLE_GEOCODER_BASE_URL = "http://maps.google.com/maps/geo";
 
 # +++++++ class ++++++
 sub instanceFromObject {
-	my ($className, $object) = @_;
+    my ($className, $object) = @_;
 
-	my $new = $className->new();
+    my $new = $className->new();
 
-	return $new unless $object;
-	my $ecd = $object->entityClassDescription();
+    return $new unless $object;
+    my $ecd = $object->entityClassDescription();
 
-	my $fields = {
-		add1    => "add1",
-		add2    => "add2",
-		city    => "city",
-		state   => "state",
-		country => "country",
-	};
+    my $fields = {
+        add1    => "add1",
+        add2    => "add2",
+        city    => "city",
+        state   => "state",
+        country => "country",
+    };
 
-	if ($ecd && $ecd->hasGeographicData()) {
-		$fields->{add1}    = $ecd->geographicAddress1NameKey();
-		$fields->{add2}    = $ecd->geographicAddress2NameKey();
-		$fields->{city}    = $ecd->geographicCityNameKey();
-		$fields->{state}   = $ecd->geographicStateNameKey();
-		$fields->{country} = $ecd->geographicCountryNameKey();
-	}
+    if ($ecd && $ecd->hasGeographicData()) {
+        $fields->{add1}    = $ecd->geographicAddress1NameKey();
+        $fields->{add2}    = $ecd->geographicAddress2NameKey();
+        $fields->{city}    = $ecd->geographicCityNameKey();
+        $fields->{state}   = $ecd->geographicStateNameKey();
+        $fields->{country} = $ecd->geographicCountryNameKey();
+    }
 
-	foreach my $f (keys %$fields) {
-		my $objectKey = $fields->{$f};
-		$new->setValueForKey($object->valueForKey($objectKey), $f);
-	}
+    foreach my $f (keys %$fields) {
+        my $objectKey = $fields->{$f};
+        $new->setValueForKey($object->valueForKey($objectKey), $f);
+    }
 
-	# some special snooping required for items that don't
-	# have add1 & add2... this could be optimised!
+    # some special snooping required for items that don't
+    # have add1 & add2... this could be optimised!
 
-	if (!$ecd->geographicAddress1NameKey() &&
-		!$ecd->geographicAddress2NameKey()) {
+    if (!$ecd->geographicAddress1NameKey() &&
+        !$ecd->geographicAddress2NameKey()) {
 
-		my $owner = $object->valueForKey("assetOwner");
-		if ($owner && !$owner->is($object)) {
-			# we have an owner that is not this (which could result in
-			# a rather nasty infinite loop!)s, and no add1/add2 info, so fish for it in
-			# the owner's record:
+        my $owner = $object->valueForKey("assetOwner");
+        if ($owner && !$owner->is($object)) {
+            # we have an owner that is not this (which could result in
+            # a rather nasty infinite loop!)s, and no add1/add2 info, so fish for it in
+            # the owner's record:
 
-			my $oecd = $owner->entityClassDescription();
-			my $add1 = $owner->valueForKey($oecd->geographicAddress1NameKey());
-			my $add2 = $owner->valueForKey($oecd->geographicAddress2NameKey());
-			my $city    = $owner->valueForKey($oecd->geographicCityNameKey());
-			my $state   = $owner->valueForKey($oecd->geographicStateNameKey());
-			my $country = $owner->valueForKey($oecd->geographicCountryNameKey());
+            my $oecd = $owner->entityClassDescription();
+            my $add1 = $owner->valueForKey($oecd->geographicAddress1NameKey());
+            my $add2 = $owner->valueForKey($oecd->geographicAddress2NameKey());
+            my $city    = $owner->valueForKey($oecd->geographicCityNameKey());
+            my $state   = $owner->valueForKey($oecd->geographicStateNameKey());
+            my $country = $owner->valueForKey($oecd->geographicCountryNameKey());
 
-			if ( ($add1 || $add2)
-				&& $city    eq $new->city()
-				&& $state   eq $new->state()
-				&& $country eq $new->country()
-				) {
-				# the city/state/country are the same as this listing,
-				# and there's an address, so let's use it
-				$new->setAdd1($add1);
-				$new->setAdd2($add2);
-			}
-		}
-	}
+            if ( ($add1 || $add2)
+                && $city    eq $new->city()
+                && $state   eq $new->state()
+                && $country eq $new->country()
+                ) {
+                # the city/state/country are the same as this listing,
+                # and there's an address, so let's use it
+                $new->setAdd1($add1);
+                $new->setAdd2($add2);
+            }
+        }
+    }
 
-	# check for an existing geocoded address for that data
-	my $fs = IF::FetchSpecification->new("GeocodedAddress",
-				IF::Qualifier->and([
-					IF::Qualifier->key("add1 = %@", $new->add1()),
-					IF::Qualifier->key("add2 = %@", $new->add2()),
-					IF::Qualifier->key("city = %@", $new->city()),
-					IF::Qualifier->key("state = %@", $new->state()),
-					IF::Qualifier->key("country = %@", $new->country()),
-				]));
-	my $match = IF::ObjectContext->new()->entityMatchingFetchSpecification($fs);
-	return $match if $match;
-	# if we don't find one in the db, populate it from google
-	$new->populateFromGoogleGeocoder();
-	return $new;
+    # check for an existing geocoded address for that data
+    my $fs = IF::FetchSpecification->new("GeocodedAddress",
+                IF::Qualifier->and([
+                    IF::Qualifier->key("add1 = %@", $new->add1()),
+                    IF::Qualifier->key("add2 = %@", $new->add2()),
+                    IF::Qualifier->key("city = %@", $new->city()),
+                    IF::Qualifier->key("state = %@", $new->state()),
+                    IF::Qualifier->key("country = %@", $new->country()),
+                ]));
+    my $match = IF::ObjectContext->new()->entityMatchingFetchSpecification($fs);
+    return $match if $match;
+    # if we don't find one in the db, populate it from google
+    $new->populateFromGoogleGeocoder();
+    return $new;
 }
 
 
 # ---------- instance ---------
 
 sub populateFromGoogleGeocoder {
-	my ($self) = @_;
+    my ($self) = @_;
 
-	# using the info we have in $self, we build a query and
-	# fire it off to google. Then we fill the object with data from google
+    # using the info we have in $self, we build a query and
+    # fire it off to google. Then we fill the object with data from google
 
-	my $url = $self->googleGeocoderUrl();
-	#IF::Log::debug("Sending URL to google: $url");
+    my $url = $self->googleGeocoderUrl();
+    #IF::Log::debug("Sending URL to google: $url");
 
-	my $ua = LWP::UserAgent->new();
-	$ua->agent("IF Framework __VERSION__");
-	$ua->timeout(10); # if google doesn't respond in 10 seconds, give up.
-	my $request = HTTP::Request->new(GET => $url);
-	my $response = $ua->request($request);
+    my $ua = LWP::UserAgent->new();
+    $ua->agent("IF Framework __VERSION__");
+    $ua->timeout(10); # if google doesn't respond in 10 seconds, give up.
+    my $request = HTTP::Request->new(GET => $url);
+    my $response = $ua->request($request);
 
-	if ($response->is_success()) {
-		my $content = $response->content();
-		$self->setRawData($content);
-		#IF::Log::debug("Google returned this: ".$content);
+    if ($response->is_success()) {
+        my $content = $response->content();
+        $self->setRawData($content);
+        #IF::Log::debug("Google returned this: ".$content);
 
-		# extract goop from it
-		my $parsedData = eval { IF::Dictionary->new(from_json($content)); };
-		if ($parsedData) {
-			$self->setParsedData($parsedData);
-			#IF::Log::debug("Google returned a code of " . $parsedData->valueForKey("Status.code"));
+        # extract goop from it
+        my $parsedData = eval { IF::Dictionary->new(from_json($content)); };
+        if ($parsedData) {
+            $self->setParsedData($parsedData);
+            #IF::Log::debug("Google returned a code of " . $parsedData->valueForKey("Status.code"));
 
-			# kinda bogus b/c we only suck data from the first
-			# placemark... there could be more than one, apparently.
-			# TODO suck it from the placemark that has the highest
-			# level of accuracy
-			my $coordinates = $parsedData->valueForKey('Placemark.@0.Point.coordinates');
-			$self->setLatitude($coordinates->[1]);
-			$self->setLongitude($coordinates->[0]);
-		} else {
-			IF::Log::error("Unable to parse geocoder response: $@");
-		}
-	} else {
-		IF::Log::error("Google returned an error response: ". $response->content());
-	}
+            # kinda bogus b/c we only suck data from the first
+            # placemark... there could be more than one, apparently.
+            # TODO suck it from the placemark that has the highest
+            # level of accuracy
+            my $coordinates = $parsedData->valueForKey('Placemark.@0.Point.coordinates');
+            $self->setLatitude($coordinates->[1]);
+            $self->setLongitude($coordinates->[0]);
+        } else {
+            IF::Log::error("Unable to parse geocoder response: $@");
+        }
+    } else {
+        IF::Log::error("Google returned an error response: ". $response->content());
+    }
 }
 
 sub isValid {
-	my ($self) = @_;
-	return 1 if ($self->latitude() && $self->longitude());
-	return 0;
+    my ($self) = @_;
+    return 1 if ($self->latitude() && $self->longitude());
+    return 0;
 }
 
 sub googleGeocoderUrl {
-	my ($self) = @_;
-	my $url = $GOOGLE_GEOCODER_BASE_URL . "?"
-			. IF::Utility::stringFromQueryDictionary( {
-				q => $self->addressStringAsGoogleQuery(),
-				key => IF::Application->defaultApplication()->configurationValueForKey("GOOGLE_MAPS_KEY"),
-				output => "json",
-			});
-	return $url;
+    my ($self) = @_;
+    my $url = $GOOGLE_GEOCODER_BASE_URL . "?"
+            . IF::Utility::stringFromQueryDictionary( {
+                q => $self->addressStringAsGoogleQuery(),
+                key => IF::Application->defaultApplication()->configurationValueForKey("GOOGLE_MAPS_KEY"),
+                output => "json",
+            });
+    return $url;
 }
 
 sub addressString {
-	my ($self) = @_;
+    my ($self) = @_;
 
-	my $address = [];
-	foreach my $key (qw(add1 add2 city state country)) {
-		my $v = $self->valueForKey($key);
-		next unless $v;
-		push (@$address, $v);
-	}
-	return join(", ", @$address);
+    my $address = [];
+    foreach my $key (qw(add1 add2 city state country)) {
+        my $v = $self->valueForKey($key);
+        next unless $v;
+        push (@$address, $v);
+    }
+    return join(", ", @$address);
 }
 
 # Don't geocode the address 2 as google doesn't like it
 sub addressStringAsGoogleQuery {
-	my ($self) = @_;
-	my $address = [];
-	foreach my $key (qw(add1 city state country)) {
-		my $v = $self->valueForKey($key);
-		next unless $v;
-		# Addresses were coming in address 1 with the address 2 info
-		$v =~ s/,.*$//;
-		push (@$address, $v);
-	}
-	return join(", ", @$address);
+    my ($self) = @_;
+    my $address = [];
+    foreach my $key (qw(add1 city state country)) {
+        my $v = $self->valueForKey($key);
+        next unless $v;
+        # Addresses were coming in address 1 with the address 2 info
+        $v =~ s/,.*$//;
+        push (@$address, $v);
+    }
+    return join(", ", @$address);
 }
 
 
 sub parsedData {
-	my ($self) = @_;
-	unless ($self->{parsedData}) {
-		$self->{parsedData} = IF::Dictionary->new(from_json($self->rawData()));
-	}
-	return $self->{parsedData};
+    my ($self) = @_;
+    unless ($self->{parsedData}) {
+        $self->{parsedData} = IF::Dictionary->new(from_json($self->rawData()));
+    }
+    return $self->{parsedData};
 }
 
 sub setParsedData {
-	my ($self, $value) = @_;
-	$self->{parsedData} = $value;
+    my ($self, $value) = @_;
+    $self->{parsedData} = $value;
 }
 
 sub parsedDataValueForKeyPath {
-	my ($self, $keypath) = @_;
-	return $self->parsedData()->valueForKey($keypath);
+    my ($self, $keypath) = @_;
+    return $self->parsedData()->valueForKey($keypath);
 }
 
 

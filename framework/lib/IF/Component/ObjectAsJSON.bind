@@ -22,27 +22,27 @@
 
 #
 {
-	FACTORY => {
-		type => "STRING",
-		value => q(factory),
-	},
+    FACTORY => {
+        type => "STRING",
+        value => q(factory),
+    },
 
-	KEYS => {
-		type => "LOOP",
-		list => q(keys),
-		item => q(aKey),
-	},
+    KEYS => {
+        type => "LOOP",
+        list => q(keys),
+        item => q(aKey),
+    },
 
-	KEY => {
-		type => "STRING",
-		value => q(aKey),
-		filter => q(stripDots),
-	},
+    KEY => {
+        type => "STRING",
+        value => q(aKey),
+        filter => q(stripDots),
+    },
 
-	VALUE => {
-		type => "STRING",
-		value => q(valueForKeyOnObjectInContext(aKey,object,context)),
-		filter => q(escape)
-	},
+    VALUE => {
+        type => "STRING",
+        value => q(valueForKeyOnObjectInContext(aKey,object,context)),
+        filter => q(escape)
+    },
 
 }

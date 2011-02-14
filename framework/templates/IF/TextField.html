@@ -2,17 +2,17 @@
 <script type="text/javascript">
 <!--
 function <BINDING:UNIQUE_ID>Value() {
-	return valueOfTextField("<BINDING:UNIQUE_ID>");
+    return valueOfTextField("<BINDING:UNIQUE_ID>");
 }
 function set<BINDING:UNIQUE_ID>Value(value) {
-	setValueOfTextField(value, "<BINDING:UNIQUE_ID>");
+    setValueOfTextField(value, "<BINDING:UNIQUE_ID>");
 }
 // -->
 </script>
 </BINDING_IF:SHOULD_ENABLE_CLIENT_SIDE_SCRIPTING>
 <script type="text/javascript">
 IF.setupFn['<BINDING:UNIQUE_ID>'] = function (controller) {
-	controller.setIsRequired(<BINDING:IS_REQUIRED>);
-	<BINDING_IF:HAS_REQUIRED_MESSAGE>controller.setRequiredErrorMessage("<BINDING:REQUIRED_MESSAGE>");</BINDING_IF:HAS_REQUIRED_MESSAGE>
-};	
+    controller.setIsRequired(<BINDING:IS_REQUIRED>);
+    <BINDING_IF:HAS_REQUIRED_MESSAGE>controller.setRequiredErrorMessage("<BINDING:REQUIRED_MESSAGE>");</BINDING_IF:HAS_REQUIRED_MESSAGE>
+};    
 </script>

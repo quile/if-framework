@@ -25,14 +25,14 @@ package IF::Component::Text;
 use strict;
 
 use base qw(
-	IF::Component::TextField
+    IF::Component::TextField
 );
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
+    my ($self) = @_;
+    return [
         IF::PageResource->javascript("/if-static/javascript/IF/TextField.js"),
-	];
+    ];
 }
 
 sub takeValuesFromRequest {
@@ -43,23 +43,23 @@ sub takeValuesFromRequest {
 }
 
 sub rows {
-	my $self = shift;
-	return $self->{ROWS};
+    my $self = shift;
+    return $self->{ROWS};
 }
 
 sub setRows {
-	my $self = shift;
-	$self->{ROWS} = shift;
+    my $self = shift;
+    $self->{ROWS} = shift;
 }
 
 sub columns {
-	my $self = shift;
-	return $self->{COLUMNS};
+    my $self = shift;
+    return $self->{COLUMNS};
 }
 
 sub setColumns {
-	my $self = shift;
-	$self->{COLUMNS} = shift;
+    my $self = shift;
+    $self->{COLUMNS} = shift;
 }
 
 1;

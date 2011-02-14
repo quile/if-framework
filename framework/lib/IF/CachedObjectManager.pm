@@ -39,75 +39,75 @@ use IF::Cache;
 my $_sharedCache = IF::Cache::cacheOfTypeWithName("Memcached", "CacheManager");
 
 sub registerEntryInCacheWithKeyForObject {
-	my ($className, $cache, $key, $object) = @_;
-	return unless ($cache && $key && $object);
-	my $id = _identifierForObject($object);
+    my ($className, $cache, $key, $object) = @_;
+    return unless ($cache && $key && $object);
+    my $id = _identifierForObject($object);
 
-	my $entries = _sharedCacheEntryForId($id);
-	my $newKey = $cache->type()."/".$cache->name();
-	IF::Log::debug("Adding cache reference for $id");
-	$entries->{$newKey} = { cacheType  => $cache->type(),
-					 		cacheName => $cache->name(),
-					 		cacheKey  => $key
-					 	};
+    my $entries = _sharedCacheEntryForId($id);
+    my $newKey = $cache->type()."/".$cache->name();
+    IF::Log::debug("Adding cache reference for $id");
+    $entries->{$newKey} = { cacheType  => $cache->type(),
+                             cacheName => $cache->name(),
+                             cacheKey  => $key
+                         };
 
-	_setSharedCacheEntryForId($entries, $id);
+    _setSharedCacheEntryForId($entries, $id);
 }
 
 sub removeAllCacheEntriesForObject {
-	my ($className, $object) = @_;
-	my $id = _identifierForObject($object);
-	my $entries = _sharedCacheEntryForId($id);
-	foreach my $hashKey (keys %$entries) {
-		my $entry = $entries->{$hashKey};
-		my $cache = IF::Cache::cacheOfTypeWithName($entry->{cacheType}, $entry->{cacheName});
-		if ($cache) {
-			IF::Log::debug("Deleting cache entry for $id from cache $hashKey");
-			$cache->deleteCachedValueForKey($entry->{cacheKey});
-		}
-	}
-	_removeSharedCacheEntryForId($id);
+    my ($className, $object) = @_;
+    my $id = _identifierForObject($object);
+    my $entries = _sharedCacheEntryForId($id);
+    foreach my $hashKey (keys %$entries) {
+        my $entry = $entries->{$hashKey};
+        my $cache = IF::Cache::cacheOfTypeWithName($entry->{cacheType}, $entry->{cacheName});
+        if ($cache) {
+            IF::Log::debug("Deleting cache entry for $id from cache $hashKey");
+            $cache->deleteCachedValueForKey($entry->{cacheKey});
+        }
+    }
+    _removeSharedCacheEntryForId($id);
 }
 
 sub _identifierForObject {
-	my $object = shift;
-	my $idString;
-	if (UNIVERSAL::can($object, "id")) {
-		$idString = ref($object)."/".$object->id();
-	} else {
-		IF::Log::warning("Object $object passed in, but object has no 'id' method");
-		$idString = ref($object);
-	}
+    my $object = shift;
+    my $idString;
+    if (UNIVERSAL::can($object, "id")) {
+        $idString = ref($object)."/".$object->id();
+    } else {
+        IF::Log::warning("Object $object passed in, but object has no 'id' method");
+        $idString = ref($object);
+    }
 
-	# here we should hash it, but for now let's keep it plaintext
-	return $idString;
+    # here we should hash it, but for now let's keep it plaintext
+    return $idString;
 }
 
 sub _sharedCacheEntryForId {
-	my $id = shift;
-	unless ($_sharedCache) {
-		IF::Log::warning("No cache manager cache is available");
-		return {};
-	}
-	return $_sharedCache->cachedValueForKey($id) || {};
+    my $id = shift;
+    unless ($_sharedCache) {
+        IF::Log::warning("No cache manager cache is available");
+        return {};
+    }
+    return $_sharedCache->cachedValueForKey($id) || {};
 }
 
 sub _setSharedCacheEntryForId {
-	my ($entry, $id) = @_;
-	unless ($_sharedCache) {
-		IF::Log::warning("No cache manager cache is available");
-		return;
-	}
-	$_sharedCache->setCachedValueForKey($entry, $id);
+    my ($entry, $id) = @_;
+    unless ($_sharedCache) {
+        IF::Log::warning("No cache manager cache is available");
+        return;
+    }
+    $_sharedCache->setCachedValueForKey($entry, $id);
 }
 
 sub _removeSharedCacheEntryForId {
-	my $id = shift;
-	unless ($_sharedCache) {
-		IF::Log::warning("No cache manager cache is available");
-		return;
-	}
-	$_sharedCache->deleteCachedValueForKey($id);
+    my $id = shift;
+    unless ($_sharedCache) {
+        IF::Log::warning("No cache manager cache is available");
+        return;
+    }
+    $_sharedCache->deleteCachedValueForKey($id);
 }
 
 1;

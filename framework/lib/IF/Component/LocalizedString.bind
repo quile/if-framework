@@ -25,8 +25,8 @@
         type => "STRING",
         value => q(stringValue),
     },
-	HAS_UNHANDLED_TAG_ATTRIBUTES => {
-		type => "BOOLEAN",
-		value => q(hasUnhandledTagAttributes),
-	},
+    HAS_UNHANDLED_TAG_ATTRIBUTES => {
+        type => "BOOLEAN",
+        value => q(hasUnhandledTagAttributes),
+    },
 };

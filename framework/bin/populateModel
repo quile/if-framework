@@ -45,21 +45,21 @@ my $application;
 my $debug;
 
 GetOptions( "application=s" => \$application,
-			"input-model=s" => \$inputModel,
-			"output-model=s" => \$outputModel,
-			"debug" => \$debug );
+            "input-model=s" => \$inputModel,
+            "output-model=s" => \$outputModel,
+            "debug" => \$debug );
 
 usage() unless ($application && $inputModel && $outputModel);
 if ($debug) {
     $ENV{'MOD_PERL'} = 1;
-	IF::Log::setLogMask(0xffff);
+    IF::Log::setLogMask(0xffff);
 }
 
 my $applicationClass = $application."::Application";
 if ($application eq "IFTest") {
-	unshift @INC, "t";
+    unshift @INC, "t";
 } else {
-	unshift @INC, "../applications/$application";
+    unshift @INC, "../applications/$application";
 }
 
 print "Loading app config...\n";
@@ -74,8 +74,8 @@ require "AppControl/Perl5Lib.pl";
 
 eval "use $applicationClass;";
 if ($@) {
-	IF::Log::error($@);
-	exit(1);
+    IF::Log::error($@);
+    exit(1);
 }
 
 my $modelFileName = $inputModel;
@@ -84,71 +84,71 @@ IF::Log::debug("Application model class is $modelClass");
 my $model = $modelClass->new($modelFileName);
 
 foreach my $entityName (keys %{$model->{ENTITIES}}) {
-	IF::Log::debug("Fetching attributes for $entityName");
-	my $entityRecord = $model->{ENTITIES}->{$entityName};
-	IF::Log::dump($entityRecord);
+    IF::Log::debug("Fetching attributes for $entityName");
+    my $entityRecord = $model->{ENTITIES}->{$entityName};
+    IF::Log::dump($entityRecord);
 
-	my $results;
-	if ($entityRecord->{TABLE}) {
-		$results = IF::DB::descriptionOfTable($entityRecord->{TABLE});
-	} elsif ($entityRecord->{AGGREGATE_ENTITY} || $entityRecord->{AGGREGATE_TABLE}) {
-		my $aggregateEntityClass = $model->{ENTITIES}->{$entityRecord->{AGGREGATE_ENTITY}};
-		my $aggregateTable = $aggregateEntityClass->{TABLE} || $entityRecord->{AGGREGATE_TABLE};
-		my $sql = "SHOW COLUMNS FROM ".$aggregateTable;
-		$results = [];
-		my ($aggregateColumns, undef) = IF::DB::rawRowsForSQL($sql);
-		my $aggregatePrimaryKey = IF::PrimaryKey->new($entityRecord->{PRIMARY_KEY});
-		my $primaryKeyFields = {map { uc($_) => 1 } @{$aggregatePrimaryKey->keyFields()}};
-		foreach my $column (@$aggregateColumns) {
-			my $ucColumnName = uc($column->{FIELD});
-			next unless ($ucColumnName eq uc($entityRecord->{AGGREGATE_KEY_NAME}) ||
-						 $ucColumnName eq uc($entityRecord->{AGGREGATE_VALUE_NAME}) ||
-						 $ucColumnName eq uc($entityRecord->{AGGREGATE_QUALIFIER}) ||
-						 $primaryKeyFields->{$ucColumnName});
-			push (@$results, $column);
-		}
-	}
+    my $results;
+    if ($entityRecord->{TABLE}) {
+        $results = IF::DB::descriptionOfTable($entityRecord->{TABLE});
+    } elsif ($entityRecord->{AGGREGATE_ENTITY} || $entityRecord->{AGGREGATE_TABLE}) {
+        my $aggregateEntityClass = $model->{ENTITIES}->{$entityRecord->{AGGREGATE_ENTITY}};
+        my $aggregateTable = $aggregateEntityClass->{TABLE} || $entityRecord->{AGGREGATE_TABLE};
+        my $sql = "SHOW COLUMNS FROM ".$aggregateTable;
+        $results = [];
+        my ($aggregateColumns, undef) = IF::DB::rawRowsForSQL($sql);
+        my $aggregatePrimaryKey = IF::PrimaryKey->new($entityRecord->{PRIMARY_KEY});
+        my $primaryKeyFields = {map { uc($_) => 1 } @{$aggregatePrimaryKey->keyFields()}};
+        foreach my $column (@$aggregateColumns) {
+            my $ucColumnName = uc($column->{FIELD});
+            next unless ($ucColumnName eq uc($entityRecord->{AGGREGATE_KEY_NAME}) ||
+                         $ucColumnName eq uc($entityRecord->{AGGREGATE_VALUE_NAME}) ||
+                         $ucColumnName eq uc($entityRecord->{AGGREGATE_QUALIFIER}) ||
+                         $primaryKeyFields->{$ucColumnName});
+            push (@$results, $column);
+        }
+    }
 
-	foreach my $result (@$results) {
+    foreach my $result (@$results) {
 
-		# make a nice name from the DB column name and, if the
-		# user has not specified a custom name, set it for the column
-		my $prettyName = lcfirst(join("", map {ucfirst(lc($_))} split(/_/, $result->{FIELD})));
-		if ($entityRecord->{ATTRIBUTES} &&
-			$entityRecord->{ATTRIBUTES}->{$result->{FIELD}} &&
-			$entityRecord->{ATTRIBUTES}->{$result->{FIELD}}->{ATTRIBUTE_NAME} &&
-			$entityRecord->{ATTRIBUTES}->{$result->{FIELD}}->{ATTRIBUTE_NAME} ne $prettyName) {
-			$prettyName = $entityRecord->{ATTRIBUTES}->{$result->{FIELD}}->{ATTRIBUTE_NAME};
-		}
+        # make a nice name from the DB column name and, if the
+        # user has not specified a custom name, set it for the column
+        my $prettyName = lcfirst(join("", map {ucfirst(lc($_))} split(/_/, $result->{FIELD})));
+        if ($entityRecord->{ATTRIBUTES} &&
+            $entityRecord->{ATTRIBUTES}->{$result->{FIELD}} &&
+            $entityRecord->{ATTRIBUTES}->{$result->{FIELD}}->{ATTRIBUTE_NAME} &&
+            $entityRecord->{ATTRIBUTES}->{$result->{FIELD}}->{ATTRIBUTE_NAME} ne $prettyName) {
+            $prettyName = $entityRecord->{ATTRIBUTES}->{$result->{FIELD}}->{ATTRIBUTE_NAME};
+        }
 
-		my $type = $result->{TYPE};
-		my $size = undef;
-		my $enumeratedValues = [];
-		if ($type =~ /([\w]+)\(([0-9]+)\)/) {
-			$type = $1;
-			$size = $2;
-		}
+        my $type = $result->{TYPE};
+        my $size = undef;
+        my $enumeratedValues = [];
+        if ($type =~ /([\w]+)\(([0-9]+)\)/) {
+            $type = $1;
+            $size = $2;
+        }
 
-		if ($type =~ /^enum\(([^\)]+)\)$/i) {
-			$type = "ENUM";
-			$enumeratedValues = eval ("[".$1."]");
-		}
+        if ($type =~ /^enum\(([^\)]+)\)$/i) {
+            $type = "ENUM";
+            $enumeratedValues = eval ("[".$1."]");
+        }
 
-		# TODO: this just takes the values from MySQL and slots
-		# them in.  This really should be a bit smarter...
+        # TODO: this just takes the values from MySQL and slots
+        # them in.  This really should be a bit smarter...
 
-		$entityRecord->{ATTRIBUTES}->{$result->{FIELD}} = {
-						ATTRIBUTE_NAME => $prettyName,
-						COLUMN_NAME => $result->{FIELD},
-						TYPE => $type,
-						SIZE => $size,
-						VALUES => $enumeratedValues,
-						NULL => $result->{NULL},
-						KEY => $result->{NULL},
-						DEFAULT => $result->{DEFAULT},
-						EXTRA => $result->{DEFAULT},
-		};
-	}
+        $entityRecord->{ATTRIBUTES}->{$result->{FIELD}} = {
+                        ATTRIBUTE_NAME => $prettyName,
+                        COLUMN_NAME => $result->{FIELD},
+                        TYPE => $type,
+                        SIZE => $size,
+                        VALUES => $enumeratedValues,
+                        NULL => $result->{NULL},
+                        KEY => $result->{NULL},
+                        DEFAULT => $result->{DEFAULT},
+                        EXTRA => $result->{DEFAULT},
+        };
+    }
 }
 
 my $newModelFile = Data::Dumper->Dump([$model]);
@@ -167,8 +167,8 @@ close (OUTPUT);
 #==========================================
 
 sub usage {
-	print STDERR <<EOU;
+    print STDERR <<EOU;
 usage: populateModel --application=<app> --input-model=<model> --output-model=<model>
 EOU
-	exit (1);
+    exit (1);
 }

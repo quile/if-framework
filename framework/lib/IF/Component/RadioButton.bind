@@ -4,15 +4,15 @@
         type => "STRING",
         value => q(name),
     },
-	VALUE => {
-		type => "STRING",
-		value => q(value),
-	},
-	IS_CHECKED => {
-		type => "BOOLEAN",
-		value => q(isChecked),
-	},
-	TAG_ATTRIBUTES => {
-		type => "ATTRIBUTES",
-	},
+    VALUE => {
+        type => "STRING",
+        value => q(value),
+    },
+    IS_CHECKED => {
+        type => "BOOLEAN",
+        value => q(isChecked),
+    },
+    TAG_ATTRIBUTES => {
+        type => "ATTRIBUTES",
+    },
 };

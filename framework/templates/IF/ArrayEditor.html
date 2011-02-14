@@ -1,23 +1,23 @@
 <style type="text/css">
 .array-editor-control {
-	border: 1px solid #8b8;
-	background: #ccc;
-	font-family: monaco, courier, verdana, tahoma;
-	font-size: 10px;
-	padding: 1px;
-	margin: 2px;
+    border: 1px solid #8b8;
+    background: #ccc;
+    font-family: monaco, courier, verdana, tahoma;
+    font-size: 10px;
+    padding: 1px;
+    margin: 2px;
 }
 .array-editor-control:hover {
-	background: #fff;
+    background: #fff;
 }
 </style>
 <script type="text/javascript">
 <!--
 if (!arrayValues) {
-	var arrayValues = new Array();
-	var minimumNumberOfFields = new Array();
-	var maximumNumberOfFields = new Array();
-	var numberOfFields = new Array();
+    var arrayValues = new Array();
+    var minimumNumberOfFields = new Array();
+    var maximumNumberOfFields = new Array();
+    var numberOfFields = new Array();
 }
 arrayValues["<BINDING:UNIQUE_NAME>"] = new Array();
 <BINDING_LOOP:VALUES>arrayValues["<BINDING:UNIQUE_NAME>"][arrayValues["<BINDING:UNIQUE_NAME>"].length] = "<BINDING:VALUE>";
@@ -29,424 +29,424 @@ numberOfFields["<BINDING:UNIQUE_NAME>"] = "<BINDING:STARTING_NUMBER_OF_FIELDS>";
 <BINDING_IF:IS_FIRST_TIME_LOADED>
 // shared functions
 function allNodesMatchingRegexpBeneathNode(regexp, node) {
-	var matchingNodes = new Array();
-	if (node.hasChildNodes()) {
-		for (var i=0; i<node.childNodes.length; i++) {
-			var childNode = node.childNodes[i];
-			if (childNode.id && childNode.id.match(regexp)) {
-				matchingNodes[matchingNodes.length] = childNode;
-				//alert("Found match");
-			} else {
-				if (childNode.hasChildNodes) {
-					var childMatches = allNodesMatchingRegexpBeneathNode(regexp, childNode);
-					if (childMatches && childMatches.length > 0) {
-						matchingNodes = matchingNodes.concat(childMatches);
-						//alert ("Matching nodes: " + matchingNodes.length);
-					}
-				}
-			}
-		}
-	}
-	return matchingNodes;
+    var matchingNodes = new Array();
+    if (node.hasChildNodes()) {
+        for (var i=0; i<node.childNodes.length; i++) {
+            var childNode = node.childNodes[i];
+            if (childNode.id && childNode.id.match(regexp)) {
+                matchingNodes[matchingNodes.length] = childNode;
+                //alert("Found match");
+            } else {
+                if (childNode.hasChildNodes) {
+                    var childMatches = allNodesMatchingRegexpBeneathNode(regexp, childNode);
+                    if (childMatches && childMatches.length > 0) {
+                        matchingNodes = matchingNodes.concat(childMatches);
+                        //alert ("Matching nodes: " + matchingNodes.length);
+                    }
+                }
+            }
+        }
+    }
+    return matchingNodes;
 }
 function setDisplayStyleOnNodes(style, nodes) {
-	for (var i=0; i<nodes.length; i++) {
-		nodes[i].style.display = style;
-	}
+    for (var i=0; i<nodes.length; i++) {
+        nodes[i].style.display = style;
+    }
 }
 </BINDING_IF:IS_FIRST_TIME_LOADED>
 // -->
 </script>
 <BINDING_IF:IS_FIFTH_GENERATION_BROWSER>
-	<BINDING_IF:IS_FIRST_TIME_LOADED>
+    <BINDING_IF:IS_FIRST_TIME_LOADED>
 <script type="text/javascript">
 <!-- 
 function renumberChildNodesOfNodeWithNumber(node, number) {
-	if (node) {
-		if (node.hasChildNodes()) {
-			for (var j=0; j<node.childNodes.length; j++) {
-				renumberChildNodesOfNodeWithNumber(node.childNodes[j], number);
-			}
-		}
-		var re = /-[0-9]+$/g;
-		if (node.name != undefined) {
-			if (node.name.match(re)) {
-				node.name.replace(re, "-" + number);
-				var nodeName = node.getAttribute("name");
-				node.setAttribute("name", nodeName.replace(re, "-" + number));
-			}
-		}
-		if (node.id != undefined) {
-			if (node.id.match(re)) {
-				node.id.replace(re, "-" + number);
-				var nodeId = node.getAttribute("id");
-				node.setAttribute("id", nodeId.replace(re, "-" + number));
-				//alert("Element has new id " + node.id);
-			}
-		}
-	}
+    if (node) {
+        if (node.hasChildNodes()) {
+            for (var j=0; j<node.childNodes.length; j++) {
+                renumberChildNodesOfNodeWithNumber(node.childNodes[j], number);
+            }
+        }
+        var re = /-[0-9]+$/g;
+        if (node.name != undefined) {
+            if (node.name.match(re)) {
+                node.name.replace(re, "-" + number);
+                var nodeName = node.getAttribute("name");
+                node.setAttribute("name", nodeName.replace(re, "-" + number));
+            }
+        }
+        if (node.id != undefined) {
+            if (node.id.match(re)) {
+                node.id.replace(re, "-" + number);
+                var nodeId = node.getAttribute("id");
+                node.setAttribute("id", nodeId.replace(re, "-" + number));
+                //alert("Element has new id " + node.id);
+            }
+        }
+    }
 }
 
 function renumberElementsInComponentWithName(componentName) {
-	var element = getElementById(componentName);
-	if (!element) {
-		alert("Couldn't find element named "+componentName);
-		return;
-	}
-	var subtreeIndex = 0;
-	for (var i=0; i<element.childNodes.length; i++) {
-		renumberChildNodesOfNodeWithNumber(element.childNodes[i], subtreeIndex);
-		if (element.childNodes[i].nodeName == "DIV") {
-			subtreeIndex++;
-		}
-	}
+    var element = getElementById(componentName);
+    if (!element) {
+        alert("Couldn't find element named "+componentName);
+        return;
+    }
+    var subtreeIndex = 0;
+    for (var i=0; i<element.childNodes.length; i++) {
+        renumberChildNodesOfNodeWithNumber(element.childNodes[i], subtreeIndex);
+        if (element.childNodes[i].nodeName == "DIV") {
+            subtreeIndex++;
+        }
+    }
 }
 
 function indexOfElement(element) {
-	var currentElement = element.parentNode;
-	var match = false;
-	while (currentElement != undefined && !match) {
-		currentElementId = currentElement.id;
-		//alert(currentElementId);
-		if (currentElementId != undefined) {
-			var re = /[0-9]+$/g;
-			var results = currentElementId.match(re);
-			if (results) {
-				//alert("Found index " + results[0]);
-				return results[0];
-			}
-		}
-		currentElement = currentElement.parentNode;
-	}
-	return 0;
+    var currentElement = element.parentNode;
+    var match = false;
+    while (currentElement != undefined && !match) {
+        currentElementId = currentElement.id;
+        //alert(currentElementId);
+        if (currentElementId != undefined) {
+            var re = /[0-9]+$/g;
+            var results = currentElementId.match(re);
+            if (results) {
+                //alert("Found index " + results[0]);
+                return results[0];
+            }
+        }
+        currentElement = currentElement.parentNode;
+    }
+    return 0;
 }
 
 function getElementById(elementId) {
-	var element = document.getElementById(elementId);
-	if (element) {
-		if(element.id && element.id == elementId) {
-			return element;
-		} else {
-			// internet explorer is being dopey
-			element = document.all[elementId];
-			if (element) {
-				return element;
-			}
-		}
-	}
-	return element;
+    var element = document.getElementById(elementId);
+    if (element) {
+        if(element.id && element.id == elementId) {
+            return element;
+        } else {
+            // internet explorer is being dopey
+            element = document.all[elementId];
+            if (element) {
+                return element;
+            }
+        }
+    }
+    return element;
 }
 
 function childElementWithIdOfElement(elementId, component) {
-	if (component && component.hasChildNodes()) {
-		for(var i=0; i<component.childNodes.length; i++) {
-			if (component.childNodes[i] && component.childNodes[i].id &&
-				component.childNodes[i].id == elementId) {
-				return component.childNodes[i];
-			}
-			var element = childElementWithIdOfElement(elementId, component.childNodes[i]);
-			if (element) {
-				return element;
-			}
-		}
-	}
-	return null;
+    if (component && component.hasChildNodes()) {
+        for(var i=0; i<component.childNodes.length; i++) {
+            if (component.childNodes[i] && component.childNodes[i].id &&
+                component.childNodes[i].id == elementId) {
+                return component.childNodes[i];
+            }
+            var element = childElementWithIdOfElement(elementId, component.childNodes[i]);
+            if (element) {
+                return element;
+            }
+        }
+    }
+    return null;
 }
 
 function getElementByIdInComponentWithName(elementId, componentName) {
-	// first just try to fetch it
-	var element = getElementById(elementId);
-	if (element) {
-		return element;
-	}
-	// now, just sift thru and locate it (this is for dopey safari, mostly)
-	var component = getElementById(componentName);
-	if (component) {
-		return childElementWithIdOfElement(elementId, component);
-	} else {
-		alert("Can't even find component named "+componentName);
-		return null;
-	}
+    // first just try to fetch it
+    var element = getElementById(elementId);
+    if (element) {
+        return element;
+    }
+    // now, just sift thru and locate it (this is for dopey safari, mostly)
+    var component = getElementById(componentName);
+    if (component) {
+        return childElementWithIdOfElement(elementId, component);
+    } else {
+        alert("Can't even find component named "+componentName);
+        return null;
+    }
 }
 
 function addFieldToComponent(componentName, link) {
-	index = indexOfElement(link);
-	var elementId = componentName + "-" + index;
-	var element = getElementByIdInComponentWithName(elementId, componentName);
-	var newEntry = element.cloneNode(true);
-	jQuery(":input", newEntry).val("");
-	
-	parentNode = getElementById(componentName);
-	// insert subelement
-	if (element.nextSibling) {
-		parentNode.insertBefore(newEntry, element.nextSibling);
-	} else {
-		parentNode.appendChild(newEntry);
-	}
-	// renumber elements
-	renumberElementsInComponentWithName(componentName);
+    index = indexOfElement(link);
+    var elementId = componentName + "-" + index;
+    var element = getElementByIdInComponentWithName(elementId, componentName);
+    var newEntry = element.cloneNode(true);
+    jQuery(":input", newEntry).val("");
+    
+    parentNode = getElementById(componentName);
+    // insert subelement
+    if (element.nextSibling) {
+        parentNode.insertBefore(newEntry, element.nextSibling);
+    } else {
+        parentNode.appendChild(newEntry);
+    }
+    // renumber elements
+    renumberElementsInComponentWithName(componentName);
 
-	// increment the field count for this component
-	numberOfFields[componentName]++;
-	
-	// hide or show links if necessary
-	if (numberOfFields[componentName] >= maximumNumberOfFields[componentName]) {
-		setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-add-link", "g"), parentNode));
-	}
-	if (numberOfFields[componentName] > minimumNumberOfFields[componentName]) {
-		setDisplayStyleOnNodes("inline", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-remove-link", "g"), parentNode));
-	}
-	//purgeDuplicateFieldsFromFormForElement(element);
-	//dumpFormForElement(element);
-	return false;
+    // increment the field count for this component
+    numberOfFields[componentName]++;
+    
+    // hide or show links if necessary
+    if (numberOfFields[componentName] >= maximumNumberOfFields[componentName]) {
+        setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-add-link", "g"), parentNode));
+    }
+    if (numberOfFields[componentName] > minimumNumberOfFields[componentName]) {
+        setDisplayStyleOnNodes("inline", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-remove-link", "g"), parentNode));
+    }
+    //purgeDuplicateFieldsFromFormForElement(element);
+    //dumpFormForElement(element);
+    return false;
 }
 
 function removeFieldFromComponent(componentName, link) {
-	index = indexOfElement(link);
-	var elementId = componentName + "-" + index;
-	var element = getElementByIdInComponentWithName(elementId, componentName);
-	var parentNode = getElementById(componentName);
-	// remove subelement
-	element.innerHTML = "<!-- damn! -->";
-	
-	// decrement the field count for this component
-	numberOfFields[componentName]--;
-	
-	// renumber elements
-	renumberElementsInComponentWithName(componentName);
-	
-	// hide or show links if necessary
-	if (numberOfFields[componentName] < maximumNumberOfFields[componentName]) {
-		setDisplayStyleOnNodes("inline", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-add-link", "g"), parentNode));
-	}
-	if (numberOfFields[componentName] <= minimumNumberOfFields[componentName]) {
-		setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-remove-link", "g"), parentNode));
-	}
-	//purgeDuplicateFieldsFromFormForElement(parentNode);
-	//dumpFormForElement(parentNode);
+    index = indexOfElement(link);
+    var elementId = componentName + "-" + index;
+    var element = getElementByIdInComponentWithName(elementId, componentName);
+    var parentNode = getElementById(componentName);
+    // remove subelement
+    element.innerHTML = "<!-- damn! -->";
+    
+    // decrement the field count for this component
+    numberOfFields[componentName]--;
+    
+    // renumber elements
+    renumberElementsInComponentWithName(componentName);
+    
+    // hide or show links if necessary
+    if (numberOfFields[componentName] < maximumNumberOfFields[componentName]) {
+        setDisplayStyleOnNodes("inline", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-add-link", "g"), parentNode));
+    }
+    if (numberOfFields[componentName] <= minimumNumberOfFields[componentName]) {
+        setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-remove-link", "g"), parentNode));
+    }
+    //purgeDuplicateFieldsFromFormForElement(parentNode);
+    //dumpFormForElement(parentNode);
 }
 
 function dumpTreeForElement(element) {
-	var dump = "";
-	if (element.hasChildNodes()) {
-		for(var i=0; i<element.childNodes.length; i++) {
-			dump += dumpTreeForElement(element.childNodes[i]);
-			dump += "\n";
-		}
-	}
-	return element.nodeName + ":" + element.name + "/" + element.id + "[\n" + dump + "\n]";
+    var dump = "";
+    if (element.hasChildNodes()) {
+        for(var i=0; i<element.childNodes.length; i++) {
+            dump += dumpTreeForElement(element.childNodes[i]);
+            dump += "\n";
+        }
+    }
+    return element.nodeName + ":" + element.name + "/" + element.id + "[\n" + dump + "\n]";
 }
 function parentFormOfElement (element) {
-	var currentElement = element;
-	while (currentElement != null && currentElement.nodeName != "FORM") {
-		currentElement = currentElement.parentNode;
-	}
-	return currentElement;
+    var currentElement = element;
+    while (currentElement != null && currentElement.nodeName != "FORM") {
+        currentElement = currentElement.parentNode;
+    }
+    return currentElement;
 }
 function dumpFormForElement(element) {
-	var parentForm = parentFormOfElement(element);
-	if (parentForm) {
-		var dump = "";
-		for (var i=0; i<parentForm.elements.length; i++) {
-			dump += parentForm.elements[i].name + "\n";
-		}
-		alert(dump);
-	} else {
-		alert ("Couldn't find parent form for " + element);
-	}
+    var parentForm = parentFormOfElement(element);
+    if (parentForm) {
+        var dump = "";
+        for (var i=0; i<parentForm.elements.length; i++) {
+            dump += parentForm.elements[i].name + "\n";
+        }
+        alert(dump);
+    } else {
+        alert ("Couldn't find parent form for " + element);
+    }
 }
 function valuesForArray(componentName) {
-	var element = getElementById(componentName);
-	if (!element) {
-		//alert("Couldn't find element named "+componentName);
-		return new Array();
-	}
-	var values = new Array();
-	var formElements = formElementsBelowElement(element);
-	for (var i=0; i<formElements.length; i++) {
-		//alert(formElements[i] + ": " + valueOfFormElement(formElements[i]));
-		values[i] = valueOfFormElement(formElements[i]);
-	}
-	return values;
+    var element = getElementById(componentName);
+    if (!element) {
+        //alert("Couldn't find element named "+componentName);
+        return new Array();
+    }
+    var values = new Array();
+    var formElements = formElementsBelowElement(element);
+    for (var i=0; i<formElements.length; i++) {
+        //alert(formElements[i] + ": " + valueOfFormElement(formElements[i]));
+        values[i] = valueOfFormElement(formElements[i]);
+    }
+    return values;
 }
 
 // -->
 </script>
-	</BINDING_IF:IS_FIRST_TIME_LOADED>
+    </BINDING_IF:IS_FIRST_TIME_LOADED>
 
 
 <div id="<BINDING:UNIQUE_NAME>"><BINDING_LOOP:FIELDS><div id="<BINDING:UNIQUE_NAME>-<BINDING:FIELD_INDEX>"><nobr>
 <BINDING:FIELD %_TAG_ATTRIBUTES_%><BINDING_IF:HAS_FIELD_LABEL><div id="<BINDING:UNIQUE_NAME>-label-<BINDING:FIELD_INDEX>"><BINDING:FIELD_LABEL></div><BINDING_ELSE:HAS_FIELD_LABEL>&nbsp;</BINDING_IF:HAS_FIELD_LABEL><BINDING_IF:USER_CAN_CHANGE_SIZE><span class="array-editor-control" id="<BINDING:UNIQUE_NAME>-add-link-<BINDING:FIELD_INDEX>" onClick="javascript:addFieldToComponent('<BINDING:UNIQUE_NAME>', this);">+</span><span class="array-editor-control" id="<BINDING:UNIQUE_NAME>-remove-link-<BINDING:FIELD_INDEX>" onClick="javascript:removeFieldFromComponent('<BINDING:UNIQUE_NAME>', this);">-</span></BINDING_IF:USER_CAN_CHANGE_SIZE>
-		</nobr></div></BINDING_LOOP:FIELDS>
+        </nobr></div></BINDING_LOOP:FIELDS>
 </div>
 <script type"text/javascript">
-	<!--
-	var node = document.getElementById("<BINDING:UNIQUE_NAME>");
-	if (numberOfFields["<BINDING:UNIQUE_NAME>"] <= minimumNumberOfFields["<BINDING:UNIQUE_NAME>"]) {
-		setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp("<BINDING:UNIQUE_NAME>-remove-link", "g"), node));
-	}
-	if (numberOfFields["<BINDING:UNIQUE_NAME>"] >= maximumNumberOfFields["<BINDING:UNIQUE_NAME>"]) {
-		setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp("<BINDING:UNIQUE_NAME>-add-link", "g"), node));
-	}
-	// -->
+    <!--
+    var node = document.getElementById("<BINDING:UNIQUE_NAME>");
+    if (numberOfFields["<BINDING:UNIQUE_NAME>"] <= minimumNumberOfFields["<BINDING:UNIQUE_NAME>"]) {
+        setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp("<BINDING:UNIQUE_NAME>-remove-link", "g"), node));
+    }
+    if (numberOfFields["<BINDING:UNIQUE_NAME>"] >= maximumNumberOfFields["<BINDING:UNIQUE_NAME>"]) {
+        setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp("<BINDING:UNIQUE_NAME>-add-link", "g"), node));
+    }
+    // -->
 </script>
 <BINDING_ELSE:IS_FIFTH_GENERATION_BROWSER>
-	<BINDING_IF:IS_SAFARI>
-		<BINDING_IF:IS_FIRST_TIME_LOADED>
+    <BINDING_IF:IS_SAFARI>
+        <BINDING_IF:IS_FIRST_TIME_LOADED>
 <script type="text/javascript">
 <!--
 function refreshHiddenFieldForComponentNamed(componentName) {
-	var list = arrayValues[componentName];
-	var value = "";
-	for (var i=0; i< numberOfFields[componentName]; i++) {
-		var listValue = unescapedHtmlEncodedStringFromString(list[i]);
-		if (listValue == "undefined") {
-			listValue = "";
-		}
-		value += listValue; 
-		if (i<(numberOfFields[componentName]-1)) {
-			value += "<BINDING:SEPARATOR>";
-		}
-	}
-	var hiddenFieldName = "hidden-"+componentName;
-	var hiddenField = document.getElementById(hiddenFieldName);
-	if (hiddenField) {
-		hiddenField.value = value;
-		//alert(value);
-	} else {
-		alert("No field hidden-"+componentName+" found");
-	}
+    var list = arrayValues[componentName];
+    var value = "";
+    for (var i=0; i< numberOfFields[componentName]; i++) {
+        var listValue = unescapedHtmlEncodedStringFromString(list[i]);
+        if (listValue == "undefined") {
+            listValue = "";
+        }
+        value += listValue; 
+        if (i<(numberOfFields[componentName]-1)) {
+            value += "<BINDING:SEPARATOR>";
+        }
+    }
+    var hiddenFieldName = "hidden-"+componentName;
+    var hiddenField = document.getElementById(hiddenFieldName);
+    if (hiddenField) {
+        hiddenField.value = value;
+        //alert(value);
+    } else {
+        alert("No field hidden-"+componentName+" found");
+    }
 }
 
 function removeAllChildrenFromElement(element) {
-	if (element.hasChildNodes()) {
-		for (var i=(element.childNodes.length - 1); i >= 0; i--) {
-			var child = element.childNodes[i];
-			element.removeChild(child);
-		}
-	}
+    if (element.hasChildNodes()) {
+        for (var i=(element.childNodes.length - 1); i >= 0; i--) {
+            var child = element.childNodes[i];
+            element.removeChild(child);
+        }
+    }
 }
 
 function unescapedHtmlEncodedStringFromString(string) {
-	var element = document.createElement("span");
-	element.innerHTML = string;
-	return element.innerText;
+    var element = document.createElement("span");
+    element.innerHTML = string;
+    return element.innerText;
 }
 
 function renderListForComponentNamed(componentName) {
-	var list = arrayValues[componentName];
-	var component = document.getElementById(componentName);
-	if (!component) {
-		alert("No component named "+componentName+" found");
-		return;
-	}
-	var templateName = componentName + "-template";
-	var template = document.getElementById(templateName);
-	component.style.display = "none";
-	removeAllChildrenFromElement(component);
-	for (var i=0; i<numberOfFields[componentName] || i<minimumNumberOfFields[componentName]; i++) {
-		// commented out because it doesn't work on lame Mac IE:
-		//var newElement = template.cloneNode(true);
-		// instead we just do this:
-		var arrayValue = list[i];
-		if (arrayValue == undefined) {
-			arrayValue = "";
-		} else {
-			arrayValue = unescapedHtmlEncodedStringFromString(arrayValue);
-		}
-		var newElement = document.createElement("div");
-		newElement.innerHTML = template.innerHTML;
-		var re = /-template/g;
-		newElement.id = newElement.id.replace(re, "");
-		renumberNodesBelowElementWithIndex(newElement, i);
-		component.appendChild(newElement);
-		newElement.style.display = "block";
-		var formElements = formElementsBelowElement(newElement);
-		for (var j=0; j<formElements.length; j++) {
-			setValueOfFormElement(arrayValue, formElements[j]);
-			formElements[j].onchange = new Function("", "arrayValues[\"" + componentName + "\"]["+i+"] = valueOfFormElement(this); refreshHiddenFieldForComponentNamed(\""+componentName+"\");");
-		}
-	}
-	component.style.display = "block";
+    var list = arrayValues[componentName];
+    var component = document.getElementById(componentName);
+    if (!component) {
+        alert("No component named "+componentName+" found");
+        return;
+    }
+    var templateName = componentName + "-template";
+    var template = document.getElementById(templateName);
+    component.style.display = "none";
+    removeAllChildrenFromElement(component);
+    for (var i=0; i<numberOfFields[componentName] || i<minimumNumberOfFields[componentName]; i++) {
+        // commented out because it doesn't work on lame Mac IE:
+        //var newElement = template.cloneNode(true);
+        // instead we just do this:
+        var arrayValue = list[i];
+        if (arrayValue == undefined) {
+            arrayValue = "";
+        } else {
+            arrayValue = unescapedHtmlEncodedStringFromString(arrayValue);
+        }
+        var newElement = document.createElement("div");
+        newElement.innerHTML = template.innerHTML;
+        var re = /-template/g;
+        newElement.id = newElement.id.replace(re, "");
+        renumberNodesBelowElementWithIndex(newElement, i);
+        component.appendChild(newElement);
+        newElement.style.display = "block";
+        var formElements = formElementsBelowElement(newElement);
+        for (var j=0; j<formElements.length; j++) {
+            setValueOfFormElement(arrayValue, formElements[j]);
+            formElements[j].onchange = new Function("", "arrayValues[\"" + componentName + "\"]["+i+"] = valueOfFormElement(this); refreshHiddenFieldForComponentNamed(\""+componentName+"\");");
+        }
+    }
+    component.style.display = "block";
 }
 
 function renumberNodesBelowElementWithIndex(element, index) {
-	if (element) {
-		if (element.id) {
-			element.id = element.id + "-" + index;
-		}
-		if (element.hasChildNodes()) {
-			for (var i=0; i<element.childNodes.length; i++) {
-				renumberNodesBelowElementWithIndex(element.childNodes[i], index);
-			}
-		}
-	}
+    if (element) {
+        if (element.id) {
+            element.id = element.id + "-" + index;
+        }
+        if (element.hasChildNodes()) {
+            for (var i=0; i<element.childNodes.length; i++) {
+                renumberNodesBelowElementWithIndex(element.childNodes[i], index);
+            }
+        }
+    }
 }
 
 
 function addFieldToComponent(componentName) {
-	// increment the field count for this component
-	numberOfFields[componentName]++;
-	arrayValues[componentName][numberOfFields[componentName]-1] = "";
-	
-	var componentControls = componentName+"-controls";
-	var component = document.getElementById(componentControls);
-	// hide or show links if necessary
-	if (numberOfFields[componentName] >= maximumNumberOfFields[componentName]) {
-		setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-add-link", "g"), component));
-	}
-	if (numberOfFields[componentName] > minimumNumberOfFields[componentName]) {
-		setDisplayStyleOnNodes("inline", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-remove-link", "g"), component));
-	}
-	refreshHiddenFieldForComponentNamed(componentName);
-	renderListForComponentNamed(componentName);
+    // increment the field count for this component
+    numberOfFields[componentName]++;
+    arrayValues[componentName][numberOfFields[componentName]-1] = "";
+    
+    var componentControls = componentName+"-controls";
+    var component = document.getElementById(componentControls);
+    // hide or show links if necessary
+    if (numberOfFields[componentName] >= maximumNumberOfFields[componentName]) {
+        setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-add-link", "g"), component));
+    }
+    if (numberOfFields[componentName] > minimumNumberOfFields[componentName]) {
+        setDisplayStyleOnNodes("inline", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-remove-link", "g"), component));
+    }
+    refreshHiddenFieldForComponentNamed(componentName);
+    renderListForComponentNamed(componentName);
 }
 
 function removeFieldFromComponent(componentName) {
-	// decrement the field count for this component
-	numberOfFields[componentName]--;
-	var componentControls = componentName+"-controls";
-	var component = document.getElementById(componentControls);
-	// hide or show links if necessary
-	if (numberOfFields[componentName] < maximumNumberOfFields[componentName]) {
-		setDisplayStyleOnNodes("inline", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-add-link", "g"), component));
-	}
-	if (numberOfFields[componentName] <= minimumNumberOfFields[componentName]) {
-		setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-remove-link", "g"), component));
-	}
-	refreshHiddenFieldForComponentNamed(componentName);
-	renderListForComponentNamed(componentName);
+    // decrement the field count for this component
+    numberOfFields[componentName]--;
+    var componentControls = componentName+"-controls";
+    var component = document.getElementById(componentControls);
+    // hide or show links if necessary
+    if (numberOfFields[componentName] < maximumNumberOfFields[componentName]) {
+        setDisplayStyleOnNodes("inline", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-add-link", "g"), component));
+    }
+    if (numberOfFields[componentName] <= minimumNumberOfFields[componentName]) {
+        setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp(componentName+"-remove-link", "g"), component));
+    }
+    refreshHiddenFieldForComponentNamed(componentName);
+    renderListForComponentNamed(componentName);
 }
 
 function valuesForArray(componentName) {
-	var element = document.getElementById(componentName);
-	if (!element) {
-		//alert("Couldn't find element named "+componentName);
-		return new Array();
-	}
-	var values = new Array();
-	var formElements = formElementsBelowElement(element);
-	var hiddenFieldRegexp = /^hidden-/;
-	for (i=0; i<formElements.length; i++) {
-		var element = formElements[i];
-		//alert(element);
-		if (element.name.match(hiddenFieldRegexp)) {
-			componentName = element.name.replace(hiddenFieldRegexp, "");
-			for (var j=0;j<numberOfFields[componentName];j++) {
-				values[j] = arrayValues[componentName][j];
-			}
-			return values;
-		}
-	}
-	return values;
+    var element = document.getElementById(componentName);
+    if (!element) {
+        //alert("Couldn't find element named "+componentName);
+        return new Array();
+    }
+    var values = new Array();
+    var formElements = formElementsBelowElement(element);
+    var hiddenFieldRegexp = /^hidden-/;
+    for (i=0; i<formElements.length; i++) {
+        var element = formElements[i];
+        //alert(element);
+        if (element.name.match(hiddenFieldRegexp)) {
+            componentName = element.name.replace(hiddenFieldRegexp, "");
+            for (var j=0;j<numberOfFields[componentName];j++) {
+                values[j] = arrayValues[componentName][j];
+            }
+            return values;
+        }
+    }
+    return values;
 }
 // -->
 </script>
-		</BINDING_IF:IS_FIRST_TIME_LOADED>
+        </BINDING_IF:IS_FIRST_TIME_LOADED>
 <input type="HIDDEN" name="hidden-<BINDING:UNIQUE_NAME>" id="hidden-<BINDING:UNIQUE_NAME>" />
 
 <div style="display: none;" id="<BINDING:UNIQUE_NAME>-template">
-	<BINDING:EDITOR %_TAG_ATTRIBUTES_%>
+    <BINDING:EDITOR %_TAG_ATTRIBUTES_%>
 </div>
 
 <div id="<BINDING:UNIQUE_NAME>">
@@ -457,39 +457,39 @@ function valuesForArray(componentName) {
 
 <script type="text/javascript">
 <!--
-	refreshHiddenFieldForComponentNamed("<BINDING:UNIQUE_NAME>");
-	renderListForComponentNamed("<BINDING:UNIQUE_NAME>");
-	var node = document.getElementById("<BINDING:UNIQUE_NAME>-controls");
-	if (node) {
-		if (numberOfFields["<BINDING:UNIQUE_NAME>"] <= minimumNumberOfFields["<BINDING:UNIQUE_NAME>"]) {
-			setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp("<BINDING:UNIQUE_NAME>-remove-link", "g"), node));
-		}
-		if (numberOfFields["<BINDING:UNIQUE_NAME>"] >= maximumNumberOfFields["<BINDING:UNIQUE_NAME>"]) {
-			setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp("<BINDING:UNIQUE_NAME>-add-link", "g"), node));
-		}
-		node.style.display = "none";
-		node.style.display = "block";
-	}
+    refreshHiddenFieldForComponentNamed("<BINDING:UNIQUE_NAME>");
+    renderListForComponentNamed("<BINDING:UNIQUE_NAME>");
+    var node = document.getElementById("<BINDING:UNIQUE_NAME>-controls");
+    if (node) {
+        if (numberOfFields["<BINDING:UNIQUE_NAME>"] <= minimumNumberOfFields["<BINDING:UNIQUE_NAME>"]) {
+            setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp("<BINDING:UNIQUE_NAME>-remove-link", "g"), node));
+        }
+        if (numberOfFields["<BINDING:UNIQUE_NAME>"] >= maximumNumberOfFields["<BINDING:UNIQUE_NAME>"]) {
+            setDisplayStyleOnNodes("none", allNodesMatchingRegexpBeneathNode(new RegExp("<BINDING:UNIQUE_NAME>-add-link", "g"), node));
+        }
+        node.style.display = "none";
+        node.style.display = "block";
+    }
 
 // -->
 </script>
-	<BINDING_ELSE:IS_SAFARI>
-	<!-- dopey useless browsers get this code: -->
+    <BINDING_ELSE:IS_SAFARI>
+    <!-- dopey useless browsers get this code: -->
 <BINDING_IF:IS_FIRST_TIME_LOADED>
 <script type="text/javascript" language="Javascript"><!-- 
 function valuesForArray(componentName) {
-	var element = document.getElementById(componentName);
-	if (!element) {
-		//alert("Couldn't find element named "+componentName);
-		return new Array();
-	}
-	var values = new Array();
-	var formElements = formElementsBelowElement(element);
-	for (var i=0; i<formElements.length; i++) {
-		//alert(formElements[i] + ": " + valueOfFormElement(formElements[i]));
-		values[i] = valueOfFormElement(formElements[i]);
-	}
-	return values;
+    var element = document.getElementById(componentName);
+    if (!element) {
+        //alert("Couldn't find element named "+componentName);
+        return new Array();
+    }
+    var values = new Array();
+    var formElements = formElementsBelowElement(element);
+    for (var i=0; i<formElements.length; i++) {
+        //alert(formElements[i] + ": " + valueOfFormElement(formElements[i]));
+        values[i] = valueOfFormElement(formElements[i]);
+    }
+    return values;
 }
  // -->
 </script>
@@ -501,7 +501,7 @@ for information on where you can find a browser to suit your needs.
 </div></BINDING_IF:IS_FIRST_TIME_LOADED>
 <div id="<BINDING:UNIQUE_NAME>"><BINDING_LOOP:FIELDS_FOR_DOPEY_BROWSER><div id="<BINDING:UNIQUE_NAME>-<BINDING:FIELD_INDEX>">
 <BINDING:FIELD %_TAG_ATTRIBUTES_%> <BINDING_IF:HAS_FIELD_LABEL><div id="<BINDING:UNIQUE_NAME>-label-<BINDING:FIELD_INDEX>"><BINDING:FIELD_LABEL></div></BINDING_IF:HAS_FIELD_LABEL>
-		</div></BINDING_LOOP:FIELDS_FOR_DOPEY_BROWSER>
+        </div></BINDING_LOOP:FIELDS_FOR_DOPEY_BROWSER>
 </div>
-	</BINDING_IF:IS_SAFARI>
+    </BINDING_IF:IS_SAFARI>
 </BINDING_IF:IS_FIFTH_GENERATION_BROWSER>

@@ -1,91 +1,91 @@
 <BINDING:WRAPPER>
-	<table class=content>
-		<tr><td><BINDING:NAVIGATION></td></tr> 
-		<tr><td>
-			<BINDING_IF:ENTITY_IS_NEW>
-			<h4>Creating new  <BINDING:ENTITY_NAME></h4>
-			<BINDING_ELSE:ENTITY_IS_NEW>
-			<h4>Editing <BINDING:ENTITY_NAME></h4>
-			</BINDING_IF:ENTITY_IS_NEW>
-			<p>
-			<BINDING:ENTITY_EDITOR_FORM>
-				<table>
-					<tr>
-						<td>
-							<BINDING_IF:ENTITY_IS_NEW>
-								<BINDING:CREATE_BUTTON VALUE="Create">
-							<BINDING_ELSE:ENTITY_IS_NEW>
-								<BINDING:SUBMIT_BUTTON VALUE="Update">
-							</BINDING_IF:ENTITY_IS_NEW>
-							<BINDING_IF:HAS_PREVIEW>
-								<BINDING:PREVIEW_BUTTON value="Preview" />
-							</BINDING_IF:HAS_PREVIEW>
-						</td>
-					</tr>
+    <table class=content>
+        <tr><td><BINDING:NAVIGATION></td></tr> 
+        <tr><td>
+            <BINDING_IF:ENTITY_IS_NEW>
+            <h4>Creating new  <BINDING:ENTITY_NAME></h4>
+            <BINDING_ELSE:ENTITY_IS_NEW>
+            <h4>Editing <BINDING:ENTITY_NAME></h4>
+            </BINDING_IF:ENTITY_IS_NEW>
+            <p>
+            <BINDING:ENTITY_EDITOR_FORM>
+                <table>
+                    <tr>
+                        <td>
+                            <BINDING_IF:ENTITY_IS_NEW>
+                                <BINDING:CREATE_BUTTON VALUE="Create">
+                            <BINDING_ELSE:ENTITY_IS_NEW>
+                                <BINDING:SUBMIT_BUTTON VALUE="Update">
+                            </BINDING_IF:ENTITY_IS_NEW>
+                            <BINDING_IF:HAS_PREVIEW>
+                                <BINDING:PREVIEW_BUTTON value="Preview" />
+                            </BINDING_IF:HAS_PREVIEW>
+                        </td>
+                    </tr>
 
-					<tr>
-						<td><BINDING:ENTITY_EDITOR></td>
-					</tr>
+                    <tr>
+                        <td><BINDING:ENTITY_EDITOR></td>
+                    </tr>
 
-					<BINDING_IF:HAS_RELATIONSHIP_HINTS>
-					<tr><td>Hints:</td></tr>
-					<tr>
-						<td><BINDING:HINT_EDITOR></td>
-					</tr>
-					</BINDING_IF:HAS_RELATIONSHIP_HINTS>
-					
-					<tr>
-						<td>
-							<BINDING_IF:ENTITY_IS_NEW>
-								<BINDING:CREATE_BUTTON VALUE="Create">
-							<BINDING_ELSE:ENTITY_IS_NEW>
-								<BINDING:SUBMIT_BUTTON VALUE="Update">
-								<BINDING:DELETE_BUTTON VALUE="Delete" onClick="javascript:return confirm('Are you sure you wish to delete this?');">
-								<BINDING_IF:IS_EDITING_FLATTENED_TO_MANY_RELATIONSHIP>
-									<BINDING:REMOVE_FROM_RELATIONSHIP_BUTTON VALUE="Remove from relationship" onClick="javascript:return confirm('This will NOT delete the object, just remove it from the relationship.  Are you sure?');">
-								</BINDING_IF:IS_EDITING_FLATTENED_TO_MANY_RELATIONSHIP>
-							</BINDING_IF:ENTITY_IS_NEW>
-							<BINDING_IF:HAS_PREVIEW>
-								<BINDING:PREVIEW_BUTTON value="Preview" />
-							</BINDING_IF:HAS_PREVIEW>
-						</td>
-					</tr>
-					<BINDING_IF:HAS_RELATIONSHIPS>
-					<tr>
-						<td><b>Relationships:</b></td>
-					</tr>
+                    <BINDING_IF:HAS_RELATIONSHIP_HINTS>
+                    <tr><td>Hints:</td></tr>
+                    <tr>
+                        <td><BINDING:HINT_EDITOR></td>
+                    </tr>
+                    </BINDING_IF:HAS_RELATIONSHIP_HINTS>
+                    
+                    <tr>
+                        <td>
+                            <BINDING_IF:ENTITY_IS_NEW>
+                                <BINDING:CREATE_BUTTON VALUE="Create">
+                            <BINDING_ELSE:ENTITY_IS_NEW>
+                                <BINDING:SUBMIT_BUTTON VALUE="Update">
+                                <BINDING:DELETE_BUTTON VALUE="Delete" onClick="javascript:return confirm('Are you sure you wish to delete this?');">
+                                <BINDING_IF:IS_EDITING_FLATTENED_TO_MANY_RELATIONSHIP>
+                                    <BINDING:REMOVE_FROM_RELATIONSHIP_BUTTON VALUE="Remove from relationship" onClick="javascript:return confirm('This will NOT delete the object, just remove it from the relationship.  Are you sure?');">
+                                </BINDING_IF:IS_EDITING_FLATTENED_TO_MANY_RELATIONSHIP>
+                            </BINDING_IF:ENTITY_IS_NEW>
+                            <BINDING_IF:HAS_PREVIEW>
+                                <BINDING:PREVIEW_BUTTON value="Preview" />
+                            </BINDING_IF:HAS_PREVIEW>
+                        </td>
+                    </tr>
+                    <BINDING_IF:HAS_RELATIONSHIPS>
+                    <tr>
+                        <td><b>Relationships:</b></td>
+                    </tr>
 
-					<tr>
-						<td>
-							<table table border=0 cellspacing=0 cellpadding=4 class="model-viewer-form">
-								<BINDING_LOOP:RELATIONSHIPS>
-								<tr>
-									<td class="field-cell" style="vertical-align: top;"><BINDING:RELATIONSHIP_NAME>
-										<br />
-						<BINDING_IF:SHOULD_SHOW_RELATIONSHIP_CONTROLS> <BINDING_IF:CAN_ADD_RELATED_ENTITY><BINDING:ADD_RELATED_ENTITY_LINK>add</BINDING:ADD_RELATED_ENTITY_LINK> 
-					<BINDING_IF:HAS_RELATED_ENTITIES>| <BINDING:CHOOSE_RELATED_ENTITY_LINK>choose</BINDING:CHOOSE_RELATED_ENTITY_LINK></BINDING_IF:CAN_ADD_RELATED_ENTITY>
-										<BINDING_IF:CAN_EDIT_ORDERING> | <BINDING:EDIT_ORDERING_LINK>edit ordering</BINDING:EDIT_ORDERING_LINK></BINDING_IF:CAN_EDIT_ORDERING></BINDING_IF:HAS_RELATED_ENTITIES>
-						</BINDING_IF:SHOULD_SHOW_RELATIONSHIP_CONTROLS>
-						</td>
-									<td>
-									<BINDING_IF:HAS_RELATED_ENTITIES>
-  										<BINDING_IF:RELATIONSHIP_IS_INLINE>
- 											<BINDING:INLINE_RELATIONSHIP_VIEWER>
-										<BINDING_ELSE:RELATIONSHIP_IS_INLINE>																	<BINDING:VIEW_RELATED_ENTITIES_LINK><BINDING:RELATIONSHIP_COUNT></BINDING:VIEW_RELATED_ENTITIES_LINK>
-										</BINDING_IF:RELATIONSHIP_IS_INLINE>
-										<BINDING_ELSE:HAS_RELATED_ENTITIES>
-											none 
-									</BINDING_IF:HAS_RELATED_ENTITIES>
-										&nbsp;
-									</td>
-								</tr>
-								</BINDING_LOOP:RELATIONSHIPS>
-							</table>
-						</td>
-					</tr>
-					</BINDING_IF:HAS_RELATIONSHIPS>
-				</table>
-			</BINDING:ENTITY_EDITOR_FORM>
-		</td></tr>
-	</table>
+                    <tr>
+                        <td>
+                            <table table border=0 cellspacing=0 cellpadding=4 class="model-viewer-form">
+                                <BINDING_LOOP:RELATIONSHIPS>
+                                <tr>
+                                    <td class="field-cell" style="vertical-align: top;"><BINDING:RELATIONSHIP_NAME>
+                                        <br />
+                        <BINDING_IF:SHOULD_SHOW_RELATIONSHIP_CONTROLS> <BINDING_IF:CAN_ADD_RELATED_ENTITY><BINDING:ADD_RELATED_ENTITY_LINK>add</BINDING:ADD_RELATED_ENTITY_LINK> 
+                    <BINDING_IF:HAS_RELATED_ENTITIES>| <BINDING:CHOOSE_RELATED_ENTITY_LINK>choose</BINDING:CHOOSE_RELATED_ENTITY_LINK></BINDING_IF:CAN_ADD_RELATED_ENTITY>
+                                        <BINDING_IF:CAN_EDIT_ORDERING> | <BINDING:EDIT_ORDERING_LINK>edit ordering</BINDING:EDIT_ORDERING_LINK></BINDING_IF:CAN_EDIT_ORDERING></BINDING_IF:HAS_RELATED_ENTITIES>
+                        </BINDING_IF:SHOULD_SHOW_RELATIONSHIP_CONTROLS>
+                        </td>
+                                    <td>
+                                    <BINDING_IF:HAS_RELATED_ENTITIES>
+                                          <BINDING_IF:RELATIONSHIP_IS_INLINE>
+                                             <BINDING:INLINE_RELATIONSHIP_VIEWER>
+                                        <BINDING_ELSE:RELATIONSHIP_IS_INLINE>                                                                    <BINDING:VIEW_RELATED_ENTITIES_LINK><BINDING:RELATIONSHIP_COUNT></BINDING:VIEW_RELATED_ENTITIES_LINK>
+                                        </BINDING_IF:RELATIONSHIP_IS_INLINE>
+                                        <BINDING_ELSE:HAS_RELATED_ENTITIES>
+                                            none 
+                                    </BINDING_IF:HAS_RELATED_ENTITIES>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                </BINDING_LOOP:RELATIONSHIPS>
+                            </table>
+                        </td>
+                    </tr>
+                    </BINDING_IF:HAS_RELATIONSHIPS>
+                </table>
+            </BINDING:ENTITY_EDITOR_FORM>
+        </td></tr>
+    </table>
 </BINDING:WRAPPER>

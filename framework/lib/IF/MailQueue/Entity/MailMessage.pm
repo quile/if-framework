@@ -30,51 +30,51 @@ use base qw(
 use Data::Dumper;
 
 sub contentType {
-	my $self = shift;
-	return $self->storedValueForKey("contentType");
+    my $self = shift;
+    return $self->storedValueForKey("contentType");
 }
 
 sub setContentType {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "contentType");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "contentType");
 }
 
 sub headers {
-	my $self = shift;
-	my $h;
-	my $headers = $self->storedValueForKey("headers");
-	eval $headers; # DANGER! TODO add some guards against exploits
-	return $h;
+    my $self = shift;
+    my $h;
+    my $headers = $self->storedValueForKey("headers");
+    eval $headers; # DANGER! TODO add some guards against exploits
+    return $h;
 }
 
 sub setHeaders {
-	my $self = shift;
-	my $h = shift;
-	my $headersAsString = Data::Dumper->Dump([$h], [qw($h)]);
-	$self->setStoredValueForKey($headersAsString, "headers");
+    my $self = shift;
+    my $h = shift;
+    my $headersAsString = Data::Dumper->Dump([$h], [qw($h)]);
+    $self->setStoredValueForKey($headersAsString, "headers");
 }
 
 sub subject {
-	my $self = shift;
-	return $self->storedValueForKey("subject");
+    my $self = shift;
+    return $self->storedValueForKey("subject");
 }
 
 sub setSubject {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "subject");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "subject");
 }
 
 sub body {
-	my $self = shift;
-	return $self->storedValueForKey("body");
+    my $self = shift;
+    return $self->storedValueForKey("body");
 }
 
 sub setBody {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "body");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "body");
 }
 
 1;

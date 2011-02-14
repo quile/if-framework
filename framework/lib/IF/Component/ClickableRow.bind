@@ -21,36 +21,36 @@
 # THE SOFTWARE.
 
 {
-	inheritsFrom => "IF::Component::URL",
-	HAS_HIGHLIGHTED_ROW_CLASS => {
-		type => "BOOLEAN",
-		value => q(highlightedRowClass),
-	},
-	HAS_EVEN_ROW_CLASS => {
-		type => "BOOLEAN",
-		value => q(evenRowClass),
-	},
-	HAS_ODD_ROW_CLASS => {
-		type => "BOOLEAN",
-		value => q(oddRowClass),
-	},
-	HIGHLIGHTED_ROW_CLASS => {
-		type => "STRING",
-		value => q(or(highlightedRowClass,"highlighted-row-default")),
-	},
-	ROW_CLASS => {
-		type => "STRING",
-		value => q(rowClass),
-	},
-	CONTENT => {
-		type => "CONTENT",
-	},
-	IS_FIRST_TIME_RENDERED => {
-		type => "BOOLEAN",
-		value => q(isFirstTimeRendered),
-	},
-	index => {
-	    type => "NUMBER",
-	    value => q(index),
-	},
+    inheritsFrom => "IF::Component::URL",
+    HAS_HIGHLIGHTED_ROW_CLASS => {
+        type => "BOOLEAN",
+        value => q(highlightedRowClass),
+    },
+    HAS_EVEN_ROW_CLASS => {
+        type => "BOOLEAN",
+        value => q(evenRowClass),
+    },
+    HAS_ODD_ROW_CLASS => {
+        type => "BOOLEAN",
+        value => q(oddRowClass),
+    },
+    HIGHLIGHTED_ROW_CLASS => {
+        type => "STRING",
+        value => q(or(highlightedRowClass,"highlighted-row-default")),
+    },
+    ROW_CLASS => {
+        type => "STRING",
+        value => q(rowClass),
+    },
+    CONTENT => {
+        type => "CONTENT",
+    },
+    IS_FIRST_TIME_RENDERED => {
+        type => "BOOLEAN",
+        value => q(isFirstTimeRendered),
+    },
+    index => {
+        type => "NUMBER",
+        value => q(index),
+    },
 }

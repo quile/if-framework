@@ -1,53 +1,53 @@
 #
 {
-	HAS_RECENTLY_VIEWED_ENTITIES => {
-		type => "BOOLEAN",
-		value => q(recentlyViewedEntities.#),
-	},
-	RECENTLY_VIEWED_ENTITIES => {
-		type => "LOOP",
-		list => q(recentlyViewedEntities),
-		item => "anEntity",
-	},
-	CLEAR_MENU_LINK => {
-		type => "Hyperlink",
-		bindings => {
-			directAction => q("clearMenu"),
-			queryDictionary => q({
-				"entity-id" => q($context->formValueForKey("entity-id")),
-				"entity-class-name" => q($context->formValueForKey("entity-class-name")),
-				"root-entity-id" => q($context->formValueForKey("root-entity-id")),
-				"relationship-name" => q($context->formValueForKey("relationship-name")),
-				"root-entity-class-name" => q($context->formValueForKey("root-entity-class-name")),
-				"controller-class" => q(controller.controllerClass),
-			}),
-		},
-	},
-	ENTITY_CLASS_NAME => {
-		type => "STRING",
-		value => q(anEntity.entityClassName),
-	},
-	ENTITY_ID => {
-		type => "STRING",
-		value => q(anEntity.id),
-	},
-	ENTITY_HAS_NAME => {
-		type => "BOOLEAN",
-		value => q(anEntity.name),
-	},
-	ENTITY_NAME => {
-		type => "STRING",
-		value => q(anEntity.name),
-	},
-	VIEW_ENTITY_LINK => {
-		type => "Hyperlink",
-		bindings => {
-			targetComponentName => q("_Admin::Model::EntityEditor"),
-			queryDictionary => q({
-				"entity-id" => q(anEntity.id),
-				"entity-class-name" => q(anEntity.entityClassName),
-				"controller-class" => q(controller.controllerClass),
-			}),
-		},
-	},
+    HAS_RECENTLY_VIEWED_ENTITIES => {
+        type => "BOOLEAN",
+        value => q(recentlyViewedEntities.#),
+    },
+    RECENTLY_VIEWED_ENTITIES => {
+        type => "LOOP",
+        list => q(recentlyViewedEntities),
+        item => "anEntity",
+    },
+    CLEAR_MENU_LINK => {
+        type => "Hyperlink",
+        bindings => {
+            directAction => q("clearMenu"),
+            queryDictionary => q({
+                "entity-id" => q($context->formValueForKey("entity-id")),
+                "entity-class-name" => q($context->formValueForKey("entity-class-name")),
+                "root-entity-id" => q($context->formValueForKey("root-entity-id")),
+                "relationship-name" => q($context->formValueForKey("relationship-name")),
+                "root-entity-class-name" => q($context->formValueForKey("root-entity-class-name")),
+                "controller-class" => q(controller.controllerClass),
+            }),
+        },
+    },
+    ENTITY_CLASS_NAME => {
+        type => "STRING",
+        value => q(anEntity.entityClassName),
+    },
+    ENTITY_ID => {
+        type => "STRING",
+        value => q(anEntity.id),
+    },
+    ENTITY_HAS_NAME => {
+        type => "BOOLEAN",
+        value => q(anEntity.name),
+    },
+    ENTITY_NAME => {
+        type => "STRING",
+        value => q(anEntity.name),
+    },
+    VIEW_ENTITY_LINK => {
+        type => "Hyperlink",
+        bindings => {
+            targetComponentName => q("_Admin::Model::EntityEditor"),
+            queryDictionary => q({
+                "entity-id" => q(anEntity.id),
+                "entity-class-name" => q(anEntity.entityClassName),
+                "controller-class" => q(controller.controllerClass),
+            }),
+        },
+    },
 }

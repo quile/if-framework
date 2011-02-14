@@ -3,29 +3,29 @@
 
 <style>
 #ordering-group {
-	width: 500px;
-	border:  1px solid #000000;
-	background-color:  #dddd00;
+    width: 500px;
+    border:  1px solid #000000;
+    background-color:  #dddd00;
 }
 div.orderable {
-	border:  1px solid #999999;
-	background-color:  #eeeeee;
-	margin: 1px 3px 1px 3px;
-	padding: 1px 1px 1px 2px;
-	font-size: 9pt;
-	cursor: move;
+    border:  1px solid #999999;
+    background-color:  #eeeeee;
+    margin: 1px 3px 1px 3px;
+    padding: 1px 1px 1px 2px;
+    font-size: 9pt;
+    cursor: move;
 }
 #statusBar {
-	margin: 2px 3px 2px 10px;
-	color: #CC0000;
+    margin: 2px 3px 2px 10px;
+    color: #CC0000;
 }
 a.editLink {
-	border:  1px solid #009933;
-	margin: 0px 5px 0px 2px;
-	padding: 0px 2px 0px 2px;
-	font-size: 8pt;
-	text-decoration: none;
-	cursor: auto;
+    border:  1px solid #009933;
+    margin: 0px 5px 0px 2px;
+    padding: 0px 2px 0px 2px;
+    font-size: 8pt;
+    text-decoration: none;
+    cursor: auto;
 }
 </style>
 
@@ -34,17 +34,17 @@ a.editLink {
 <div id="statusBar">&nbsp;
 </div>
 <BINDING:FORM>
-	<BINDING:SUBMIT_BUTTON value="Done">
+    <BINDING:SUBMIT_BUTTON value="Done">
 </BINDING:FORM>
 <div id="ordering-group">
 <BINDING_LOOP:ENTITY_SEARCH_RESULTS>
-	<div class="orderable" id="element_<BINDING:ELEMENT_ID>"><BINDING:RESULT_EDIT_LINK class="editLink">edit</BINDING:RESULT_EDIT_LINK><BINDING:RESULT_NAME></div>
+    <div class="orderable" id="element_<BINDING:ELEMENT_ID>"><BINDING:RESULT_EDIT_LINK class="editLink">edit</BINDING:RESULT_EDIT_LINK><BINDING:RESULT_NAME></div>
 </BINDING_LOOP:ENTITY_SEARCH_RESULTS>
-</div>	
+</div>    
 <br>
 <BINDING:FORM>
-	<BINDING:SUBMIT_BUTTON  value="Done">
-</BINDING:FORM>	
+    <BINDING:SUBMIT_BUTTON  value="Done">
+</BINDING:FORM>    
 <script type="text/javascript">
 jQuery(function($) {
     $("#ordering-group").sortable({});  

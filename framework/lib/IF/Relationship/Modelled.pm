@@ -27,97 +27,97 @@ package IF::Relationship::Modelled;
 
 use strict;
 use base qw(
-	IF::Interface::KeyValueCoding
+    IF::Interface::KeyValueCoding
 );
 
 use IF::Log;
 
 my $TYPES = {
-	TO_ONE => 1,
-	TO_MANY => 2,
-	FLATTENED_TO_MANY => 3,
+    TO_ONE => 1,
+    TO_MANY => 2,
+    FLATTENED_TO_MANY => 3,
 };
 
 sub newFromModelEntryWithName {
-	my ($className, $entry, $name) = @_;
-	return unless $entry;
-	my $self = bless $entry, $className;
-	$self->setName($name);
-	return $self;
+    my ($className, $entry, $name) = @_;
+    return unless $entry;
+    my $self = bless $entry, $className;
+    $self->setName($name);
+    return $self;
 }
 
 sub targetEntity {
-	my ($self) = @_;
-	return $self->{TARGET_ENTITY};
+    my ($self) = @_;
+    return $self->{TARGET_ENTITY};
 }
 
 sub targetEntityClassDescription {
-	my ($self, $model) = @_;
-	unless ($self->{_tecd}) {
-		$model ||= IF::Model->defaultModel();
-		$self->{_tecd} = $model->entityClassDescriptionForEntityNamed($self->targetEntity());
-	}
-	return $self->{_tecd};
+    my ($self, $model) = @_;
+    unless ($self->{_tecd}) {
+        $model ||= IF::Model->defaultModel();
+        $self->{_tecd} = $model->entityClassDescriptionForEntityNamed($self->targetEntity());
+    }
+    return $self->{_tecd};
 }
 
 sub name {
-	my ($self) = @_;
-	return $self->{name};
+    my ($self) = @_;
+    return $self->{name};
 }
 
 sub setName {
-	my ($self, $value) = @_;
-	$self->{name} = $value;
+    my ($self, $value) = @_;
+    $self->{name} = $value;
 }
 
 sub sourceAttribute {
-	my ($self) = @_;
-	return $self->{SOURCE_ATTRIBUTE};
+    my ($self) = @_;
+    return $self->{SOURCE_ATTRIBUTE};
 }
 
 sub targetAttribute {
-	my ($self) = @_;
-	return $self->{TARGET_ATTRIBUTE};
+    my ($self) = @_;
+    return $self->{TARGET_ATTRIBUTE};
 }
 
 sub joinTable {
-	my ($self) = @_;
-	return $self->{JOIN_TABLE};
+    my ($self) = @_;
+    return $self->{JOIN_TABLE};
 }
 
 sub joinTargetAttribute {
-	my ($self) = @_;
-	return $self->{JOIN_TARGET_ATTRIBUTE};
+    my ($self) = @_;
+    return $self->{JOIN_TARGET_ATTRIBUTE};
 }
 
 sub joinSourceAttribute {
-	my ($self) = @_;
-	return $self->{JOIN_SOURCE_ATTRIBUTE};
+    my ($self) = @_;
+    return $self->{JOIN_SOURCE_ATTRIBUTE};
 }
 
 sub type {
-	my ($self) = @_;
-	return $self->{TYPE};
+    my ($self) = @_;
+    return $self->{TYPE};
 }
 
 sub qualifier {
-	my ($self) = @_;
-	return $self->{QUALIFIER};
+    my ($self) = @_;
+    return $self->{QUALIFIER};
 }
 
 sub joinQualifiers {
-	my ($self) = @_;
-	return $self->{JOIN_QUALIFIERS};
+    my ($self) = @_;
+    return $self->{JOIN_QUALIFIERS};
 }
 
 sub defaultSortOrderings {
-	my ($self) = @_;
-	return $self->{DEFAULT_SORT_ORDERINGS};
+    my ($self) = @_;
+    return $self->{DEFAULT_SORT_ORDERINGS};
 }
 
 sub isToOne {
-	my $self = shift;
-	return $self->type() eq 'TO_ONE';
+    my $self = shift;
+    return $self->type() eq 'TO_ONE';
 }
 
 1;

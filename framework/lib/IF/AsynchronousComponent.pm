@@ -24,7 +24,7 @@ package IF::AsynchronousComponent;
 
 use strict;
 use base qw(
-	IF::Component
+    IF::Component
 );
 use IF::Constants;
 
@@ -34,122 +34,122 @@ use IF::Constants;
 # regions of the page very transparently.
 
 sub takeValuesFromRequest {
-	my ($self, $context) = @_;
+    my ($self, $context) = @_;
 
-	my $ucid = $context->formValueForKey($IF::Constants::QK_CLIENT_SIDE_ID);
-	IF::Log::debug("PCN is ".$self->pageContextNumber()." UCID is $ucid");
-	# Only the async component that's the ROOT is allowed to renumber the tree.
-	if ($ucid && $self->pageContextNumber() eq "1") {
-		my $pcn = $self->pageContextNumberFromUniqueId($ucid);
-		IF::Log::debug("$self - Renumbering page context to start with $pcn");
-		if ($pcn && $pcn ne "1") {
-			$self->setPageContextNumberRoot($pcn);
-		}
-	}
-	foreach my $k (@{$self->persistentKeys()}) {
-		IF::Log::debug("... trying to inflate persistent key $k");
-		$self->setValueForKey($context->formValueForKey(PERSISTENT_KEY_PREFIX().$k), $k);
-	}
-	# process this value here and set it on this component.  we do this
-	# because if we don't, and this component returns another component, it
-	# will think that IT is responding asynchronously.
-	if ($context->formValueForKey($IF::Constants::QK_ASYNCHRONOUS)) {
-		$self->setIsRespondingAsynchronously(1);
-	}
-	# Remember to set the parent binding name so that when rendered
-	# asynchronously, it recreates the same binding name tree.
+    my $ucid = $context->formValueForKey($IF::Constants::QK_CLIENT_SIDE_ID);
+    IF::Log::debug("PCN is ".$self->pageContextNumber()." UCID is $ucid");
+    # Only the async component that's the ROOT is allowed to renumber the tree.
+    if ($ucid && $self->pageContextNumber() eq "1") {
+        my $pcn = $self->pageContextNumberFromUniqueId($ucid);
+        IF::Log::debug("$self - Renumbering page context to start with $pcn");
+        if ($pcn && $pcn ne "1") {
+            $self->setPageContextNumberRoot($pcn);
+        }
+    }
+    foreach my $k (@{$self->persistentKeys()}) {
+        IF::Log::debug("... trying to inflate persistent key $k");
+        $self->setValueForKey($context->formValueForKey(PERSISTENT_KEY_PREFIX().$k), $k);
+    }
+    # process this value here and set it on this component.  we do this
+    # because if we don't, and this component returns another component, it
+    # will think that IT is responding asynchronously.
+    if ($context->formValueForKey($IF::Constants::QK_ASYNCHRONOUS)) {
+        $self->setIsRespondingAsynchronously(1);
+    }
+    # Remember to set the parent binding name so that when rendered
+    # asynchronously, it recreates the same binding name tree.
     my $csn = $context->formValueForKey("client-side-name");
     if ($csn) {
        IF::Log::debug("Setting parent binding name to $csn");
        $self->setParentBindingName($csn);
     }
-	IF::Log::debug("Calling SUPER::tvfr");
-	$self->SUPER::takeValuesFromRequest($context);
+    IF::Log::debug("Calling SUPER::tvfr");
+    $self->SUPER::takeValuesFromRequest($context);
 }
 
 sub appendToResponse {
-	my ($self, $response, $context) = @_;
+    my ($self, $response, $context) = @_;
 
-	# expand the asynchronous component definition
-	# and wrap the response with tags defining it.
-	# These tags will be read by the browser and
-	# the front-end cache, which will have the ability
-	# to ignore these asynchronous regions when
-	# caching or retrieving cached pages.
+    # expand the asynchronous component definition
+    # and wrap the response with tags defining it.
+    # These tags will be read by the browser and
+    # the front-end cache, which will have the ability
+    # to ignore these asynchronous regions when
+    # caching or retrieving cached pages.
 
-	if ($self->shouldRenderWrapperInContext($context)) {
-		$response->appendContentString($self->header());
-	}
+    if ($self->shouldRenderWrapperInContext($context)) {
+        $response->appendContentString($self->header());
+    }
 
-	if ($self->isRespondingAsynchronously()) {
-		$response->appendContentString('<?xml version="1.0" encoding="utf-8" ?>'."\n");
-		$response->appendContentString($self->asynchronousStatusMessages());
+    if ($self->isRespondingAsynchronously()) {
+        $response->appendContentString('<?xml version="1.0" encoding="utf-8" ?>'."\n");
+        $response->appendContentString($self->asynchronousStatusMessages());
 
-		# check for a different template based on the context.
-		# in this case it allows the component to use a different template
-		# for the asynchronous response than if the component is rendered
-		# as part of the page.
-		my $templateName = $self->mappedTemplateNameFromTemplateNameInContext(
+        # check for a different template based on the context.
+        # in this case it allows the component to use a different template
+        # for the asynchronous response than if the component is rendered
+        # as part of the page.
+        my $templateName = $self->mappedTemplateNameFromTemplateNameInContext(
                                     IF::Component::__templateNameFromComponentName($self->componentName()),
-									$context);
-		IF::Log::debug("loading template $templateName");
+                                    $context);
+        IF::Log::debug("loading template $templateName");
         my $template = $context->siteClassifier()->bestTemplateForPathAndContext($templateName, $context);
-		if ($template) {
-			$response->setTemplate($template);
-		}
-	}
-	my $returnValue = $self->SUPER::appendToResponse($response, $context);
-	if ($self->shouldRenderWrapperInContext($context)) {
-	    $self->{_context} = $context;
-		$response->appendContentString($self->footer());
-		$self->{_context} = undef;
-	}
+        if ($template) {
+            $response->setTemplate($template);
+        }
+    }
+    my $returnValue = $self->SUPER::appendToResponse($response, $context);
+    if ($self->shouldRenderWrapperInContext($context)) {
+        $self->{_context} = $context;
+        $response->appendContentString($self->footer());
+        $self->{_context} = undef;
+    }
 
-	return $returnValue;
+    return $returnValue;
 }
 
 sub mappedTemplateNameFromTemplateNameInContext {
-	my ($self, $templateName, $context) = @_;
-	# Not sure if this will work
-	my $appName = $self->context()->application()->name();
-	return $templateName unless $appName;
-	$templateName =~ s/$appName//;
-	my $asynchronousToken = $self->asynchronousTemplateIdentifier();
-	$templateName =~ s!\.html!$asynchronousToken.html!;
-	return $templateName;
+    my ($self, $templateName, $context) = @_;
+    # Not sure if this will work
+    my $appName = $self->context()->application()->name();
+    return $templateName unless $appName;
+    $templateName =~ s/$appName//;
+    my $asynchronousToken = $self->asynchronousTemplateIdentifier();
+    $templateName =~ s!\.html!$asynchronousToken.html!;
+    return $templateName;
 }
 
 sub asynchronousTemplateIdentifier {
-	my ($self) = @_;
-	return ".async";
+    my ($self) = @_;
+    return ".async";
 }
 
 sub shouldRenderWrapperInContext {
-	my ($self, $context) = @_;
-	if ($self->shouldRenderAsynchronousController()) {
-		if ($self->isRespondingAsynchronously()) {
-			IF::Log::debug("ASYNC:: isRespondingAsynchronously is set");
-			if (!$self->isRenderingAsRoot()) {
-				IF::Log::debug("ASYNC:: $self is not being rendered as root");
-				return 1;
-			} else {
-				IF::Log::debug("ASYNC:: $self is ".$self->rootComponent());
-			}
-		} else {
-		    if ($self->isRootComponent()) {
-		        return 0;
-		    } else {
-			    IF::Log::debug("ASYNC:: Rendering out header because isRespondingAsynchronously is not set");
-			    return 1;
-			}
-		}
-	}
-	return 0;
+    my ($self, $context) = @_;
+    if ($self->shouldRenderAsynchronousController()) {
+        if ($self->isRespondingAsynchronously()) {
+            IF::Log::debug("ASYNC:: isRespondingAsynchronously is set");
+            if (!$self->isRenderingAsRoot()) {
+                IF::Log::debug("ASYNC:: $self is not being rendered as root");
+                return 1;
+            } else {
+                IF::Log::debug("ASYNC:: $self is ".$self->rootComponent());
+            }
+        } else {
+            if ($self->isRootComponent()) {
+                return 0;
+            } else {
+                IF::Log::debug("ASYNC:: Rendering out header because isRespondingAsynchronously is not set");
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 sub isRenderingAsRoot {
-	my ($self) = @_;
-	return ($self->parent() == undef);
+    my ($self) = @_;
+    return ($self->parent() == undef);
 }
 
 # -------------- yikes warning -------------
@@ -159,223 +159,223 @@ sub isRenderingAsRoot {
 # ------------------------------------------
 
 sub asynchronousStatusMessages {
-	my ($self) = @_;
-	my $list = $self->{_statusMessages} || [];
-	my $stringList = [];
-	my $classList = [];
-	my $hasErrors = 0;
-	my $hasMessages = scalar @$list;
+    my ($self) = @_;
+    my $list = $self->{_statusMessages} || [];
+    my $stringList = [];
+    my $classList = [];
+    my $hasErrors = 0;
+    my $hasMessages = scalar @$list;
 
-	foreach my $msg (@$list) {
-		push @$stringList, $msg->text();
-		push @$classList, $msg->cssClass();
-		$hasErrors = 1 if $msg->typeIsError();
-	}
-	my $messages = '"'. join ('", "', @$stringList) .'"' if $hasMessages;
-	my $classes = '"'. join ('", "', @$classList) .'"' if $hasMessages;;
+    foreach my $msg (@$list) {
+        push @$stringList, $msg->text();
+        push @$classList, $msg->cssClass();
+        $hasErrors = 1 if $msg->typeIsError();
+    }
+    my $messages = '"'. join ('", "', @$stringList) .'"' if $hasMessages;
+    my $classes = '"'. join ('", "', @$classList) .'"' if $hasMessages;;
 
-	# when this is refreshed asynchronously, this script will
-	# be run by the browser when the component is loaded; it will
-	# fish out the primary status viewer and post the messages that >this< component
-	# has embedded in it.
-	# TODO -41 actually, I feel that it should have its OWN status messages
-	# viewer, so that any status messages are WITH the component that generated them.
-	my $output = <<"EOL";
+    # when this is refreshed asynchronously, this script will
+    # be run by the browser when the component is loaded; it will
+    # fish out the primary status viewer and post the messages that >this< component
+    # has embedded in it.
+    # TODO -41 actually, I feel that it should have its OWN status messages
+    # viewer, so that any status messages are WITH the component that generated them.
+    my $output = <<"EOL";
 <script language="javascript">
-		if (typeof StatusMessagesViewer != "undefined") {
-			StatusMessagesViewer.primaryStatusMessagesViewer().postStatusMessages([$messages], [$classes], $hasErrors);
-		}
+        if (typeof StatusMessagesViewer != "undefined") {
+            StatusMessagesViewer.primaryStatusMessagesViewer().postStatusMessages([$messages], [$classes], $hasErrors);
+        }
 </script>
 EOL
 
-	#IF::Log::debug($output);
-	return;
+    #IF::Log::debug($output);
+    return;
 }
 
 sub wrapperTag {
-	my ($self) = @_;
-	return ($self->isInline() ? "span" : "div");
+    my ($self) = @_;
+    return ($self->isInline() ? "span" : "div");
 }
 
 sub header {
-	my ($self) = @_;
+    my ($self) = @_;
 
-	my $header = '<'.$self->wrapperTag().' id="'.$self->uniqueId().'" updateFrom="'.$self->updateFrom().'">';
+    my $header = '<'.$self->wrapperTag().' id="'.$self->uniqueId().'" updateFrom="'.$self->updateFrom().'">';
 
-	my $output;
-	if ($self->redirect()) {
-		my $url = $self->redirect();
-		$output = <<"EOL";
+    my $output;
+    if ($self->redirect()) {
+        my $url = $self->redirect();
+        $output = <<"EOL";
 <script language="javascript">
-	location.replace("$url");
+    location.replace("$url");
 </script>
 EOL
-	}
+    }
 
-	return $header . $output;
+    return $header . $output;
 }
 
 sub footer {
-	my ($self) = @_;
-	return '</'.$self->wrapperTag().">\n".$self->controller();
+    my ($self) = @_;
+    return '</'.$self->wrapperTag().">\n".$self->controller();
 }
 
 # so evil to have all this goop buried in here.
 
 sub controller {
-	my ($self) = @_;
-	my $bindingName = $self->parentBindingName();
-	my $nestedBindingPath = $self->nestedBindingPath();
-	my $url = $self->updateFrom();
+    my ($self) = @_;
+    my $bindingName = $self->parentBindingName();
+    my $nestedBindingPath = $self->nestedBindingPath();
+    my $url = $self->updateFrom();
 
-	my $clientSideName = $self->clientSideName() || $nestedBindingPath;
-	my $csvar = $clientSideName;
-	my $onLoadCode = ($self->updateOnLoad() ? "c.reload()" : "");
-	my $reloadEventCode = ($self->reloadEvent()
-		? "jQuery('body').bind('".$self->reloadEvent()."', function() { c.reload() })"
-	 	: "");
-	my $uniqueId = $self->uniqueId();
-	my ($host, $rootUrl, $action, $queryString) = ($url =~ q/^((?:https?:\/\/)?[^\/]+)?(\/[\w-_\/]+\/)(\w+)\?(.+)$/);
+    my $clientSideName = $self->clientSideName() || $nestedBindingPath;
+    my $csvar = $clientSideName;
+    my $onLoadCode = ($self->updateOnLoad() ? "c.reload()" : "");
+    my $reloadEventCode = ($self->reloadEvent()
+        ? "jQuery('body').bind('".$self->reloadEvent()."', function() { c.reload() })"
+         : "");
+    my $uniqueId = $self->uniqueId();
+    my ($host, $rootUrl, $action, $queryString) = ($url =~ q/^((?:https?:\/\/)?[^\/]+)?(\/[\w-_\/]+\/)(\w+)\?(.+)$/);
     #my ($rootUrl, $action, $queryString) = ($url =~ q/^((?:https?:\/)?\/[^\?]+\/)(\w+)\?(.+)$/);
-	return <<EOC;
+    return <<EOC;
 <script type="text/javascript">
-	jQuery(function () {
-		var c = new AsynchronousComponent("$uniqueId", "$nestedBindingPath");
-		c.initWithValues("$rootUrl", "$action", "$queryString");
-		// register with the component registry
-		componentRegistry.registerComponentWithName(c, "$clientSideName");
-		$reloadEventCode
-		$onLoadCode
-	});
+    jQuery(function () {
+        var c = new AsynchronousComponent("$uniqueId", "$nestedBindingPath");
+        c.initWithValues("$rootUrl", "$action", "$queryString");
+        // register with the component registry
+        componentRegistry.registerComponentWithName(c, "$clientSideName");
+        $reloadEventCode
+        $onLoadCode
+    });
 </script>
 EOC
 }
 
 sub _updateUrl {
-	my ($self) = @_;
-	my $qd = $self->persistentQueryDictionary();
-	$qd->{$IF::Constants::QK_ASYNCHRONOUS} = $self->uniqueId();  # aieee I hate shit like this (temporary!)
-	my $context = $self->context();
-	my $url = IF::Utility::urlInContextForDirectActionOnComponentWithQueryDictionary(
-		$context,
-		"default",
-		$self->updateFromComponent(),
-		{
-			$context? %{$context->queryDictionary()} : (),
-			%$qd,
-		}
-	);
-	# Wipe out the server so it's relative...All your base are belong to us.
-	my $base = IF::Utility::baseUrlInContext($self->context());
-	$url =~ s/$base//g;
-	return $url;
+    my ($self) = @_;
+    my $qd = $self->persistentQueryDictionary();
+    $qd->{$IF::Constants::QK_ASYNCHRONOUS} = $self->uniqueId();  # aieee I hate shit like this (temporary!)
+    my $context = $self->context();
+    my $url = IF::Utility::urlInContextForDirectActionOnComponentWithQueryDictionary(
+        $context,
+        "default",
+        $self->updateFromComponent(),
+        {
+            $context? %{$context->queryDictionary()} : (),
+            %$qd,
+        }
+    );
+    # Wipe out the server so it's relative...All your base are belong to us.
+    my $base = IF::Utility::baseUrlInContext($self->context());
+    $url =~ s/$base//g;
+    return $url;
 }
 
 sub setIsRespondingAsynchronously {
-	my ($self, $value) = @_;
-	$self->{_isRespondingAsynchronously} = 1;
+    my ($self, $value) = @_;
+    $self->{_isRespondingAsynchronously} = 1;
 }
 
 sub isRespondingAsynchronously {
-	my ($self) = @_;
-	return $self->{_isRespondingAsynchronously};
-	#return $self->context()->formValueForKey($IF::Constants::QK_ASYNCHRONOUS);
+    my ($self) = @_;
+    return $self->{_isRespondingAsynchronously};
+    #return $self->context()->formValueForKey($IF::Constants::QK_ASYNCHRONOUS);
 }
 
 sub updateOnLoad {
-	my $self = shift;
-	return $self->{updateOnLoad};
+    my $self = shift;
+    return $self->{updateOnLoad};
 }
 
 sub setUpdateOnLoad {
-	my ($self, $value) = @_;
-	$self->{updateOnLoad} = $value;
+    my ($self, $value) = @_;
+    $self->{updateOnLoad} = $value;
 }
 
 sub redirect {
-	my $self = shift;
-	return $self->{redirect};
+    my $self = shift;
+    return $self->{redirect};
 }
 
 sub setRedirect {
-	my ($self, $value) = @_;
-	$self->{redirect} = $value;
+    my ($self, $value) = @_;
+    $self->{redirect} = $value;
 }
 
 sub updateFrom {
-	my $self = shift;
-	return $self->{updateFrom} ||
-			$self->_updateUrl();
+    my $self = shift;
+    return $self->{updateFrom} ||
+            $self->_updateUrl();
 }
 
 sub setUpdateFrom {
-	my ($self, $value) = @_;
-	$self->{updateFrom} = $value;
+    my ($self, $value) = @_;
+    $self->{updateFrom} = $value;
 }
 
 sub clientSideName {
-	my ($self) = @_;
-	# ouch, this could frak things up:
-	#return $self->{clientSideName} || $self->parentBindingName();
-	return $self->{clientSideName} || $self->nestedBindingPath();
+    my ($self) = @_;
+    # ouch, this could frak things up:
+    #return $self->{clientSideName} || $self->parentBindingName();
+    return $self->{clientSideName} || $self->nestedBindingPath();
 }
 
 sub setClientSideName {
-	my ($self, $value) = @_;
-	$self->{clientSideName} = $value;
+    my ($self, $value) = @_;
+    $self->{clientSideName} = $value;
 }
 
 sub updateFromComponent {
-	my $self = shift;
-	return $self->{updateFromComponent} ||
-			$self->componentNameRelativeToSiteClassifier();
+    my $self = shift;
+    return $self->{updateFromComponent} ||
+            $self->componentNameRelativeToSiteClassifier();
 }
 
 sub setUpdateFromComponent {
-	my ($self, $value) = @_;
-	$self->{updateFromComponent} = $value;
+    my ($self, $value) = @_;
+    $self->{updateFromComponent} = $value;
 }
 
 sub shouldRenderAsynchronousController {
-	my ($self) = @_;
-	return 1;
+    my ($self) = @_;
+    return 1;
 }
 
 sub requiredPageResources {
-	my ($self) = @_;
-	my $prs = $self->SUPER::requiredPageResources();
-	push (@$prs,
-	    IF::PageResource->javascript("/if-static/javascript/jquery/jquery-1.2.6.js"),
-		IF::PageResource->javascript("/if-static/javascript/IF/ComponentRegistry.js"),
-		IF::PageResource->javascript("/if-static/javascript/IF/AsynchronousComponent.js"),
-		);
-	return $prs;
+    my ($self) = @_;
+    my $prs = $self->SUPER::requiredPageResources();
+    push (@$prs,
+        IF::PageResource->javascript("/if-static/javascript/jquery/jquery-1.2.6.js"),
+        IF::PageResource->javascript("/if-static/javascript/IF/ComponentRegistry.js"),
+        IF::PageResource->javascript("/if-static/javascript/IF/AsynchronousComponent.js"),
+        );
+    return $prs;
 }
 
 # The async component will optionally listen for this
 # event and reload itself.
 sub reloadEvent {
-	my ($self) = @_;
-	return $self->{reloadEvent};
+    my ($self) = @_;
+    return $self->{reloadEvent};
 }
 
 sub setReloadEvent {
-	my ($self, $value) = @_;
-	$self->{reloadEvent} = $value;
+    my ($self, $value) = @_;
+    $self->{reloadEvent} = $value;
 }
 
 # consumers should override or set this if they wish to be rendered
 # inline using span tags rather than as a block using div tags
 # default: not inline
 sub isInline {
-	my ($self) = @_;
-	# default to undef intentional
-	return $self->{isInline};
+    my ($self) = @_;
+    # default to undef intentional
+    return $self->{isInline};
 }
 
 sub setIsInLine {
-	my ($self,$value) = @_;
-	$self->{isInline} = $value;
+    my ($self,$value) = @_;
+    $self->{isInline} = $value;
 }
 
 # allow the async component to "persist" values by declaring keys that are 'persisted',
@@ -387,35 +387,35 @@ sub setIsInLine {
 # setValueForKey() will be called during takeValues once for each one.
 
 sub persistentKeys {
-	my ($self) = @_;
-	return [];
+    my ($self) = @_;
+    return [];
 }
 
 sub PERSISTENT_KEY_PREFIX {
-	return "_pk-";
+    return "_pk-";
 }
 
 sub persistentQueryDictionary {
-	my ($self) = @_;
-	my $qd = {
-		_ucid => $self->renderContextNumber(),
-	};
-	if (scalar @{$self->persistentKeys()}) {
-		foreach my $k (@{$self->persistentKeys()}) {
-			$qd->{PERSISTENT_KEY_PREFIX().$k} = $self->valueForKey($k);
-		}
-	}
-	return $qd;
+    my ($self) = @_;
+    my $qd = {
+        _ucid => $self->renderContextNumber(),
+    };
+    if (scalar @{$self->persistentKeys()}) {
+        foreach my $k (@{$self->persistentKeys()}) {
+            $qd->{PERSISTENT_KEY_PREFIX().$k} = $self->valueForKey($k);
+        }
+    }
+    return $qd;
 }
 
 sub pageContextNumberFromUniqueId {
-	my ($self, $uid) = @_;
-	# experimental:
-	my ($foo, $bar) = split("L", $uid, 2);
-	my $pcn = $foo;
-	#$pcn =~ tr/Z[a-j]/_[0-9]/;
-	$pcn =~ s/^c//;
-	return $pcn; # this ignores the loop context... bad!
+    my ($self, $uid) = @_;
+    # experimental:
+    my ($foo, $bar) = split("L", $uid, 2);
+    my $pcn = $foo;
+    #$pcn =~ tr/Z[a-j]/_[0-9]/;
+    $pcn =~ s/^c//;
+    return $pcn; # this ignores the loop context... bad!
 }
 
 1;

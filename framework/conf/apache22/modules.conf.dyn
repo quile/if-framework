@@ -55,8 +55,8 @@ LoadModule dir_module conf/ACTIVE/libexec/mod_dir.so
 LoadModule actions_module conf/ACTIVE/libexec/mod_actions.so
 #LoadModule speling_module conf/ACTIVE/libexec/mod_speling.so
 #LoadModule userdir_module conf/ACTIVE/libexec/mod_userdir.so
-LoadModule alias_module 		conf/ACTIVE/libexec/mod_alias.so
-LoadModule rewrite_module 		conf/ACTIVE/libexec/mod_rewrite.so
+LoadModule alias_module         conf/ACTIVE/libexec/mod_alias.so
+LoadModule rewrite_module         conf/ACTIVE/libexec/mod_rewrite.so
 #LoadModule bonjour_module     conf/ACTIVE/libexec/mod_bonjour.so
 #LoadModule php5_module        conf/ACTIVE/libexec/libphp5.so
 

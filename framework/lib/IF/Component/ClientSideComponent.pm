@@ -29,23 +29,23 @@ use IF::Component;
 
 
 sub componentType {
-	my $self = shift;
-	return $self->{componentType};
+    my $self = shift;
+    return $self->{componentType};
 }
 
 sub setComponentType {
-	my $self = shift;
-	$self->{componentType} = shift;
+    my $self = shift;
+    $self->{componentType} = shift;
 }
 
 sub componentId {
-	my $self = shift;
-	return $self->{componentId};
+    my $self = shift;
+    return $self->{componentId};
 }
 
 sub setComponentId {
-	my $self = shift;
-	$self->{componentId} = shift;
+    my $self = shift;
+    $self->{componentId} = shift;
 }
 
 1;

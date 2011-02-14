@@ -28,36 +28,36 @@ use strict;
 use base qw(IF::Component);
 
 sub _displayValue {
-	my $self = shift;
-	return $self->value() || "http://";
+    my $self = shift;
+    return $self->value() || "http://";
 }
 
 sub set_displayValue {
-	my $self = shift;
-	my $v = shift;
-	$self->setValue( $v ne "http://" ? $v : "" );
+    my $self = shift;
+    my $v = shift;
+    $self->setValue( $v ne "http://" ? $v : "" );
 }
 
 ################################
 
 sub value {
-	my $self = shift;
-	return $self->{value};
+    my $self = shift;
+    return $self->{value};
 }
 
 sub setValue {
-	my $self = shift;
-	$self->{value} = shift;
+    my $self = shift;
+    $self->{value} = shift;
 }
 
 sub name {
-	my ($self) = @_;
-	return $self->{name};
+    my ($self) = @_;
+    return $self->{name};
 }
 
 sub setName {
-	my ($self, $value) = @_;
-	$self->{name} = $value;
+    my ($self, $value) = @_;
+    $self->{name} = $value;
 }
 
 1;

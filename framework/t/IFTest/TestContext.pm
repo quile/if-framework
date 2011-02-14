@@ -69,26 +69,26 @@ sub test_request_params : Test(10) {
     my $context = IF::Context->contextForRequest($request);
     ok($context, "Create and inflated a context");
 
-	my $rv = $context->formValueForKey('abc');
-	ok($rv eq '123', "Scalar key value from request fetched correctly. (abc eq $rv)");
+    my $rv = $context->formValueForKey('abc');
+    ok($rv eq '123', "Scalar key value from request fetched correctly. (abc eq $rv)");
 
-	my $rv = $context->formValuesForKey('abc');
-	ok($rv->[0] eq '123', "Scalar key value from request fetched correctly in list context. ([abc]->[0] eq $rv->[0])");
+    my $rv = $context->formValuesForKey('abc');
+    ok($rv->[0] eq '123', "Scalar key value from request fetched correctly in list context. ([abc]->[0] eq $rv->[0])");
 
-	my $rv = $context->formValueForKey('def');
-	my @rvl = split("\0", $rv);
-	ok($rvl[2] eq "777", "Multiple value key fetched as scalar. (def[2] eq 777)");
+    my $rv = $context->formValueForKey('def');
+    my @rvl = split("\0", $rv);
+    ok($rvl[2] eq "777", "Multiple value key fetched as scalar. (def[2] eq 777)");
 
-	my $rv = $context->formValuesForKey('def');
-	ok(scalar @$rv == 3 && $rv->[0] eq '555', "Multiple value key fetched as list. ([def]->[0] eq $rv->[0])");
+    my $rv = $context->formValuesForKey('def');
+    ok(scalar @$rv == 3 && $rv->[0] eq '555', "Multiple value key fetched as list. ([def]->[0] eq $rv->[0])");
 
-	my $rv = $context->formValueForKey('blank');
-	ok(!length($rv), "Key with empty string value returned correctly.");
+    my $rv = $context->formValueForKey('blank');
+    ok(!length($rv), "Key with empty string value returned correctly.");
 
     # Test setting form values on the context
     $context->setFormValueForKey('999', 'abc');
-	my $rv = $context->formValueForKey('abc');
-	ok($rv eq '999', "Scalar value following setFormValueForKey on context returned ok. (abc eq $rv)");
+    my $rv = $context->formValueForKey('abc');
+    ok($rv eq '999', "Scalar value following setFormValueForKey on context returned ok. (abc eq $rv)");
 }
 
 1;

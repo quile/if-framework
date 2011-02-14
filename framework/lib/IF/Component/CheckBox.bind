@@ -20,21 +20,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 {
-	inheritsFrom => "IF::Component::_Default",
+    inheritsFrom => "IF::Component::_Default",
     NAME => {
         type => "STRING",
         value => q(name),
     },
-	VALUE => {
-		type => "STRING",
-		value => q(value),
-	},
-	IS_CHECKED => {
-		type => "BOOLEAN",
-		value => q(isChecked),
-	},
-	IS_REQUIRED => {
-		type => "BOOLEAN",
-		value => q(isRequired),
-	},
+    VALUE => {
+        type => "STRING",
+        value => q(value),
+    },
+    IS_CHECKED => {
+        type => "BOOLEAN",
+        value => q(isChecked),
+    },
+    IS_REQUIRED => {
+        type => "BOOLEAN",
+        value => q(isRequired),
+    },
 };

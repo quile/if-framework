@@ -9,25 +9,25 @@
             $.data(this, 'cancel.tipsy', true);
 
             var tip = $.data(this, 'active.tipsy');
-			var tipClass = "tipsy-inner";
-			var styleString = "";
-			//if (opts['styles']) {
-			//	tipClass = "tipsy-basic";
-			//	styles = [];
-			//	for (k in opts['styles']) {
-			//		styles[styles.length] = k + ": \"" + opts['styles'][k] + "\"";
-			//	}
-			//	styleString = styles.join("; ");
-			//	if (styles.length) {
-			//		styleString += ";";
-			//		styleString = " style='" + styleString + "'";	
-			//		console.log(styleString);
-			//	}
-			//}
-			if (opts['class']) {
-				tipClass = opts['class'];
-				//console.log(tipClass);
-			}
+            var tipClass = "tipsy-inner";
+            var styleString = "";
+            //if (opts['styles']) {
+            //    tipClass = "tipsy-basic";
+            //    styles = [];
+            //    for (k in opts['styles']) {
+            //        styles[styles.length] = k + ": \"" + opts['styles'][k] + "\"";
+            //    }
+            //    styleString = styles.join("; ");
+            //    if (styles.length) {
+            //        styleString += ";";
+            //        styleString = " style='" + styleString + "'";    
+            //        console.log(styleString);
+            //    }
+            //}
+            if (opts['class']) {
+                tipClass = opts['class'];
+                //console.log(tipClass);
+            }
             if (!tip) {
                 tip = $('<div class="tipsy"><div class="'+tipClass+'"' + styleString + '>' + $(this).attr('title') + '</div></div>');
                 tip.css({position: 'absolute', zIndex: 100000});

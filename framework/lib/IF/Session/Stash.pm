@@ -41,32 +41,32 @@ my $MAX_REQUEST_CONTEXTS = 6;
 #--------------- Class Methods --------------------
 
 sub sessionWithExternalId {
-	my ($className, $id) = @_;
-	my $id = IF::Utility::idFromExternalId($id);
-	return undef unless $id;
-	return $className->instanceWithId($id);
+    my ($className, $id) = @_;
+    my $id = IF::Utility::idFromExternalId($id);
+    return undef unless $id;
+    return $className->instanceWithId($id);
 }
 
 sub sessionWithExternalIdAndContextNumber {
     my ($className, $id) = @_;
-	return $className->sessionWithExternalId($id);
+    return $className->sessionWithExternalId($id);
 }
 
 sub sessionWithId {
-	my ($className, $id) = @_;
-	return $className->instanceWithId($id);
+    my ($className, $id) = @_;
+    return $className->instanceWithId($id);
 }
 
 sub sessionWithIdAndContextNumber {
-	my ($className, $id) = @_;
-	return $className->sessionWithId($id);}
+    my ($className, $id) = @_;
+    return $className->sessionWithId($id);}
 
 sub externalIdRegularExpression {
-	IF::Log::error("externalIdRegularExpression() not overridden in Session subclass");
+    IF::Log::error("externalIdRegularExpression() not overridden in Session subclass");
 }
 
 sub sessionWithExternalIdIsAuthenticated {
-	IF::Log::error("sessionWithExternalIdIsAuthenticated() not overridden in Session subclass");
+    IF::Log::error("sessionWithExternalIdIsAuthenticated() not overridden in Session subclass");
 }
 
 
@@ -91,7 +91,7 @@ sub _requestContexts    { return $_[0]->{_requestContexts} ||= [] }
 sub _setRequestContexts { $_[0]->{_requestContexts} = $_[1] }
 
 sub requestContextForContextNumber {
-	my ($self, $contextNumber, $noDefault) = @_;
+    my ($self, $contextNumber, $noDefault) = @_;
     my $rcs = $self->_requestContexts();
     foreach my $rc (@$rcs) {
         next unless $rc->contextNumber() == $contextNumber;
@@ -102,35 +102,35 @@ sub requestContextForContextNumber {
 }
 
 sub requestContextForLastRequest {
-	my $self = shift;
-	return if ($self->contextNumber() == 0);
-	return $self->requestContextForContextNumber($self->contextNumber()-1, 1);
+    my $self = shift;
+    return if ($self->contextNumber() == 0);
+    return $self->requestContextForContextNumber($self->contextNumber()-1, 1);
 }
 
 sub newRequestContext {
-	my $self = shift;
-	unless ($self->application()) {
-		IF::Log::error("Session has no application object");
-		return undef;
-	}
-	my $requestContextClassName = $self->requestContextClassName();
-	return unless $requestContextClassName;
-	return $requestContextClassName->new();
+    my $self = shift;
+    unless ($self->application()) {
+        IF::Log::error("Session has no application object");
+        return undef;
+    }
+    my $requestContextClassName = $self->requestContextClassName();
+    return unless $requestContextClassName;
+    return $requestContextClassName->new();
 }
 
 sub requestContext {
-	my $self = shift;
-	unless ($self->{_requestContext}) {
-	    my $nr = $self->newRequestContext();
-		$self->{_requestContext} = $nr;
-    	push (@{$self->_requestContexts()}, $nr);
-    	if (scalar @{$self->_requestContexts()} > $MAX_REQUEST_CONTEXTS) {
-    	    shift @{$self->_requestContexts()};
-    	    $self->{_requestContextOffset}++;
-    	}
-		$self->{_requestContext}->setContextNumber($self->contextNumber());
-	}
-	return $self->{_requestContext};
+    my $self = shift;
+    unless ($self->{_requestContext}) {
+        my $nr = $self->newRequestContext();
+        $self->{_requestContext} = $nr;
+        push (@{$self->_requestContexts()}, $nr);
+        if (scalar @{$self->_requestContexts()} > $MAX_REQUEST_CONTEXTS) {
+            shift @{$self->_requestContexts()};
+            $self->{_requestContextOffset}++;
+        }
+        $self->{_requestContext}->setContextNumber($self->contextNumber());
+    }
+    return $self->{_requestContext};
 }
 
 # Note that the application-specified RequestContext class is ignored here.
@@ -150,16 +150,16 @@ sub setSessionValueForKey {
 }
 
 sub save {
-	my ($self, $when) = @_;
+    my ($self, $when) = @_;
 
-	# Don't save null sessions
-	return if $self->isNullSession();
+    # Don't save null sessions
+    return if $self->isNullSession();
 
-	# Generate an ID if there isn't one:
-	unless ($self->id()) {
-	    my $sid = IF::DB::nextNumberForSequence("SESSION_ID");
-	    $self->setId($sid);
-	}
+    # Generate an ID if there isn't one:
+    unless ($self->id()) {
+        my $sid = IF::DB::nextNumberForSequence("SESSION_ID");
+        $self->setId($sid);
+    }
 
     # unhook the application
     $self->{_applicationName} = $self->application()->name();

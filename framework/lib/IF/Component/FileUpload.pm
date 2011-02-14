@@ -29,66 +29,66 @@ use IF::Component;
 @ISA = qw(IF::Component);
 
 sub takeValuesFromRequest {
-	my $self = shift;
-	my $context = shift;
+    my $self = shift;
+    my $context = shift;
 
-	$self->SUPER::takeValuesFromRequest($context);
-	#my $FILEHANDLE = $context->formValueForKey($self->name());
-	my $upload = $context->uploadForKey($self->name());
-	if ($upload) {
-		my $FILEHANDLE = $upload->fh();
-		if ($FILEHANDLE) {
-			my $file = $self->file() || IF::File->new();
-			my $uploadedFile = join("", <$FILEHANDLE>);
-			$self->setValue($uploadedFile);
-			$self->setFileName($upload->filename());
-			$file->setData($uploadedFile);
-			$file->setFileName($upload->filename());
-			$file->setId(IF::DB::nextNumberForSequence("UPLOADED_FILE_ID"));
-			$self->setFile($file) unless length($uploadedFile) == 0;
-		}
-	}
+    $self->SUPER::takeValuesFromRequest($context);
+    #my $FILEHANDLE = $context->formValueForKey($self->name());
+    my $upload = $context->uploadForKey($self->name());
+    if ($upload) {
+        my $FILEHANDLE = $upload->fh();
+        if ($FILEHANDLE) {
+            my $file = $self->file() || IF::File->new();
+            my $uploadedFile = join("", <$FILEHANDLE>);
+            $self->setValue($uploadedFile);
+            $self->setFileName($upload->filename());
+            $file->setData($uploadedFile);
+            $file->setFileName($upload->filename());
+            $file->setId(IF::DB::nextNumberForSequence("UPLOADED_FILE_ID"));
+            $self->setFile($file) unless length($uploadedFile) == 0;
+        }
+    }
 }
 
 sub setName {
-	my $self = shift;
-	$self->{name} = shift;
+    my $self = shift;
+    $self->{name} = shift;
 }
 
 sub name {
-	my $self = shift;
-	return $self->{name} if $self->{name};
-	return $self->queryKeyNameForPageAndLoopContexts();
+    my $self = shift;
+    return $self->{name} if $self->{name};
+    return $self->queryKeyNameForPageAndLoopContexts();
 }
 
 sub setValue {
-	my $self = shift;
-	$self->{value} = shift;
+    my $self = shift;
+    $self->{value} = shift;
 }
 
 sub value {
-	my $self = shift;
-	return $self->{value};
+    my $self = shift;
+    return $self->{value};
 }
 
 sub fileName {
-	my $self = shift;
-	return $self->{fileName};
+    my $self = shift;
+    return $self->{fileName};
 }
 
 sub setFileName {
-	my $self = shift;
-	$self->{fileName} = shift;
+    my $self = shift;
+    $self->{fileName} = shift;
 }
 
 sub file {
-	my $self = shift;
-	return $self->{file};
+    my $self = shift;
+    return $self->{file};
 }
 
 sub setFile {
-	my ($self, $value) = @_;
-	$self->{file} = $value;
+    my ($self, $value) = @_;
+    $self->{file} = $value;
 }
 
 1;

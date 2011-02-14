@@ -24,7 +24,7 @@ package IF::Model;
 
 use strict;
 use base qw(
-	IF::Interface::KeyValueCoding
+    IF::Interface::KeyValueCoding
 );
 #===========================================
 use IF::Application;
@@ -38,41 +38,41 @@ sub entityClassDescriptionClassName { return "IF::EntityClassDescription" }
 
 # TODO refactor this nonsense
 sub new {
-	my ($className, $modelPath) = @_;
-	IF::Log::debug("Loading in model found at $modelPath");
-	my $self = do "$modelPath";
-	unless ($self) {
-		IF::Log::error("Cannot load model $modelPath: $@ - This is fatal unless it's the first time you're generating the model.");
-		return;
-	}
-	bless $self, $className;
+    my ($className, $modelPath) = @_;
+    IF::Log::debug("Loading in model found at $modelPath");
+    my $self = do "$modelPath";
+    unless ($self) {
+        IF::Log::error("Cannot load model $modelPath: $@ - This is fatal unless it's the first time you're generating the model.");
+        return;
+    }
+    bless $self, $className;
 
-	# by this point we have an empty model.
+    # by this point we have an empty model.
     IF::Log::debug("Populating model loaded from $modelPath");
 
     $self->populateModel();
 
-	IF::Log::debug("---> done populating");
-	# Instantiate entity class descriptions for every entity type,
-	# which forces the class to cache each one
-	foreach my $entityClass (sort keys %{$self->{ENTITIES}}) {
-		IF::Log::debug("Caching entity class description for $entityClass");
-		my $entityClassDescription = $self->entityClassDescriptionForEntityNamed($entityClass);
-	}
-	IF::Log::debug("Loaded and populated model");
-	return $self;
+    IF::Log::debug("---> done populating");
+    # Instantiate entity class descriptions for every entity type,
+    # which forces the class to cache each one
+    foreach my $entityClass (sort keys %{$self->{ENTITIES}}) {
+        IF::Log::debug("Caching entity class description for $entityClass");
+        my $entityClassDescription = $self->entityClassDescriptionForEntityNamed($entityClass);
+    }
+    IF::Log::debug("Loaded and populated model");
+    return $self;
 }
 
 my $_defaultModel;
 
 sub defaultModel {
-	return $_defaultModel;
+    return $_defaultModel;
 }
 
 sub setDefaultModel {
-	my $className = shift;
-	$_defaultModel = shift;
-	#IF::Log::error("Set default model to $_defaultModel");
+    my $className = shift;
+    $_defaultModel = shift;
+    #IF::Log::error("Set default model to $_defaultModel");
 }
 
 sub entityRoot {
@@ -81,30 +81,30 @@ sub entityRoot {
 }
 
 sub entityRecordForKey {
-	my $self = shift;
-	my $key = shift;
-	return $self->entityClassDescriptionForEntityNamed($key);
+    my $self = shift;
+    my $key = shift;
+    return $self->entityClassDescriptionForEntityNamed($key);
 }
 
 {
-	my $_entityClassDescriptionCache = {};
+    my $_entityClassDescriptionCache = {};
 
-	sub entityClassDescriptionForEntityNamed {
-		my $self = shift;
-		my $entityName = shift;
+    sub entityClassDescriptionForEntityNamed {
+        my $self = shift;
+        my $entityName = shift;
 
-		return $_entityClassDescriptionCache->{$entityName} if $_entityClassDescriptionCache->{$entityName};
+        return $_entityClassDescriptionCache->{$entityName} if $_entityClassDescriptionCache->{$entityName};
 
-		my $ecdClassName = $self->entityClassDescriptionClassName();
-		# if ecdClassName doesn't exist, this will yack, but that's ok
-		# because if this ain't workin', ain't nothin' workin'.
-		IF::Log::debug("Trying to load $ecdClassName for $entityName");
-		my $entityClassDescription = $ecdClassName->new($self->{ENTITIES}->{$entityName});
-		return unless $entityClassDescription;
-		$entityClassDescription->setValueForKey($entityName, "NAME");
-		$_entityClassDescriptionCache->{$entityName} = $entityClassDescription;
-		return $entityClassDescription;
-	}
+        my $ecdClassName = $self->entityClassDescriptionClassName();
+        # if ecdClassName doesn't exist, this will yack, but that's ok
+        # because if this ain't workin', ain't nothin' workin'.
+        IF::Log::debug("Trying to load $ecdClassName for $entityName");
+        my $entityClassDescription = $ecdClassName->new($self->{ENTITIES}->{$entityName});
+        return unless $entityClassDescription;
+        $entityClassDescription->setValueForKey($entityName, "NAME");
+        $_entityClassDescriptionCache->{$entityName} = $entityClassDescription;
+        return $entityClassDescription;
+    }
 }
 
 sub entityClassDescriptionForTable {
@@ -117,29 +117,29 @@ sub entityClassDescriptionForTable {
 }
 
 sub brokerRecordForKey {
-	my $self = shift;
-	my $key = shift;
-	return $self->{BROKERS}->{$key};
+    my $self = shift;
+    my $key = shift;
+    return $self->{BROKERS}->{$key};
 }
 
 sub entityNamespace {
-	my $self = shift;
-	return $self->{NAMESPACE}->{ENTITY};
+    my $self = shift;
+    return $self->{NAMESPACE}->{ENTITY};
 }
 
 sub relationshipWithNameOnEntity {
-	my ($self, $relationshipName, $entityName) = @_;
+    my ($self, $relationshipName, $entityName) = @_;
 
-	my $entity = $self->entityRecordForKey($entityName);
-	return undef unless $entity;
-	my $relationships = $entity->relationships();
-	return undef unless $relationships;
-	return $relationships->{$relationshipName};
+    my $entity = $self->entityRecordForKey($entityName);
+    return undef unless $entity;
+    my $relationships = $entity->relationships();
+    return undef unless $relationships;
+    return $relationships->{$relationshipName};
 }
 
 sub allEntityClassKeys {
-	my $self = shift;
-	return [keys %{$self->{ENTITIES}}];
+    my $self = shift;
+    return [keys %{$self->{ENTITIES}}];
 }
 
 sub populateModel {

@@ -34,24 +34,24 @@ use IF::Application;
 use IF::Component;
 
 BEGIN {
-	my $frameworkRoot = IF::Application->systemConfigurationValueForKey("FRAMEWORK_ROOT");
+    my $frameworkRoot = IF::Application->systemConfigurationValueForKey("FRAMEWORK_ROOT");
 
-	open (DIR, "find $frameworkRoot/lib/IF/Component -name '*.pm' -print |") || die "Can't find any components in $frameworkRoot/lib/IF/Component";
+    open (DIR, "find $frameworkRoot/lib/IF/Component -name '*.pm' -print |") || die "Can't find any components in $frameworkRoot/lib/IF/Component";
 
-	my ($file,$pkg);
-	while ($file = <DIR>) {
-		next unless $file =~ /^.+\.pm$/;
-		$file =~ s/$frameworkRoot\/lib\/IF\/Component\///g;
-		$file =~ s/\.pm//;
-		$file =~ s/\//::/g;
-		$pkg = 	"IF::Component::".$file;
-		#IF::Log::debug("use $pkg\n");
-		eval "use $pkg";
-		if ($@) {
-			die "WARNING: failed to use $pkg: $@";
-		}
-	}
-	close(DIR);
+    my ($file,$pkg);
+    while ($file = <DIR>) {
+        next unless $file =~ /^.+\.pm$/;
+        $file =~ s/$frameworkRoot\/lib\/IF\/Component\///g;
+        $file =~ s/\.pm//;
+        $file =~ s/\//::/g;
+        $pkg =     "IF::Component::".$file;
+        #IF::Log::debug("use $pkg\n");
+        eval "use $pkg";
+        if ($@) {
+            die "WARNING: failed to use $pkg: $@";
+        }
+    }
+    close(DIR);
 }
 
 1;

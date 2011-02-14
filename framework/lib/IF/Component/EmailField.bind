@@ -22,10 +22,10 @@
 
 #
 {
-	inheritsFrom => "IF::Component::TextField",
+    inheritsFrom => "IF::Component::TextField",
 
-	VALID_EMAIL_REQUIRED_MESSAGE => {
-		type => "STRING",
-		value => q(validEmailRequiredMessage),
-	},
+    VALID_EMAIL_REQUIRED_MESSAGE => {
+        type => "STRING",
+        value => q(validEmailRequiredMessage),
+    },
 }

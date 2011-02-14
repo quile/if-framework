@@ -28,85 +28,85 @@ use strict;
 # Class
 
 sub newInfoMessage {
-	my ($className, $message) = @_;
-	return $className->_newMessage("INFO", $message);
+    my ($className, $message) = @_;
+    return $className->_newMessage("INFO", $message);
 }
 
 sub newWarningMessage {
-	my ($className, $message) = @_;
-	return $className->_newMessage("WARNING", $message);
+    my ($className, $message) = @_;
+    return $className->_newMessage("WARNING", $message);
 }
 
 sub newErrorMessage {
-	my ($className, $message) = @_;
-	return $className->_newMessage("ERROR", $message);
+    my ($className, $message) = @_;
+    return $className->_newMessage("ERROR", $message);
 }
 
 sub newConfirmationMessage {
-	my ($className, $message) = @_;
-	return $className->_newMessage("CONFIRMATION", $message);
+    my ($className, $message) = @_;
+    return $className->_newMessage("CONFIRMATION", $message);
 }
 
 sub _newMessage {
-	my ($className, $type, $text) = @_;
-	my $self = { }; # $className->new();
-	bless($self, $className);
-	$self->setType($type);
-	$self->setText($text);
-	return $self;
+    my ($className, $type, $text) = @_;
+    my $self = { }; # $className->new();
+    bless($self, $className);
+    $self->setType($type);
+    $self->setText($text);
+    return $self;
 }
 
 ########################################################################
 # Instance
 
 sub cssClass {
-	my ($self) = @_;
-	return "status-messages-error"  if $self->type() eq "ERROR";
-	return "status-messages-warning" if $self->type() eq "WARNING";
-	return "status-messages-confirmation" if $self->type() eq "CONFIRMATION";
-	return "status-messages-info";
+    my ($self) = @_;
+    return "status-messages-error"  if $self->type() eq "ERROR";
+    return "status-messages-warning" if $self->type() eq "WARNING";
+    return "status-messages-confirmation" if $self->type() eq "CONFIRMATION";
+    return "status-messages-info";
 }
 
 ############################################
 
 sub type {
-	my $self = shift;
-	return $self->{type};
+    my $self = shift;
+    return $self->{type};
 }
 
 sub setType {
-	my ($self, $value) = @_;
-	$self->{type} = $value;
+    my ($self, $value) = @_;
+    $self->{type} = $value;
 }
 
 sub typeIsError {
-	my ($self) = @_;
-	return $self->type() eq 'ERROR';
+    my ($self) = @_;
+    return $self->type() eq 'ERROR';
 }
 
 sub typeIsWarning {
-	my ($self) = @_;
-	return $self->type() eq 'WARNING';
+    my ($self) = @_;
+    return $self->type() eq 'WARNING';
 }
 
 sub typeIsInfo {
-	my ($self) = @_;
-	return $self->type() eq 'INFO';
+    my ($self) = @_;
+    return $self->type() eq 'INFO';
 }
 
 sub typeIsConfirmation {
-	my ($self) = @_;
-	return $self->type() eq 'CONFIRMATION';
+    my ($self) = @_;
+    return $self->type() eq 'CONFIRMATION';
 }
 
 sub text {
-	my $self = shift;
-	return $self->{text};
+    my $self = shift;
+    return $self->{text};
 }
 
 sub setText {
-	my ($self, $value) = @_;
-	$self->{text} = $value;
+    my ($self, $value) = @_;
+    $self->{text} = $value;
 }
 
 1;

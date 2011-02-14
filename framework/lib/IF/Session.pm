@@ -28,14 +28,14 @@ package IF::Session;
 use strict;
 
 sub application {
-	my $self = shift;
-	return $self->{_application} if $self->{_application};
-	return IF::Application->defaultApplication(); # Hokey but saves it from yacking
+    my $self = shift;
+    return $self->{_application} if $self->{_application};
+    return IF::Application->defaultApplication(); # Hokey but saves it from yacking
 }
 
 sub setApplication {
-	my $self = shift;
-	$self->{_application} = shift;
+    my $self = shift;
+    $self->{_application} = shift;
 }
 
 sub requestContextClassName {
@@ -46,21 +46,21 @@ sub requestContextClassName {
 # This should be overridden in your subclass to
 # create an external id if there isn't one
 sub externalId {
-	my ($self) = @_;
-	return $self->{_externalId};
+    my ($self) = @_;
+    return $self->{_externalId};
 }
 
 # this is private API because only the fw should be
 # setting this.
 sub _setExternalId {
-	my ($self, $value) = @_;
-	$self->{_externalId} = $value;
+    my ($self, $value) = @_;
+    $self->{_externalId} = $value;
 }
 
 
 sub isNullSession {
-	my ($self) = @_;
-	return ($self->{_externalId} eq IF::Context::NULL_SESSION_ID());
+    my ($self) = @_;
+    return ($self->{_externalId} eq IF::Context::NULL_SESSION_ID());
 }
 
 sub wasInflated {

@@ -34,90 +34,90 @@ sub resetValues {
 }
 
 sub time {
-	my $self = shift;
-	return $self->{TIME};
+    my $self = shift;
+    return $self->{TIME};
 }
 
 sub setTime {
-	my $self = shift;
-	$self->{TIME} = shift;
-	if ($self->{TIME} =~ /^[0-9]+$/) {
-		# it's a unix time so
-		$self->{TIME} = IF::Utility::sqlTimeFromUnixTime($self->{TIME});
-	}
-	if ($self->{TIME} =~ /^\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d/) {
-		# it's a SQL timestamp so
-		$self->{TIME} = substr($self->{TIME}, 11, 8);
-	}
+    my $self = shift;
+    $self->{TIME} = shift;
+    if ($self->{TIME} =~ /^[0-9]+$/) {
+        # it's a unix time so
+        $self->{TIME} = IF::Utility::sqlTimeFromUnixTime($self->{TIME});
+    }
+    if ($self->{TIME} =~ /^\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d/) {
+        # it's a SQL timestamp so
+        $self->{TIME} = substr($self->{TIME}, 11, 8);
+    }
 }
 
 sub value {
-	my $self = shift;
-	return $self->time();
+    my $self = shift;
+    return $self->time();
 }
 
 sub setValue {
-	my $self = shift;
-	my $value = shift;
-	$self->setTime($value);
+    my $self = shift;
+    my $value = shift;
+    $self->setTime($value);
 }
 
 sub hours {
-	my $self = shift;
-	my $hours = substr($self->{TIME}, 0, 2);
-	return $hours if ($self->isTwentyFourHour());
-	$hours = $hours % 12;
-	return $hours unless $hours == 0;
-	return 12;
+    my $self = shift;
+    my $hours = substr($self->{TIME}, 0, 2);
+    return $hours if ($self->isTwentyFourHour());
+    $hours = $hours % 12;
+    return $hours unless $hours == 0;
+    return 12;
 }
 
 sub minutes {
-	my $self = shift;
-	return substr($self->{TIME}, 3, 2);
+    my $self = shift;
+    return substr($self->{TIME}, 3, 2);
 }
 
 sub seconds {
-	my $self = shift;
-	return substr($self->{TIME}, 6, 2);
+    my $self = shift;
+    return substr($self->{TIME}, 6, 2);
 }
 
 sub ampm {
-	my $self = shift;
+    my $self = shift;
 
-	my $hours = substr($self->{TIME}, 0, 2);
-	return "pm" if ($hours > 11);
-	return "am";
+    my $hours = substr($self->{TIME}, 0, 2);
+    return "pm" if ($hours > 11);
+    return "am";
 }
 
 sub isTwentyFourHour {
-	my ($self) = @_;
-	return $self->{isTwentyFourHour} if $self->{isTwentyFourHour};
-	return $self->{isTwentyFourHour} = ($self->context()->language() ne "en");
+    my ($self) = @_;
+    return $self->{isTwentyFourHour} if $self->{isTwentyFourHour};
+    return $self->{isTwentyFourHour} = ($self->context()->language() ne "en");
 }
 
 sub setIsTwentyFourHour {
-	my ($self, $value) = @_;
-	$self->{isTwentyFourHour} = $value;
+    my ($self, $value) = @_;
+    $self->{isTwentyFourHour} = $value;
 }
 
 sub showSeconds {
-	my $self = shift;
-	return $self->{SHOW_SECONDS};
+    my $self = shift;
+    return $self->{SHOW_SECONDS};
 }
 
 sub setShowSeconds {
-	my $self = shift;
-	$self->{SHOW_SECONDS} = shift;
+    my $self = shift;
+    $self->{SHOW_SECONDS} = shift;
 }
 
 sub timeZone {
-	my ($self) = @_;
-	return $self->{timeZone};
+    my ($self) = @_;
+    return $self->{timeZone};
 }
 
 sub setTimeZone {
-	my ($self, $value) = @_;
-	$self->{timeZone} = $value;
+    my ($self, $value) = @_;
+    $self->{timeZone} = $value;
 }
 
 1;

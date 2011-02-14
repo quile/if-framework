@@ -32,30 +32,30 @@ sub countUsingSQL {
 sub nextNumberForSequence {
     my ($self, $sequenceName) = @_;
     
-	my $nextId;
-	my $dbh = IF::DB::dbConnection();
-	return undef unless $dbh;
+    my $nextId;
+    my $dbh = IF::DB::dbConnection();
+    return undef unless $dbh;
 
-	my $sequenceTable = IF::Application->systemConfigurationValueForKey("SEQUENCE_TABLE");
+    my $sequenceTable = IF::Application->systemConfigurationValueForKey("SEQUENCE_TABLE");
     my $sth = $dbh->prepare("LOCK TABLES $sequenceTable WRITE");
     
     if ($sth->execute()) {
         my $fetchStatementHandle = $dbh->prepare("SELECT NEXT_ID FROM $sequenceTable WHERE NAME = ?");
-		if ($fetchStatementHandle->execute($sequenceName)) {
-			($nextId) = $fetchStatementHandle->fetchrow_array;
-			$fetchStatementHandle->finish();
-			unless ($nextId) {
-				# insert the sequence
-				$dbh->do("INSERT INTO $sequenceTable (NAME, NEXT_ID) VALUES (".$dbh->quote($sequenceName).", 1)");				
-				$nextId = 1;
-			}
-			# update key
-			$dbh->do("UPDATE $sequenceTable SET NEXT_ID=NEXT_ID+1 WHERE NAME=" . $dbh->quote($sequenceName));
-			$dbh->do("UNLOCK TABLES");
-		}
-		$sth->finish();  	
-	}
-	return $nextId;    
+        if ($fetchStatementHandle->execute($sequenceName)) {
+            ($nextId) = $fetchStatementHandle->fetchrow_array;
+            $fetchStatementHandle->finish();
+            unless ($nextId) {
+                # insert the sequence
+                $dbh->do("INSERT INTO $sequenceTable (NAME, NEXT_ID) VALUES (".$dbh->quote($sequenceName).", 1)");                
+                $nextId = 1;
+            }
+            # update key
+            $dbh->do("UPDATE $sequenceTable SET NEXT_ID=NEXT_ID+1 WHERE NAME=" . $dbh->quote($sequenceName));
+            $dbh->do("UNLOCK TABLES");
+        }
+        $sth->finish();      
+    }
+    return $nextId;    
 }
 
 1;

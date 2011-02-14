@@ -32,40 +32,40 @@ use constant MP1 => ( not exists $ENV{MOD_PERL_API_VERSION} and
 
 # Please, don't try this at home without a very good reason!
 if (MP2) {
-	*new = __PACKAGE__->_generateNewMethod("IF::Request::Apache2");
+    *new = __PACKAGE__->_generateNewMethod("IF::Request::Apache2");
 } elsif (MP1) {
-	*new = __PACKAGE__->_generateNewMethod("IF::Request::Apache");
+    *new = __PACKAGE__->_generateNewMethod("IF::Request::Apache");
 } else {
-	*new = __PACKAGE__->_generateNewMethod("IF::Request::Offline");
+    *new = __PACKAGE__->_generateNewMethod("IF::Request::Offline");
 }
 
 sub _generateNewMethod {
-	my ($className, $requestPackageName) = @_;
-	eval "use $requestPackageName";
-	die "Failed to use $requestPackageName: $@" if $@;
-	return sub {
-		my ($className, $r) = @_;
-		# helpful in the offline where we've already created
-		# the request we want to use
-		return $r if ref($r) eq $requestPackageName;
-		return $requestPackageName->new($r);
-	}
+    my ($className, $requestPackageName) = @_;
+    eval "use $requestPackageName";
+    die "Failed to use $requestPackageName: $@" if $@;
+    return sub {
+        my ($className, $r) = @_;
+        # helpful in the offline where we've already created
+        # the request we want to use
+        return $r if ref($r) eq $requestPackageName;
+        return $requestPackageName->new($r);
+    }
 }
 
 sub applicationName {
-	my $self = shift;
-	return $self->{_applicationName} if $self->{_applicationName};
-	return $ENV{'IF_APPLICATION_NAME'} || 'IF';
+    my $self = shift;
+    return $self->{_applicationName} if $self->{_applicationName};
+    return $ENV{'IF_APPLICATION_NAME'} || 'IF';
 }
 
 sub setApplicationName {
-	my ($self, $name) = @_;
-	$self->{_applicationName} = $name;
+    my ($self, $name) = @_;
+    $self->{_applicationName} = $name;
 }
 
 sub dropCookie {
-	my $self = shift;
-	IF::Log::error("dropCookie not implemented");
+    my $self = shift;
+    IF::Log::error("dropCookie not implemented");
 }
 
 1;

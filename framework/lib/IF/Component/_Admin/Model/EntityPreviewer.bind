@@ -1,42 +1,42 @@
 {
-	WRAPPER => {
+    WRAPPER => {
         type => "Admin::PageWrapper",
         bindings => {
- 			controller => q(controller),
+             controller => q(controller),
        },
- 	},
-	NAVIGATION => {
-		type => "_Admin::Model::Navigation",
-		bindings => {
-			entity => q(entity),
-			rootEntity => q(rootEntity),
-			entityClassName => q(entityClassDescription.name),
-			controller => q(controller),
-		},
-	},
-	ENTITY_NAME => {
-		type => "STRING",
-		value => q(entityClassDescription.name),
-	},
-	PREVIEW_URL => {
-		type => "STRING",
-		value => q(previewUrl),
-	},
-	PREVIEW_FORM => {
-		type => "Form",
-		bindings => {
-		},
-	},
-	EDIT_BUTTON => {
-		type => "SubmitButton",
-		bindings => {
-			directAction => q("makeChanges"),
-		},
-	},
-	SAVE_BUTTON => {
-		type => "SubmitButton",
-		bindings => {
-			directAction => q("save"),
-		},
-	},
+     },
+    NAVIGATION => {
+        type => "_Admin::Model::Navigation",
+        bindings => {
+            entity => q(entity),
+            rootEntity => q(rootEntity),
+            entityClassName => q(entityClassDescription.name),
+            controller => q(controller),
+        },
+    },
+    ENTITY_NAME => {
+        type => "STRING",
+        value => q(entityClassDescription.name),
+    },
+    PREVIEW_URL => {
+        type => "STRING",
+        value => q(previewUrl),
+    },
+    PREVIEW_FORM => {
+        type => "Form",
+        bindings => {
+        },
+    },
+    EDIT_BUTTON => {
+        type => "SubmitButton",
+        bindings => {
+            directAction => q("makeChanges"),
+        },
+    },
+    SAVE_BUTTON => {
+        type => "SubmitButton",
+        bindings => {
+            directAction => q("save"),
+        },
+    },
 }

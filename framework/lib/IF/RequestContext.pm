@@ -29,88 +29,88 @@ use base qw(
 );
 
 sub requestContextForSessionIdAndContextNumber {
-	my ($className, $sessionId, $contextNumber) = @_;
-	return IF::ObjectContext->new()->entityMatchingQualifier("RequestContext",
-	            IF::Qualifier->and([
-	                IF::Qualifier->key("contextNumber = %@", $contextNumber),
-	                IF::Qualifier->key("sessionId = %@", $sessionId)
-	            ]));
+    my ($className, $sessionId, $contextNumber) = @_;
+    return IF::ObjectContext->new()->entityMatchingQualifier("RequestContext",
+                IF::Qualifier->and([
+                    IF::Qualifier->key("contextNumber = %@", $contextNumber),
+                    IF::Qualifier->key("sessionId = %@", $sessionId)
+                ]));
 }
 
 sub session {
-	my $self = shift;
-	return $self->faultEntityForRelationshipNamed("session");
+    my $self = shift;
+    return $self->faultEntityForRelationshipNamed("session");
 }
 
 sub contextNumber {
-	my $self = shift;
-	return $self->storedValueForKey("contextNumber");
+    my $self = shift;
+    return $self->storedValueForKey("contextNumber");
 }
 
 sub setContextNumber {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "contextNumber");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "contextNumber");
 }
 
 sub sessionId {
-	my $self = shift;
-	return $self->storedValueForKey("sessionId");
+    my $self = shift;
+    return $self->storedValueForKey("sessionId");
 }
 
 sub setSessionId {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "sessionId");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "sessionId");
 }
 
 sub renderedComponents {
-	my $self = shift;
-	return $self->storedValueForKey("renderedComponents");
+    my $self = shift;
+    return $self->storedValueForKey("renderedComponents");
 }
 
 sub setRenderedComponents {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "renderedComponents");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "renderedComponents");
 }
 
 sub callingComponent {
-	my $self = shift;
-	return $self->storedValueForKey("callingComponent");
+    my $self = shift;
+    return $self->storedValueForKey("callingComponent");
 }
 
 sub setCallingComponent {
-	my $self = shift;
-	my $value = shift;
-	$self->setStoredValueForKey($value, "callingComponent");
+    my $self = shift;
+    my $value = shift;
+    $self->setStoredValueForKey($value, "callingComponent");
 }
 
 sub awakeFromInflation {
-	my $self = shift;
-	$self->SUPER::awakeFromInflation();
-	my $renderedComponents = {};
-	my $renderedPageContextNumbers = {};
-	foreach my $component (split("/", $self->renderedComponents())) {
-		my ($componentName, $pageContextNumbers) = split("=", $component);
-		foreach my $pageContextNumber (split(":", $pageContextNumbers)) {
-			$renderedComponents->{$componentName}->{$pageContextNumber}++;
-			$renderedPageContextNumbers->{$pageContextNumber}++;
-		}
-	}
-	$self->{_renderedComponents} = $renderedComponents;
-	$self->{_renderedPageContextNumbers} = $renderedPageContextNumbers;
+    my $self = shift;
+    $self->SUPER::awakeFromInflation();
+    my $renderedComponents = {};
+    my $renderedPageContextNumbers = {};
+    foreach my $component (split("/", $self->renderedComponents())) {
+        my ($componentName, $pageContextNumbers) = split("=", $component);
+        foreach my $pageContextNumber (split(":", $pageContextNumbers)) {
+            $renderedComponents->{$componentName}->{$pageContextNumber}++;
+            $renderedPageContextNumbers->{$pageContextNumber}++;
+        }
+    }
+    $self->{_renderedComponents} = $renderedComponents;
+    $self->{_renderedPageContextNumbers} = $renderedPageContextNumbers;
 }
 
 sub prepareForCommit {
-	my $self = shift;
-	my $renderedComponents = [];
-	foreach my $componentName (keys %{$self->{_renderedComponents}}) {
-		my $pageContextNumbers = join (":", keys %{$self->{_renderedComponents}->{$componentName}});
-		push (@$renderedComponents, $componentName."=".$pageContextNumbers);
-	}
+    my $self = shift;
+    my $renderedComponents = [];
+    foreach my $componentName (keys %{$self->{_renderedComponents}}) {
+        my $pageContextNumbers = join (":", keys %{$self->{_renderedComponents}->{$componentName}});
+        push (@$renderedComponents, $componentName."=".$pageContextNumbers);
+    }
 
-	$self->setRenderedComponents(join("/", @$renderedComponents));
+    $self->setRenderedComponents(join("/", @$renderedComponents));
 }
 
 

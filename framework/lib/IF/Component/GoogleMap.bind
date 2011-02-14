@@ -22,42 +22,42 @@
 
 #
 {
-	UNIQUE_ID => {
-		type => "STRING",
-		value => q(uniqueId),
-	},
+    UNIQUE_ID => {
+        type => "STRING",
+        value => q(uniqueId),
+    },
 
-	BINDING_NAME => {
-		type => "STRING",
-		value => q(parentBindingName),
-	},
+    BINDING_NAME => {
+        type => "STRING",
+        value => q(parentBindingName),
+    },
 
-	ASSETS => {
-		type => "LOOP",
-		list => q(assets),
-		item => q(anAsset),
-	},
-	ASSET => {
-		type => "ObjectAsJSON",
-		bindings => {
-			object => q(anAsset),
-			keys => q([qw(
-							mappingTitle
-							mappingDescription
-							mappingViewerUrl
-							mappingAddress
-							mappingLatitude
-							mappingLongitude
-							mappingAssetType
-						)]),
-		},
-	},
-	GOOGLE_MAPS_KEY => {
-		type => "STRING",
-		value => q(application.configurationValueForKey("GOOGLE_MAPS_KEY")),
-	},
-	ON_LOAD_HANDLER => {
-		type => "STRING",
-		value => q(onLoadHandler),
-	},
+    ASSETS => {
+        type => "LOOP",
+        list => q(assets),
+        item => q(anAsset),
+    },
+    ASSET => {
+        type => "ObjectAsJSON",
+        bindings => {
+            object => q(anAsset),
+            keys => q([qw(
+                            mappingTitle
+                            mappingDescription
+                            mappingViewerUrl
+                            mappingAddress
+                            mappingLatitude
+                            mappingLongitude
+                            mappingAssetType
+                        )]),
+        },
+    },
+    GOOGLE_MAPS_KEY => {
+        type => "STRING",
+        value => q(application.configurationValueForKey("GOOGLE_MAPS_KEY")),
+    },
+    ON_LOAD_HANDLER => {
+        type => "STRING",
+        value => q(onLoadHandler),
+    },
 }

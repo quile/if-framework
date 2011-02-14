@@ -24,101 +24,101 @@ package IF::Web::ActionLocator;
 
 use strict;
 use base qw(
-	IF::Interface::KeyValueCoding
+    IF::Interface::KeyValueCoding
 );
 
 use IF::Utility;
 
 sub new {
-	my ($className) = @_;
-	return bless {}, $className;
+    my ($className) = @_;
+    return bless {}, $className;
 }
 
 sub newFromString {
-	my ($className, $string) = @_;
+    my ($className, $string) = @_;
 
-	my ($urlRoot, $site, $lang, $component, $action) =
-				($string =~ m#^/(\w+)/(\w+)/([\w-]+)/(.+)/([\w\d\.-]+)#);
-	return undef unless $action;
-	my $self = $className->new();
-	$self->setDirectAction($action);
-	$self->setTargetComponentName($component);
-	$self->setLanguage($lang);
-	$self->setSiteClassifierName($site);
-	$self->setUrlRoot($urlRoot);
-	return $self;
+    my ($urlRoot, $site, $lang, $component, $action) =
+                ($string =~ m#^/(\w+)/(\w+)/([\w-]+)/(.+)/([\w\d\.-]+)#);
+    return undef unless $action;
+    my $self = $className->new();
+    $self->setDirectAction($action);
+    $self->setTargetComponentName($component);
+    $self->setLanguage($lang);
+    $self->setSiteClassifierName($site);
+    $self->setUrlRoot($urlRoot);
+    return $self;
 }
 
 sub urlRoot {
-	my ($self) = @_;
-	return $self->{urlRoot};
+    my ($self) = @_;
+    return $self->{urlRoot};
 }
 
 sub setUrlRoot {
-	my ($self, $value) = @_;
-	$self->{urlRoot} = $value;
+    my ($self, $value) = @_;
+    $self->{urlRoot} = $value;
 }
 
 sub directAction {
-	my ($self) = @_;
-	return $self->{directAction};
+    my ($self) = @_;
+    return $self->{directAction};
 }
 
 sub setDirectAction {
-	my ($self, $value) = @_;
-	$self->{directAction} = $value;
+    my ($self, $value) = @_;
+    $self->{directAction} = $value;
 }
 
 sub targetComponentName {
-	my ($self) = @_;
-	return $self->{targetComponentName};
+    my ($self) = @_;
+    return $self->{targetComponentName};
 }
 
 sub setTargetComponentName {
-	my ($self, $value) = @_;
-	$self->{targetComponentName} = $value;
+    my ($self, $value) = @_;
+    $self->{targetComponentName} = $value;
 }
 
 sub siteClassifierName {
-	my ($self) = @_;
-	return $self->{siteClassifierName};
+    my ($self) = @_;
+    return $self->{siteClassifierName};
 }
 
 sub setSiteClassifierName {
-	my ($self, $value) = @_;
-	$self->{siteClassifierName} = $value;
+    my ($self, $value) = @_;
+    $self->{siteClassifierName} = $value;
 }
 
 sub language {
-	my ($self) = @_;
-	return $self->{language};
+    my ($self) = @_;
+    return $self->{language};
 }
 
 sub setLanguage {
-	my ($self, $value) = @_;
-	$self->{language} = $value;
+    my ($self, $value) = @_;
+    $self->{language} = $value;
 }
 
 sub queryDictionary {
-	my ($self) = @_;
-	return $self->{queryDictionary};
+    my ($self) = @_;
+    return $self->{queryDictionary};
 }
 
 sub setQueryDictionary {
-	my ($self, $value) = @_;
-	$self->{queryDictionary} = $value;
+    my ($self, $value) = @_;
+    $self->{queryDictionary} = $value;
 }
 
 sub asAction {
-	my ($self) = @_;
+    my ($self) = @_;
 
-	return join("/",
-		$self->urlRoot(),
-		$self->siteClassifierName(),
-		$self->language(),
-		$self->targetComponentName(),
-		$self->directAction()
-	);
+    return join("/",
+        $self->urlRoot(),
+        $self->siteClassifierName(),
+        $self->language(),
+        $self->targetComponentName(),
+        $self->directAction()
+    );
 }
 
 1;

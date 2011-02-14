@@ -41,7 +41,7 @@ use Exporter 'import';
 );
 
 sub defaultLanguage {
-	return IF::Application->defaultApplication()->defaultLanguage();
+    return IF::Application->defaultApplication()->defaultLanguage();
 }
 
 # TODO: This only works in single-threaded code!

@@ -21,22 +21,22 @@
 # THE SOFTWARE.
 
 {
-	CLIENT_SIDE_ID => {
-		type => "STRING",
-		value => "uniqueId",
-	},
-	CLIENT_SIDE_NAME => {
-		type => "STRING",
-		value => "clientSideName"
-	},
-	START_DATE => {
-		type => "STRING",
-		value => "startDate",
-	},
-	JSON_PROPERTIES => {
-		type => "STRING",
-		value => "propertiesAsJSON",
-	},
+    CLIENT_SIDE_ID => {
+        type => "STRING",
+        value => "uniqueId",
+    },
+    CLIENT_SIDE_NAME => {
+        type => "STRING",
+        value => "clientSideName"
+    },
+    START_DATE => {
+        type => "STRING",
+        value => "startDate",
+    },
+    JSON_PROPERTIES => {
+        type => "STRING",
+        value => "propertiesAsJSON",
+    },
     # IS_FIRST_TIME_RENDERED => {
     #   type => "BOOLEAN",
     #   value => q(isFirstTimeRendered),

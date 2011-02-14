@@ -38,39 +38,39 @@ sub refreshAllCacheHandles {
 }
 
 sub cacheOfTypeWithName {
-	my $type = shift;
-	my $name = shift;
+    my $type = shift;
+    my $name = shift;
 
-	if ($cache{$type} && $cache{$type}->{$name}) {
-		IF::Log::debug("Using existing cache $name for $type");
-		return $cache{$type}->{$name};
-	}
+    if ($cache{$type} && $cache{$type}->{$name}) {
+        IF::Log::debug("Using existing cache $name for $type");
+        return $cache{$type}->{$name};
+    }
 
-	unless ($cache{$type}) {
-		$cache{$type} = {};
-	}
+    unless ($cache{$type}) {
+        $cache{$type} = {};
+    }
 
-	my $cacheClass = "IF::Cache::$type";
-	my $newCache = eval { $cacheClass->new($name) };
-	if ($newCache && !$@) {
-		$newCache->init();
-		IF::Log::debug("Created cache object $newCache with name $name");
-		$cache{$type}->{$name} = $newCache;
-		return $newCache;
-	} else {
-		IF::Log::error("Couldn't create cache of type $type: $@");
-		return;
-	}
+    my $cacheClass = "IF::Cache::$type";
+    my $newCache = eval { $cacheClass->new($name) };
+    if ($newCache && !$@) {
+        $newCache->init();
+        IF::Log::debug("Created cache object $newCache with name $name");
+        $cache{$type}->{$name} = $newCache;
+        return $newCache;
+    } else {
+        IF::Log::error("Couldn't create cache of type $type: $@");
+        return;
+    }
 }
 
 sub bestAvailableCacheWithName {
-	my $name = shift;
-	my $optimalCacheList = ["Failover", "Memcached", "File"];
-	foreach my $optimalCacheType (@$optimalCacheList) {
-		my $cache = cacheOfTypeWithName($optimalCacheType, $name);
-		return $cache if $cache;
-	}
-	return;
+    my $name = shift;
+    my $optimalCacheList = ["Failover", "Memcached", "File"];
+    foreach my $optimalCacheType (@$optimalCacheList) {
+        my $cache = cacheOfTypeWithName($optimalCacheType, $name);
+        return $cache if $cache;
+    }
+    return;
 }
 
 1;

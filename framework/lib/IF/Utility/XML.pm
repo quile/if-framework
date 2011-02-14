@@ -27,21 +27,21 @@ our $DRASTIC_FILTER = q/[[:^ascii:]<>'";&]/;
 
 
 sub _filterStringWithExpression {
-	my ($className, $string, $expression) = @_;
- 	$string = _reformulate($string);
-	# first punt unassigned chars and unwanted ascii control chars
-	$string =~ s/([\p{Unassigned}\x00-\x08\x0B\x0C\x0E-\x1F])//go;
-	# now replace the key xml delimeters
+    my ($className, $string, $expression) = @_;
+     $string = _reformulate($string);
+    # first punt unassigned chars and unwanted ascii control chars
+    $string =~ s/([\p{Unassigned}\x00-\x08\x0B\x0C\x0E-\x1F])//go;
+    # now replace the key xml delimeters
     $string =~ s/($expression)/_replace($1)/ge;
    return $string;
 }
 
 sub filterString {
-	return _filterStringWithExpression(@_, $NORMAL_FILTER);
+    return _filterStringWithExpression(@_, $NORMAL_FILTER);
 }
 
 sub filterStringDrastic {
-	return _filterStringWithExpression(@_, $DRASTIC_FILTER);
+    return _filterStringWithExpression(@_, $DRASTIC_FILTER);
 }
 
 sub _replace {
@@ -54,8 +54,8 @@ sub _replace {
 # translating 0xA0 which is invalid utf8 into 0x00A0 which is valid.
 # Some day I'll figure out how to get perl to suppress those chars ....
 sub _reformulate {
-	my $string = shift;
-	return pack("U*",unpack("U*",$string));
+    my $string = shift;
+    return pack("U*",unpack("U*",$string));
 }
 
 

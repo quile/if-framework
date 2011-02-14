@@ -1,27 +1,27 @@
 <!-- STATUS MESSAGE -->
 <div id="<BINDING:UNIQUE_ID>" style="display:none;" class="status-messages-viewer">
-	<span id="<BINDING:UNIQUE_ID>-messages">
-			<ul id="<BINDING:UNIQUE_ID>-message-list" class="messages-list">
-				<BINDING_LOOP:LIST>
-					<li class="<BINDING:MESSAGE_CLASS>"><BINDING:TEXT></li>
-				</BINDING_LOOP:LIST>
-			</ul>
-	</span>
+    <span id="<BINDING:UNIQUE_ID>-messages">
+            <ul id="<BINDING:UNIQUE_ID>-message-list" class="messages-list">
+                <BINDING_LOOP:LIST>
+                    <li class="<BINDING:MESSAGE_CLASS>"><BINDING:TEXT></li>
+                </BINDING_LOOP:LIST>
+            </ul>
+    </span>
 </div>
 <script language="javascript">
 jQuery(function() {
-	<BINDING_IF:HAS_MESSAGES>
-		jQuery('#<BINDING:UNIQUE_ID>').show();
-	<BINDING_ELSE:HAS_MESSAGES>
-		jQuery('#<BINDING:UNIQUE_ID>').hide();
-	</BINDING_IF:HAS_MESSAGES>
-	<BINDING_IF:HAS_ERRORS>
-	<BINDING_ELSE:HAS_ERRORS>
-	</BINDING_IF:HAS_ERRORS>
-		// initialise the js component for the status messages
-		var c = new StatusMessagesViewer("<BINDING:UNIQUE_ID>");
-		c.init();
-		IF.controllers.<BINDING:UNIQUE_ID> = c;
+    <BINDING_IF:HAS_MESSAGES>
+        jQuery('#<BINDING:UNIQUE_ID>').show();
+    <BINDING_ELSE:HAS_MESSAGES>
+        jQuery('#<BINDING:UNIQUE_ID>').hide();
+    </BINDING_IF:HAS_MESSAGES>
+    <BINDING_IF:HAS_ERRORS>
+    <BINDING_ELSE:HAS_ERRORS>
+    </BINDING_IF:HAS_ERRORS>
+        // initialise the js component for the status messages
+        var c = new StatusMessagesViewer("<BINDING:UNIQUE_ID>");
+        c.init();
+        IF.controllers.<BINDING:UNIQUE_ID> = c;
 })
 </script>
 <!-- /STATUS MESSAGE -->

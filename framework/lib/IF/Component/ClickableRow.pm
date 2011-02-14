@@ -30,26 +30,26 @@ use base qw(
 my $index = 0;
 
 sub index {
-	my $self = shift;
-	return $self->{index} || $index;
+    my $self = shift;
+    return $self->{index} || $index;
 }
 
 sub highlightedRowClass {
-	my $self = shift;
-	return $self->{highlightedRowClass};
+    my $self = shift;
+    return $self->{highlightedRowClass};
 }
 
 sub setHighlightedRowClass {
-	my ($self, $value) = @_;
-	$self->{highlightedRowClass} = $value;
+    my ($self, $value) = @_;
+    $self->{highlightedRowClass} = $value;
 }
 
 sub appendToResponse {
-	my ($self, $response, $context) = @_;
-	my $return = $self->SUPER::appendToResponse($response, $context);
-	$index++;
-	$self->setRowClass();
-	return $return;
+    my ($self, $response, $context) = @_;
+    my $return = $self->SUPER::appendToResponse($response, $context);
+    $index++;
+    $self->setRowClass();
+    return $return;
 }
 
 1;

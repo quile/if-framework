@@ -28,36 +28,36 @@ use base qw(PF::Array);
 # static method
 
 sub isArray {
-	my $object = shift;
-	return UNIVERSAL::isa($object, "ARRAY");
+    my $object = shift;
+    return UNIVERSAL::isa($object, "ARRAY");
 }
 
 # The naming is broken at this low level; above this
 # we always use "array" to refer to an array ref.
 sub arrayFromObject {
-	my ($className, $object) = @_;
-	return IF::Array->new() unless defined $object;
-	if (isArray($object)) {
-		if (ref($object) eq "ARRAY") {
-			return bless $object, "IF::Array";
-		}
-		return $object;
-	}
-	return IF::Array->new()->initWithArray($object);
+    my ($className, $object) = @_;
+    return IF::Array->new() unless defined $object;
+    if (isArray($object)) {
+        if (ref($object) eq "ARRAY") {
+            return bless $object, "IF::Array";
+        }
+        return $object;
+    }
+    return IF::Array->new()->initWithArray($object);
 }
 
 sub arrayHasNoElements {
-	my ($className, $array) = @_;
-	return (!$className->arrayHasElements($array));
+    my ($className, $array) = @_;
+    return (!$className->arrayHasElements($array));
 }
 
 # This also returns false if the object passed in is not an array
 sub arrayHasElements {
-	my ($className, $array) = @_;
-	return 0 unless ($array);
-	return 0 unless isArray($array);
-	return 0 if (scalar @$array == 0);
-	return 1;
+    my ($className, $array) = @_;
+    return 0 unless ($array);
+    return 0 unless isArray($array);
+    return 0 if (scalar @$array == 0);
+    return 1;
 }
 
 1;

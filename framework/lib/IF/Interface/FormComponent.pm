@@ -3,45 +3,45 @@ package IF::Interface::FormComponent;
 use strict;
 
 sub isRequired {
-	my ($self) = @_;
-	my $v = $self->{isRequired} || $self->tagAttributeForKey('isRequired');
-	return $v ? 1 : 0;
+    my ($self) = @_;
+    my $v = $self->{isRequired} || $self->tagAttributeForKey('isRequired');
+    return $v ? 1 : 0;
 }
 
 sub setIsRequired {
-	my ($self, $value) = @_;
-	$self->{isRequired} = $value;
+    my ($self, $value) = @_;
+    $self->{isRequired} = $value;
 }
 
 # TODO This is bogus because there could be more than one message,
 # eg "You must enter an email address" and "You must enter a valid email address"
 
 sub validationFailureMessage {
-	my ($self) = @_;
-	return $self->{validationFailureMessage}  || $self->tagAttributeForKey('validationFailureMessage');
+    my ($self) = @_;
+    return $self->{validationFailureMessage}  || $self->tagAttributeForKey('validationFailureMessage');
 }
 
 sub setValidationFailureMessage {
-	my ($self, $value) = @_;
-	$self->{validationFailureMessage} = $value;
+    my ($self, $value) = @_;
+    $self->{validationFailureMessage} = $value;
 }
 
 sub validator {
-	my ($self) = @_;
-	return $self->{validator} || $self;
+    my ($self) = @_;
+    return $self->{validator} || $self;
 }
 
 sub setValidator {
-	my ($self, $value) = @_;
-	$self->{validator} = $value;
+    my ($self, $value) = @_;
+    $self->{validator} = $value;
 }
 
 sub hasValidValues {
-	my ($self) = @_;
-	if ($self->isRequired() && !$self->hasValueForValidation()) {
-		return 0;
-	}
-	return 1;
+    my ($self) = @_;
+    if ($self->isRequired() && !$self->hasValueForValidation()) {
+        return 0;
+    }
+    return 1;
 }
 
 sub isRequiredMessage {
@@ -57,7 +57,7 @@ sub setIsRequiredMessage {
 # This might not work for all form components
 # but it will simplify
 sub hasValueForValidation {
-	IF::Log::warning("hasValueForValidation() has not been implemented");
+    IF::Log::warning("hasValueForValidation() has not been implemented");
 }
 
 

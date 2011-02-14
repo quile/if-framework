@@ -24,135 +24,135 @@ package IF::Component::ScrollingList;
 
 use strict;
 use base qw(
-	IF::Component
-	IF::Interface::FormComponent
+    IF::Component
+    IF::Interface::FormComponent
 );
 
 sub requiredPageResources {
-	my ($self) = @_;
-	return [
+    my ($self) = @_;
+    return [
         IF::PageResource->javascript("/if-static/javascript/IF/ScrollingList.js"),
-	];
+    ];
 }
 
 sub takeValuesFromRequest {
-	my $self = shift;
-	my $context = shift;
+    my $self = shift;
+    my $context = shift;
 
-	$self->SUPER::takeValuesFromRequest($context);
-	if ($self->objectInflatorMethod() && $self->parent()) {
-		$self->setSelection(
-				$self->parent()->invokeMethodWithArguments($self->objectInflatorMethod(),
-					$context->formValuesForKey($self->name())
-					)
-				);
-	} else {
-		if ($self->isMultiple()) {
-			$self->setSelection($context->formValuesForKey($self->name()));
-		} else {
-			$self->setSelection($context->formValueForKey($self->name()));
-		}
-	}
+    $self->SUPER::takeValuesFromRequest($context);
+    if ($self->objectInflatorMethod() && $self->parent()) {
+        $self->setSelection(
+                $self->parent()->invokeMethodWithArguments($self->objectInflatorMethod(),
+                    $context->formValuesForKey($self->name())
+                    )
+                );
+    } else {
+        if ($self->isMultiple()) {
+            $self->setSelection($context->formValuesForKey($self->name()));
+        } else {
+            $self->setSelection($context->formValueForKey($self->name()));
+        }
+    }
 }
 
 sub name {
-	my $self = shift;
-	return $self->{NAME} || $self->queryKeyNameForPageAndLoopContexts();
+    my $self = shift;
+    return $self->{NAME} || $self->queryKeyNameForPageAndLoopContexts();
 }
 
 sub setName {
-	my $self = shift;
-	$self->{NAME} = shift;
+    my $self = shift;
+    $self->{NAME} = shift;
 }
 
 sub anyString {
-	my ($self) = @_;
-	return $self->{anyString};
+    my ($self) = @_;
+    return $self->{anyString};
 }
 
 sub setAnyString {
-	my ($self, $value) = @_;
-	$self->{anyString} = $value;
+    my ($self, $value) = @_;
+    $self->{anyString} = $value;
 }
 
 sub anyValue {
-	my ($self) = @_;
-	return $self->{anyValue} || "";
+    my ($self) = @_;
+    return $self->{anyValue} || "";
 }
 
 sub setAnyValue {
-	my ($self, $value) = @_;
-	$self->{anyValue} = $value;
+    my ($self, $value) = @_;
+    $self->{anyValue} = $value;
 }
 
 sub list {
-	my $self = shift;
-	return $self->{LIST};
+    my $self = shift;
+    return $self->{LIST};
 }
 
 sub setList {
-	my $self = shift;
-	$self->{LIST} = shift;
+    my $self = shift;
+    $self->{LIST} = shift;
 }
 
 sub selection {
-	my $self = shift;
-	return $self->{SELECTION};
+    my $self = shift;
+    return $self->{SELECTION};
 }
 
 sub setSelection {
-	my $self = shift;
-	$self->{SELECTION} = shift;
+    my $self = shift;
+    $self->{SELECTION} = shift;
 }
 
 sub value {
-	my $self = shift;
-	return $self->{VALUE};
+    my $self = shift;
+    return $self->{VALUE};
 }
 
 sub setValue {
-	my $self = shift;
-	$self->{VALUE} = shift;
+    my $self = shift;
+    $self->{VALUE} = shift;
 }
 
 sub displayString {
-	my $self = shift;
-	return $self->{DISPLAY_STRING};
+    my $self = shift;
+    return $self->{DISPLAY_STRING};
 }
 
 sub setDisplayString {
-	my $self = shift;
-	$self->{DISPLAY_STRING} = shift;
+    my $self = shift;
+    $self->{DISPLAY_STRING} = shift;
 }
 
 sub objectInflatorMethod {
-	my $self = shift;
-	return $self->{objectInflatorMethod};
+    my $self = shift;
+    return $self->{objectInflatorMethod};
 }
 
 sub setObjectInflatorMethod {
-	my $self = shift;
-	$self->{objectInflatorMethod} = shift;
+    my $self = shift;
+    $self->{objectInflatorMethod} = shift;
 }
 
 sub size {
-	my $self = shift;
-	return $self->{size};
+    my $self = shift;
+    return $self->{size};
 }
 
 sub setSize {
-	my $self = shift;
-	$self->{size} = shift;
+    my $self = shift;
+    $self->{size} = shift;
 }
 
 sub isMultiple {
-	my $self = shift;
-	return $self->{isMultiple};
+    my $self = shift;
+    return $self->{isMultiple};
 }
 
 sub setIsMultiple {
-	my $self = shift;
-	$self->{isMultiple} = shift;
+    my $self = shift;
+    $self->{isMultiple} = shift;
 }
 
 1;

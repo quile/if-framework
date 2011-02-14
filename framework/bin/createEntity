@@ -43,19 +43,19 @@ my $silent = 0;
 GetOptions("application=s" => \$application,
            "app-config-path=s" => \$appConfigPath,
            "entity=s" => \$entityName,
-		   "tree=s" => \$tree,
-		   "build-init-method" => \$buildInitMethod,
-		   "build-stub-class" => \$buildStubClass,
-		   "silent" => \$silent,
-		   "force" => \$force);
+           "tree=s" => \$tree,
+           "build-init-method" => \$buildInitMethod,
+           "build-stub-class" => \$buildStubClass,
+           "silent" => \$silent,
+           "force" => \$force);
 
 unless ($entityName && $application) {
-	usage();
-	exit(1);
+    usage();
+    exit(1);
 }
 
 if ($application eq "IFTest") {
-	use lib 't';
+    use lib 't';
 }
 
 # load app config:
@@ -96,34 +96,34 @@ my $stubEntityClassFile = AppControl::Utility::configurationValueForKey("APP_ROO
 # if there's no entity class file, we check
 # if we need to build the stub class too
 if (! -f $entityClassFile && ! -f $stubEntityClassFile) {
-	$buildStubClass = 1;
+    $buildStubClass = 1;
 }
 
 if ($force || !(-f $entityClassFile)) {
-	$entityGenerator->saveTemplateToFile($entityClassTemplate, $entityClassFile);
-	feedback("Created entity file $entityClassFile");
+    $entityGenerator->saveTemplateToFile($entityClassTemplate, $entityClassFile);
+    feedback("Created entity file $entityClassFile");
 } else {
-	print STDERR "Not creating file $entityClassFile, already exists.  To overwrite, use --force\n" unless $silent;
+    print STDERR "Not creating file $entityClassFile, already exists.  To overwrite, use --force\n" unless $silent;
 }
 
 if ($buildStubClass) {
-	# Generate the DB entity
-	$entityClassFile = AppControl::Utility::configurationValueForKey("APP_ROOT")."/$tree/Entity/$entityName.pm";
+    # Generate the DB entity
+    $entityClassFile = AppControl::Utility::configurationValueForKey("APP_ROOT")."/$tree/Entity/$entityName.pm";
 
-	$entityRepresentation = $entityGenerator->parseExistingEntityClass($entityClassFile);
-	$entityClassTemplate = $entityGenerator->generateStubEntityClassFromRepresentationAndModel($entityName, $entityRepresentation, $model);
+    $entityRepresentation = $entityGenerator->parseExistingEntityClass($entityClassFile);
+    $entityClassTemplate = $entityGenerator->generateStubEntityClassFromRepresentationAndModel($entityName, $entityRepresentation, $model);
 
-	# Push the basics into the template
-	$entityClassTemplate->param(TREE => $tree);
-	$entityClassTemplate->param(CLASS => $entityName);
-	$entityClassTemplate->param(BUILD_INIT_METHOD => $buildInitMethod);
+    # Push the basics into the template
+    $entityClassTemplate->param(TREE => $tree);
+    $entityClassTemplate->param(CLASS => $entityName);
+    $entityClassTemplate->param(BUILD_INIT_METHOD => $buildInitMethod);
 
-	if ($force || !(-f $entityClassFile)) {
-		$entityGenerator->saveTemplateToFile($entityClassTemplate, $entityClassFile);
-		feedback("Created stub file $entityClassFile");
-	} else {
-		print STDERR "Not creating stub file $entityClassFile, already exists.  To overwrite, use --force\n" unless $silent;
-	}
+    if ($force || !(-f $entityClassFile)) {
+        $entityGenerator->saveTemplateToFile($entityClassTemplate, $entityClassFile);
+        feedback("Created stub file $entityClassFile");
+    } else {
+        print STDERR "Not creating stub file $entityClassFile, already exists.  To overwrite, use --force\n" unless $silent;
+    }
 }
 
 
@@ -132,7 +132,7 @@ if ($buildStubClass) {
 #==============================================
 
 sub usage {
-	print <<EOU;
+    print <<EOU;
 
 usage: createEntity --entity=<entity> --tree=<tree> [--force]
                     [--build-init-method] [--build-stub-class]
@@ -145,13 +145,13 @@ usage: createEntity --entity=<entity> --tree=<tree> [--force]
        --force             : forces creation of files even if they already exist
 
 example:
-	% createEntity --application=MyApp --entity=Banana --tree=MyApp
+    % createEntity --application=MyApp --entity=Banana --tree=MyApp
 
 EOU
 }
 
 sub feedback {
-	my ($string) = @_;
-	return if $silent;
-	print "$string\n";
+    my ($string) = @_;
+    return if $silent;
+    print "$string\n";
 }

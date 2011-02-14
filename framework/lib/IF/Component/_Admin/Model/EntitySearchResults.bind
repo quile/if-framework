@@ -1,153 +1,153 @@
 #
 {
-	WRAPPER => {
-		type => "_Admin::Model::PageWrapper",
-		bindings => {
-			controller => q(controller),
-		},
-	},
-	IS_SHOWN_INLINE => {
-		type => "BOOLEAN",
-		value => q(isShownInline),
-	},
-	NAVIGATION => {
-		type => "_Admin::Model::Navigation",
-		bindings => {
-			entity => q(entity),
-			rootEntity => q(rootEntity),
-			entityClassName => q(entityClassDescription.name),
-			controller => q(controller),
-		},
-	},
-	ENTITY_NAME => {
-		type => "STRING",
-		value => q(entityClassDescription.name),
-	},
-	COUNT => {
-		type => "NUMBER",
-		value => q(countOfSearchResults),
-	},
-	ENTITY_SEARCH_RESULTS => {
-		type => "LOOP",
-		list => q(searchResults),
-		item => q(aSearchResult),
-		index => q(aSearchResultIndex),
-	},
-	EDIT_LINK => {
-		type => "Hyperlink",
-		bindings => {
-			targetComponentName => q("_Admin::Model::EntityEditor"),
-			queryDictionary => q({
-				"entity-class-name" => q(entityClassDescription.name),
-				"entity-id" => q(aSearchResult.id), # TODO: fix this!!!
-				"root-entity-class-name" => q(rootEntity.entityClassDescription.name),
-				"root-entity-id" => q(rootEntity.id),
-				"relationship-name" => q($context->formValueForKey("relationship-name")),
-				"controller-class" => q(controller.controllerClass),
-			}),
-		},
-	},
-	SHOULD_SHOW_DELETE_LINK => {
-		type => "BOOLEAN",
-		value => q(shouldShowDeleteLink),
-	},
-	DELETE_LINK => {
-		type => "Hyperlink",
-		bindings => {
-			targetComponentName => q("_Admin::Model::EntityDeletionConfirmation"),
-			queryDictionary => q({
-				"entity-class-name" => q(entityClassDescription.name),
-				"entity-id" => q(aSearchResult.id), # TODO: fix this!!!
-				"root-entity-class-name" => q(rootEntity.entityClassDescription.name),
-				"root-entity-id" => q(rootEntity.id),
-				"relationship-name" => q($context->formValueForKey("relationship-name")),
-				"controller-class" => q(controller.controllerClass),
-			}),
-		},
-	},
-	RESULT => {
-		type => "STRING",
-		value => q(aSearchResult),
-	},
-	RESULT_USES_ASSET_VIEWER => {
-		type => "BOOLEAN",
-		value => q(resultUsesAssetViewer),
-	},
-#	RESULT_IS_ASSET => {
-#		type => "BOOLEAN",
-#		value => q(resultIsAsset),
-#	},
-	ASSET => {
-		type => "SiteIndex::SearchResult",
-		bindings => {
-			asset => q(aSearchResult),
-			assetIndex => q($self->{aSearchResultIndex} + 1 + int($self->searchTerms()->objectForKey("startIndex"))),
-		},
-	},
-	ROW_CLASS => {
-		type => "STRING",
-		value => q($self->{aSearchResultIndex} % 2 == 0? "entity-search-results-even-rows" : "entity-search-results-odd-rows"),
-	},
-	INDEX => {
-		type => "STRING",
-		value => q(aSearchResultIndex),
-	},
-	SEARCH_RESULT_ATTRIBUTES => {
-		type => "LOOP",
-		list => q(attributes),
-		item => q(anAttribute),
-	},
-	ATTRIBUTE_NAME => {
-		type => "STRING",
-		value => q(anAttribute.ATTRIBUTE_NAME),
-	},
-	FILTERED_ATTRIBUTE_VALUE => {
-		type => "STRING",
-		value => q($self->aSearchResult()->valueForKey($self->{anAttribute}->{ATTRIBUTE_NAME})),
-		filter => q(filterNewLinesAndQuotes),
-	},
-	ATTRIBUTE_VALUE => {
-		type => "_Admin::Model::EntityAttributeViewer",
-		bindings => {
-			attribute => q(anAttribute),
-			value => q($self->aSearchResult()->valueForKey($self->{anAttribute}->{ATTRIBUTE_NAME})),
-			filter => q("filterNewLinesAndQuotes"),
-		},
-	},
-	SUMMARY_ATTRIBUTES => {
-		type => "LOOP",
-		list => q(summaryAttributeNamesWithDefaults),
-		item => q(aSummaryAttributeName),
-	},
-	SUMMARY_ATTRIBUTE_VALUE => {
-		type => "STRING",
-		value => q(aSearchResult.valueForKey(aSummaryAttributeName)),
-		maxLength => q(50),
-	},
-	SHOULD_ALLOW_GRID_DETAIL => {
-		type => "BOOLEAN",
-		value => q(controller.shouldAllowGridDetail),
-	},
-	HAS_PREVIOUS_PAGE => {
-		type => "BOOLEAN",
-		value => q(int($self->searchTerms()->objectForKey("startIndex")) > 0),
-	},
-	HAS_NEXT_PAGE => {
-		type => "BOOLEAN",
-		value => q(hasNextPage),
-	},
-	NEXT_LINK => {
-		type => "Hyperlink",
-		bindings => {
-			directAction => q("submit"),
-			queryString => q(IF::Utility::stringFromQueryDictionary($self->nextPageQueryDictionary())),
-		},
-	},
-	PREVIOUS_LINK => {
-		type => "Hyperlink",
-		bindings => {
-			directAction => q("submit"),
-			queryString => q(IF::Utility::stringFromQueryDictionary($self->previousPageQueryDictionary())),
-		},
-	},
+    WRAPPER => {
+        type => "_Admin::Model::PageWrapper",
+        bindings => {
+            controller => q(controller),
+        },
+    },
+    IS_SHOWN_INLINE => {
+        type => "BOOLEAN",
+        value => q(isShownInline),
+    },
+    NAVIGATION => {
+        type => "_Admin::Model::Navigation",
+        bindings => {
+            entity => q(entity),
+            rootEntity => q(rootEntity),
+            entityClassName => q(entityClassDescription.name),
+            controller => q(controller),
+        },
+    },
+    ENTITY_NAME => {
+        type => "STRING",
+        value => q(entityClassDescription.name),
+    },
+    COUNT => {
+        type => "NUMBER",
+        value => q(countOfSearchResults),
+    },
+    ENTITY_SEARCH_RESULTS => {
+        type => "LOOP",
+        list => q(searchResults),
+        item => q(aSearchResult),
+        index => q(aSearchResultIndex),
+    },
+    EDIT_LINK => {
+        type => "Hyperlink",
+        bindings => {
+            targetComponentName => q("_Admin::Model::EntityEditor"),
+            queryDictionary => q({
+                "entity-class-name" => q(entityClassDescription.name),
+                "entity-id" => q(aSearchResult.id), # TODO: fix this!!!
+                "root-entity-class-name" => q(rootEntity.entityClassDescription.name),
+                "root-entity-id" => q(rootEntity.id),
+                "relationship-name" => q($context->formValueForKey("relationship-name")),
+                "controller-class" => q(controller.controllerClass),
+            }),
+        },
+    },
+    SHOULD_SHOW_DELETE_LINK => {
+        type => "BOOLEAN",
+        value => q(shouldShowDeleteLink),
+    },
+    DELETE_LINK => {
+        type => "Hyperlink",
+        bindings => {
+            targetComponentName => q("_Admin::Model::EntityDeletionConfirmation"),
+            queryDictionary => q({
+                "entity-class-name" => q(entityClassDescription.name),
+                "entity-id" => q(aSearchResult.id), # TODO: fix this!!!
+                "root-entity-class-name" => q(rootEntity.entityClassDescription.name),
+                "root-entity-id" => q(rootEntity.id),
+                "relationship-name" => q($context->formValueForKey("relationship-name")),
+                "controller-class" => q(controller.controllerClass),
+            }),
+        },
+    },
+    RESULT => {
+        type => "STRING",
+        value => q(aSearchResult),
+    },
+    RESULT_USES_ASSET_VIEWER => {
+        type => "BOOLEAN",
+        value => q(resultUsesAssetViewer),
+    },
+#    RESULT_IS_ASSET => {
+#        type => "BOOLEAN",
+#        value => q(resultIsAsset),
+#    },
+    ASSET => {
+        type => "SiteIndex::SearchResult",
+        bindings => {
+            asset => q(aSearchResult),
+            assetIndex => q($self->{aSearchResultIndex} + 1 + int($self->searchTerms()->objectForKey("startIndex"))),
+        },
+    },
+    ROW_CLASS => {
+        type => "STRING",
+        value => q($self->{aSearchResultIndex} % 2 == 0? "entity-search-results-even-rows" : "entity-search-results-odd-rows"),
+    },
+    INDEX => {
+        type => "STRING",
+        value => q(aSearchResultIndex),
+    },
+    SEARCH_RESULT_ATTRIBUTES => {
+        type => "LOOP",
+        list => q(attributes),
+        item => q(anAttribute),
+    },
+    ATTRIBUTE_NAME => {
+        type => "STRING",
+        value => q(anAttribute.ATTRIBUTE_NAME),
+    },
+    FILTERED_ATTRIBUTE_VALUE => {
+        type => "STRING",
+        value => q($self->aSearchResult()->valueForKey($self->{anAttribute}->{ATTRIBUTE_NAME})),
+        filter => q(filterNewLinesAndQuotes),
+    },
+    ATTRIBUTE_VALUE => {
+        type => "_Admin::Model::EntityAttributeViewer",
+        bindings => {
+            attribute => q(anAttribute),
+            value => q($self->aSearchResult()->valueForKey($self->{anAttribute}->{ATTRIBUTE_NAME})),
+            filter => q("filterNewLinesAndQuotes"),
+        },
+    },
+    SUMMARY_ATTRIBUTES => {
+        type => "LOOP",
+        list => q(summaryAttributeNamesWithDefaults),
+        item => q(aSummaryAttributeName),
+    },
+    SUMMARY_ATTRIBUTE_VALUE => {
+        type => "STRING",
+        value => q(aSearchResult.valueForKey(aSummaryAttributeName)),
+        maxLength => q(50),
+    },
+    SHOULD_ALLOW_GRID_DETAIL => {
+        type => "BOOLEAN",
+        value => q(controller.shouldAllowGridDetail),
+    },
+    HAS_PREVIOUS_PAGE => {
+        type => "BOOLEAN",
+        value => q(int($self->searchTerms()->objectForKey("startIndex")) > 0),
+    },
+    HAS_NEXT_PAGE => {
+        type => "BOOLEAN",
+        value => q(hasNextPage),
+    },
+    NEXT_LINK => {
+        type => "Hyperlink",
+        bindings => {
+            directAction => q("submit"),
+            queryString => q(IF::Utility::stringFromQueryDictionary($self->nextPageQueryDictionary())),
+        },
+    },
+    PREVIOUS_LINK => {
+        type => "Hyperlink",
+        bindings => {
+            directAction => q("submit"),
+            queryString => q(IF::Utility::stringFromQueryDictionary($self->previousPageQueryDictionary())),
+        },
+    },
 }

@@ -25,90 +25,90 @@ package PF::Dictionary;
 use strict;
 
 sub new {
-	my $className = shift;
-	my $self = {};
-	bless $self, $className;
-	my $dictionary = shift;
-	if ($dictionary) {
-		$self->initWithDictionary($dictionary);
-	}
-	return $self;
+    my $className = shift;
+    my $self = {};
+    bless $self, $className;
+    my $dictionary = shift;
+    if ($dictionary) {
+        $self->initWithDictionary($dictionary);
+    }
+    return $self;
 }
 
 sub initWithDictionary {
-	my $self = shift;
-	my $dictionary = shift;
-	$self->removeAllObjects();
-	foreach my $key (keys %$dictionary) {
-		$self->setObjectForKey($dictionary->{$key}, $key);
-	}
-	return $self;
+    my $self = shift;
+    my $dictionary = shift;
+    $self->removeAllObjects();
+    foreach my $key (keys %$dictionary) {
+        $self->setObjectForKey($dictionary->{$key}, $key);
+    }
+    return $self;
 }
 
 sub removeAllObjects {
-	my $self = shift;
-	foreach my $key (keys %$self) {
-		$self->removeObjectForKey($key);
-	}
+    my $self = shift;
+    foreach my $key (keys %$self) {
+        $self->removeObjectForKey($key);
+    }
 }
 
 sub numberOfKeys {
-	my $self = shift;
-	return scalar keys %$self;
+    my $self = shift;
+    return scalar keys %$self;
 }
 
 sub objectForKey {
-	my $self = shift;
-	my $key = shift;
-	return $self->{$key};
+    my $self = shift;
+    my $key = shift;
+    return $self->{$key};
 }
 
 sub setObjectForKey {
-	my $self = shift;
-	my $object = shift;
-	my $key = shift;
-	$self->{$key} = $object;
+    my $self = shift;
+    my $object = shift;
+    my $key = shift;
+    $self->{$key} = $object;
 }
 
 # this method name is confusing becuase it actually
 # returns whether or not the key exists not the object
 sub hasObjectForKey {
-	my $self = shift;
-	my $key = shift;
-	return exists($self->{$key});
+    my $self = shift;
+    my $key = shift;
+    return exists($self->{$key});
 }
 
 sub allKeys {
-	my $self = shift;
-	return [keys %$self];
+    my $self = shift;
+    return [keys %$self];
 }
 
 sub allObjects {
-	my $self = shift;
-	return [values %$self];
+    my $self = shift;
+    return [values %$self];
 }
 
 sub removeObjectForKey {
-	my $self = shift;
-	my $key = shift;
-	delete $self->{$key};
+    my $self = shift;
+    my $key = shift;
+    delete $self->{$key};
 }
 
 sub removeObject {
-	my $self = shift;
-	my $object = shift;
-	foreach my $key (keys %$self) {
-		next unless ($self->objectForKey($key) == $object);
-		$self->removeObjectForKey($key);
-	}
+    my $self = shift;
+    my $object = shift;
+    foreach my $key (keys %$self) {
+        next unless ($self->objectForKey($key) == $object);
+        $self->removeObjectForKey($key);
+    }
 }
 
 sub removeObjectsForKeys {
-	my $self = shift;
-	my $keys = shift;
-	foreach my $key (@$keys) {
-		$self->removeObjectForKey($key);
-	}
+    my $self = shift;
+    my $keys = shift;
+    foreach my $key (@$keys) {
+        $self->removeObjectForKey($key);
+    }
 }
 
 1;

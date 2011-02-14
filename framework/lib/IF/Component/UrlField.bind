@@ -21,11 +21,11 @@
 # THE SOFTWARE.
 
 {
-	TEXT_FIELD => {
-		type => "TextField",
-		bindings => {
-			name => q(name),
-			value => q(_displayValue),
-		},
-	},
+    TEXT_FIELD => {
+        type => "TextField",
+        bindings => {
+            name => q(name),
+            value => q(_displayValue),
+        },
+    },
 }

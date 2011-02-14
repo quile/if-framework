@@ -28,88 +28,88 @@
 package IF::LogMessage;
 
 use base qw(
-	IF::Interface::KeyValueCoding
+    IF::Interface::KeyValueCoding
 );
 use Time::HiRes qw(gettimeofday);
 
 sub new {
-	my $className = shift;
-	my $self = {};
-	$self->{TYPE} = shift;
-	$self->{MESSAGE} = shift;
-	$self->{DEPTH} = shift;
-	$self->{CALLER} = shift;
-	$self->{TIME} = [ gettimeofday ];
+    my $className = shift;
+    my $self = {};
+    $self->{TYPE} = shift;
+    $self->{MESSAGE} = shift;
+    $self->{DEPTH} = shift;
+    $self->{CALLER} = shift;
+    $self->{TIME} = [ gettimeofday ];
 
-	unless ($self->{CALLER}) {
-		$self->{CALLER} = [caller(2)];
-		$self->{CALLER}->[2] = [caller(1)]->[2];
-	}
-	return bless $self, $className;
+    unless ($self->{CALLER}) {
+        $self->{CALLER} = [caller(2)];
+        $self->{CALLER}->[2] = [caller(1)]->[2];
+    }
+    return bless $self, $className;
 }
 
 sub type {
-	my $self = shift;
-	return $self->{TYPE};
+    my $self = shift;
+    return $self->{TYPE};
 }
 
 sub message {
-	my $self = shift;
-	return $self->{MESSAGE};
+    my $self = shift;
+    return $self->{MESSAGE};
 }
 
 sub content {
-	my ($self) = @_;
-	return $self->stringWithEvaluatedKeyPathsInLanguage($self->message(), "en");
+    my ($self) = @_;
+    return $self->stringWithEvaluatedKeyPathsInLanguage($self->message(), "en");
 }
 
 sub depth {
-	my $self = shift;
-	return $self->{DEPTH};
+    my $self = shift;
+    return $self->{DEPTH};
 }
 
 sub formattedMessage {
-	my $self = shift;
-	my $width = shift || 50;
-	my $message = $self->content();
-	my $formattedMessage = "";
-	while (length($message) > $width) {
-		$formattedMessage .= substr($message, 0, $width);
-		if (substr($message, 0, $width) !~ /\w/) {
-			$formattedMessage .= " ";
-		}
-		$message = substr($message, $width);
-	}
-	$formattedMessage .= $message;
-	return $formattedMessage;
+    my $self = shift;
+    my $width = shift || 50;
+    my $message = $self->content();
+    my $formattedMessage = "";
+    while (length($message) > $width) {
+        $formattedMessage .= substr($message, 0, $width);
+        if (substr($message, 0, $width) !~ /\w/) {
+            $formattedMessage .= " ";
+        }
+        $message = substr($message, $width);
+    }
+    $formattedMessage .= $message;
+    return $formattedMessage;
 }
 
 sub time {
-	my $self = shift;
-	my ($sec, $min, $hour, $day, $month, $year) = localtime($self->{TIME}->[0]);
-	return sprintf("%4d-%02d-%02d %02d:%02d:%02d.%06d", ($year+1900),
-			($month+1), $day, $hour, $min, $sec, $self->{TIME}->[1]);
+    my $self = shift;
+    my ($sec, $min, $hour, $day, $month, $year) = localtime($self->{TIME}->[0]);
+    return sprintf("%4d-%02d-%02d %02d:%02d:%02d.%06d", ($year+1900),
+            ($month+1), $day, $hour, $min, $sec, $self->{TIME}->[1]);
 }
 
 sub callerPackage {
-	my $self = shift;
-	my $value = $self->{CALLER}->[0];
-	return $value unless length($value) > 20;
-	return substr($value, 0, 8)."...".substr($value, -8, 8);
+    my $self = shift;
+    my $value = $self->{CALLER}->[0];
+    return $value unless length($value) > 20;
+    return substr($value, 0, 8)."...".substr($value, -8, 8);
 }
 
 sub callerMethod {
-	my $self = shift;
-	my $value = $self->{CALLER}->[3];
-	return $value unless length($value) > 40;
-	return substr($value, 0, 16)."...".substr($value, -16, 16);
+    my $self = shift;
+    my $value = $self->{CALLER}->[3];
+    return $value unless length($value) > 40;
+    return substr($value, 0, 16)."...".substr($value, -16, 16);
 }
 
 sub callerLine {
-	my $self = shift;
-	my $value = $self->{CALLER}->[2];
-	return $value unless length($value) > 20;
-	return substr($value, 0, 8)."...".substr($value, -8, 8);
+    my $self = shift;
+    my $value = $self->{CALLER}->[2];
+    return $value unless length($value) > 20;
+    return substr($value, 0, 8)."...".substr($value, -8, 8);
 }
 
 1;

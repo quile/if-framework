@@ -21,16 +21,16 @@
 # THE SOFTWARE.
 
 {
-	inheritsFrom => "IF::Component::_Default",
-	EXPRESSION => {
-		type => "STRING",
-		value => q(expression),
-	},
+    inheritsFrom => "IF::Component::_Default",
+    EXPRESSION => {
+        type => "STRING",
+        value => q(expression),
+    },
     CONTENT => {
         type => "CONTENT",
     },
-	UNIQUE_ID => {
-		type => "STRING",
-		value => q(uniqueId),
-	},
+    UNIQUE_ID => {
+        type => "STRING",
+        value => q(uniqueId),
+    },
 };

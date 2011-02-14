@@ -77,12 +77,12 @@ sub loadApplication {
 # IF::Application instance to make this runnable with as few dependencies
 # as possible
 sub configurationValueForKey {
-	my $key = shift;
-	die "App configuration not loaded" unless $_APP_CONFIG;
-	if (exists($_APP_CONFIG->{$key})) {
-		return $_APP_CONFIG->{$key};
-	}
-	return $IF::Config::CONFIGURATION->{$key};
+    my $key = shift;
+    die "App configuration not loaded" unless $_APP_CONFIG;
+    if (exists($_APP_CONFIG->{$key})) {
+        return $_APP_CONFIG->{$key};
+    }
+    return $IF::Config::CONFIGURATION->{$key};
 }
 
 1;

@@ -24,73 +24,73 @@ package IF::RenderState;
 
 use strict;
 use base qw(
-	IF::Interface::KeyValueCoding
-	IF::Interface::StatusMessageHandling
+    IF::Interface::KeyValueCoding
+    IF::Interface::StatusMessageHandling
 );
 
 sub new {
-	my $className = shift;
-	my $self = {
-		_pageContext => [1],
-		_loopContext => [],
-		_renderedComponents => {},
-	};
-	return bless $self, $className;
+    my $className = shift;
+    my $self = {
+        _pageContext => [1],
+        _loopContext => [],
+        _renderedComponents => {},
+    };
+    return bless $self, $className;
 }
 
 # These are used in page generation
 sub increasePageContextDepth {
-	my $self = shift;
-	push (@{$self->{_pageContext}}, 0);
+    my $self = shift;
+    push (@{$self->{_pageContext}}, 0);
 }
 
 sub decreasePageContextDepth {
-	my $self = shift;
-	pop (@{$self->{_pageContext}});
+    my $self = shift;
+    pop (@{$self->{_pageContext}});
 }
 
 sub incrementPageContextNumber {
-	my $self = shift;
-	$self->{_pageContext}->[ $#{$self->{_pageContext}} ] += 1;
+    my $self = shift;
+    $self->{_pageContext}->[ $#{$self->{_pageContext}} ] += 1;
 }
 
 sub pageContextNumber {
-	my $self = shift;
-	return join("_", @{$self->{_pageContext}});
+    my $self = shift;
+    return join("_", @{$self->{_pageContext}});
 }
 
 # these mirror the page context stuff but are used
 # with a page context for keeping track of loops:
 sub increaseLoopContextDepth {
-	my ($self) = @_;
-	push (@{$self->{_loopContext}}, 0);
+    my ($self) = @_;
+    push (@{$self->{_loopContext}}, 0);
 }
 
 sub decreaseLoopContextDepth {
-	my ($self) = @_;
-	pop (@{$self->{_loopContext}});
+    my ($self) = @_;
+    pop (@{$self->{_loopContext}});
 }
 
 sub incrementLoopContextNumber {
-	my ($self) = @_;
-	$self->{_loopContext}->[ -1 ] += 1;
+    my ($self) = @_;
+    $self->{_loopContext}->[ -1 ] += 1;
 }
 
 sub loopContextNumber {
-	my ($self) = @_;
-	return join("_", @{$self->{_loopContext}});
+    my ($self) = @_;
+    return join("_", @{$self->{_loopContext}});
 }
 
 sub loopContextDepth {
-	my ($self) = @_;
-	return scalar @{$self->{_loopContext}};
+    my ($self) = @_;
+    return scalar @{$self->{_loopContext}};
 }
 
 # ----------- these help components manage page resources ---------
 
 sub pageResources {
-	my ($self) = @_;
-	return $self->_orderedPageResources();
+    my ($self) = @_;
+    return $self->_orderedPageResources();
 }
 
 # this holds the resources in the order they are added.  It's not
@@ -100,35 +100,35 @@ sub pageResources {
 # requests WILL BE in the order that it requests them.
 
 sub _orderedPageResources {
-	my ($self) = @_;
-	return $self->{_orderedPageResources} || [];
+    my ($self) = @_;
+    return $self->{_orderedPageResources} || [];
 }
 
 sub addPageResource {
-	my ($self, $resource) = @_;
-	$self->{pageResources} ||= {};
-	$self->{_orderedPageResources} ||= [];
-	# Only add it to the list if it's not already there.
-	my $location = $resource->location();
-	unless ($self->{pageResources}->{$location}) {
-		IF::Log::debug("Requesting resource $location");
-		push (@{$self->{_orderedPageResources}}, $resource);
-	}
-	$self->{pageResources}->{$location} = $resource;
+    my ($self, $resource) = @_;
+    $self->{pageResources} ||= {};
+    $self->{_orderedPageResources} ||= [];
+    # Only add it to the list if it's not already there.
+    my $location = $resource->location();
+    unless ($self->{pageResources}->{$location}) {
+        IF::Log::debug("Requesting resource $location");
+        push (@{$self->{_orderedPageResources}}, $resource);
+    }
+    $self->{pageResources}->{$location} = $resource;
 }
 
 sub addPageResources {
-	my ($self, $resources) = @_;
-	$resources = IF::Array->arrayFromObject($resources);
-	foreach my $r (@$resources) {
-		$self->addPageResource($r);
-	}
+    my ($self, $resources) = @_;
+    $resources = IF::Array->arrayFromObject($resources);
+    foreach my $r (@$resources) {
+        $self->addPageResource($r);
+    }
 }
 
 sub removePageResource {
-	my ($self, $resource) = @_;
-	$self->{pageResources} ||= {};
-	delete $self->{pageResources}->{$resource->location()};
+    my ($self, $resource) = @_;
+    $self->{pageResources} ||= {};
+    delete $self->{pageResources}->{$resource->location()};
 }
 
 1;
