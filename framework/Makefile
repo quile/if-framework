@@ -56,16 +56,16 @@ PERL_MODULES= \
 all: perlmods
 
 clean:
-    rm -rf build/*
-    rm -rf local/*
+	rm -rf build/*
+	rm -rf local/*
 
 perlmods:
-    echo $(FW_ROOT)
-    -for d in $(PERL_MODULES); do (cd build ; tar xvfz $(FW_ROOT)/dependencies/perl/$$d.tar.gz ; cd $$d ; $(PERL_BIN) Makefile.PL PREFIX=$(FRAMEWORK_LOCAL); make; make test; make install ); done
+	echo $(FW_ROOT)
+	-for d in $(PERL_MODULES); do (cd build ; tar xvfz $(FW_ROOT)/dependencies/perl/$$d.tar.gz ; cd $$d ; $(PERL_BIN) Makefile.PL PREFIX=$(FRAMEWORK_LOCAL); make; make test; make install ); done
 
 javascript:
-    @echo "// IF Javascript lib, build $(BUILD)" > $(JAVASCRIPT_ROOT)/$(JAVASCRIPT_LIB)
-    @echo "// Built $(DATE)" >> $(JAVASCRIPT_ROOT)/$(JAVASCRIPT_LIB)
-    @cat $(JAVASCRIPT_ROOT)/jquery/plugins/jquery.if.js >> $(JAVASCRIPT_ROOT)/$(JAVASCRIPT_LIB)
-    @for d in $(IF_JAVASCRIPT_FILES); do ( cat $(JAVASCRIPT_ROOT)/IF/$$d >> $(JAVASCRIPT_ROOT)/$(JAVASCRIPT_LIB); ); done
-    @echo "$(BUILD)" > $(FW_ROOT)/conf/BUILD_VERSION.conf
+	@echo "// IF Javascript lib, build $(BUILD)" > $(JAVASCRIPT_ROOT)/$(JAVASCRIPT_LIB)
+	@echo "// Built $(DATE)" >> $(JAVASCRIPT_ROOT)/$(JAVASCRIPT_LIB)
+	@cat $(JAVASCRIPT_ROOT)/jquery/plugins/jquery.if.js >> $(JAVASCRIPT_ROOT)/$(JAVASCRIPT_LIB)
+	@for d in $(IF_JAVASCRIPT_FILES); do ( cat $(JAVASCRIPT_ROOT)/IF/$$d >> $(JAVASCRIPT_ROOT)/$(JAVASCRIPT_LIB); ); done
+	@echo "$(BUILD)" > $(FW_ROOT)/conf/BUILD_VERSION.conf

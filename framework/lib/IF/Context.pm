@@ -30,7 +30,8 @@ use base qw(
 use IF::ObjectContext;
 use IF::Request;
 use IF::Array;
-use Encode qw();
+use Encode      qw();
+use URI::Escape qw( uri_escape uri_unescape );
 
 #==============================
 # This is used to indicate that the system should not
@@ -258,12 +259,12 @@ sub setSessionId {
 
 sub escape {
     my ($self, $value) = @_;
-    return CGI::escape($value);
+    return uri_escape($value);
 }
 
 sub unescape {
     my ($self, $value) = @_;
-    return CGI::unescape($value);
+    return uri_unescape($value);
 }
 
 sub cookies {

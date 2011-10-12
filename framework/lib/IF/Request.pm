@@ -23,7 +23,7 @@
 package IF::Request;
 
 use strict;
-use CGI ();
+#use CGI ();
 
 use constant MP2 => ( exists $ENV{MOD_PERL_API_VERSION} and
                         $ENV{MOD_PERL_API_VERSION} >= 2 );

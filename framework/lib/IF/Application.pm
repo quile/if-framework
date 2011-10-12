@@ -445,5 +445,4 @@ sub createBounceAddress {
     return $bounceaddr;
 }
 
-
 1;
