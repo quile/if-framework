@@ -58,23 +58,72 @@ sub plackResponseFromResponse {
 }
 
 
+sub transHandler {
+    my ($className, $applicationName, $env) = @_;
+    IF::Log::debug("=====================> Transhandler invoked");
+
+    my $r = IF::Request::Plack->new(Plack::Request->new($env));
+    $r->setApplicationName($applicationName);
+
+    my $app = IF::Application->applicationInstanceWithName($applicationName);
+    return undef unless IF::Log::assert($app, "Retrieved app instance for request");
+
+    my $url = $r->uri();
+    foreach my $module (@{$app->modules()}) {
+        IF::Log::debug("Passing $url to module $module");
+
+        # TODO implement caching here
+
+        my ($rewrittenUrl, $rewrittenArgs) = $module->urlFromIncomingUrl($url);
+        if ($rewrittenUrl ne $url) {
+            IF::Log::debug("Rewriting as $rewrittenUrl ($rewrittenArgs) -> redirecting");
+            $env->{"if.rewritten-url"}  = $rewrittenUrl;
+            $env->{"QUERY_STRING"} = $rewrittenArgs;
+            #$env->{"if.rewritten-args"} = $rewrittenArgs;
+            #$r->uri($rewrittenUrl);
+            #$r->args($rewrittenArgs) if $rewrittenArgs;
+            # in mod_perl2 this prevents apache from running the
+            # MapToStorage phase and saves a bunch of cycles.
+            #$r->filename("TransHandler-N/A");
+            #return OK;
+            return
+        }
+    }
+
+    # Small optimization ... if we know this url is going to be
+    # handled by the big IF handler, we can give it a bogus
+    # filename and avoid the map to storage grind
+    #my $defaultPrefix = $r->dir_config('IFDefaultPrefix');
+    #if ($url =~ /^$defaultPrefix/) {
+    #    $r->filename("TransHandler-N/A");
+    #    return OK;
+    #}
+
+    IF::Log::debug("No need to rewrite incoming URL");
+    return; # DECLINED;
+}
+
+
+
 sub handler {
-    my ($className, $applicationName, $r) = @_;
+    my ($className, $applicationName, $env) = @_;
     my $context;
     my ($ERROR_CODE, $ERROR_MSG);
 
-    my $req = Plack::Request->new($r);
+    # rewrite incoming URLs and munge the query string.
+    $className->transHandler($applicationName, $env);
+
+    my $req = IF::Request::Plack->new(Plack::Request->new($env));
+    $req->setApplicationName($applicationName);
+
     my $res;
 
     IF::Log::setLogMask(0xffff);
     IF::Log::debug("=====================> Main handler invoked");
 
     #try {
-        my $plackRequest = IF::Request::Plack->new($req);
-        $plackRequest->setApplicationName($applicationName);
-
         # generate a context for this request
-        $context = $className->contextForRequest($plackRequest);
+        $context = $className->contextForRequest($req);
         unless ($context) {
             $ERROR_MSG = "Malformed URL: Failed to instantiate a context for request ".$req->uri();
             #$ERROR_CODE = NOT_FOUND;

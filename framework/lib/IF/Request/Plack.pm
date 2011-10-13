@@ -32,7 +32,7 @@ sub uri {
     my ($self) = @_;
     #return $self->{r}->uri();
     # what we call "uri", Plack (correctly) calls path_info:
-    return $self->{r}->path_info();
+    return $self->{r}->env->{'if.rewritten-url'} || $self->{r}->path_info();
 }
 
 sub cookieValueForKey {
@@ -47,8 +47,14 @@ sub upload {
 }
 
 sub param {
-    my ($self) = @_;
-    return $self->{r}->param(@_);
+    my ($self, $key) = @_;
+    if (wantarray) {
+        if ($key) {
+            return $self->{r}->parameters->get_all($key);
+        }
+        return keys %{$self->{r}->parameters};
+    }
+    return $self->{r}->parameters->get_one($key);
 }
 
 sub headers_in {
@@ -63,7 +69,7 @@ sub headers_out {
 
 sub args {
     my ($self) = @_;
-    return $self->{r}->env()->{QUERY_STRING};
+    return $self->{r}->env()->{'if.rewritten-args'} || $self->{r}->env()->{QUERY_STRING};
 }
 
 sub pnotes {

@@ -202,7 +202,7 @@ sub evaluateRuleOnIncomingUrl {
 
     $url = $self->_interpolateVariablesIntoString_Incoming($vars, $url);
     IF::Log::debug("Returning $url with qd $qdString");
-    return ($url,$qdString);
+    return ($url, $qdString);
 }
 
 sub _interpolateVariablesIntoString_Incoming {

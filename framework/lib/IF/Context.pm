@@ -182,7 +182,7 @@ sub inflateContextFromRequest {
 
 # this is not terribly optimal, but since we use formValues
 # as a general read/write store and apache2 not longer
-# lets us write to it's params table, we don't really
+# lets us write to its params table, we don't really
 # have a choice but to slurp it all in.
 
 sub buildFormValueDictionaryFromRequest {
@@ -319,7 +319,7 @@ sub formValueForKey {
 
     if (scalar @$values) {
         # HACK HACK HACK! this checks for the doubled value problem and prevents it
-        shift @$values if (scalar @$values == 2 && $values->[0] eq $values->[1]);
+        # shift @$values if (scalar @$values == 2 && $values->[0] eq $values->[1]);
         return join("\0", @$values);
     }
     return;
