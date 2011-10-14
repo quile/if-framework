@@ -14,19 +14,33 @@ sub new {
     }
     $self->{_headers_in}  = $headers;
     $self->{_headers_out} = {};
+    $self->{_cookies} = { %{$r->cookies} };
+    $self->{_cookiesOut} = {};
     return $self;
 }
 
-#sub dropCookie {
-    # my $self = shift;
-    # my $cookie = Apache2::Cookie->new($self, @_);
-    # unless ($cookie) {
-    #     IF::Log::error("Failed to create cookie ".join(", ", @_));
-    #         return;
-    #     }
-    # $cookie->bake($self);
-    # return $cookie;
-#}
+sub dropCookie {
+    my $self = shift;
+    my $options = { @_ };
+
+    return unless IF::Log::assert($options->{'-name'}, "Can't set cookie without a name");
+
+    my $expires = $options->{'-expires'};
+
+    # for now, we only support either-or... session (meaning it will expire
+    # at the end of this browser session) or 1 year.
+    if ($expires eq "+12M") {
+        $expires = time + 365 * 24 * 60 * 60;
+        $self->{_cookiesOut}->{ $options->{'-name'} } = {
+            value => $options->{'-value'},
+            expires => $expires,
+            path => $options->{'-path'},
+            domain => $options->{'-domain'},
+        };
+    } else {
+        $self->{_cookiesOut}->{ $options->{'-name'} } = $options->{'-value'};
+    }
+}
 
 sub uri {
     my ($self) = @_;
@@ -37,8 +51,12 @@ sub uri {
 
 sub cookieValueForKey {
     my ($self, $key) = @_;
-    my $c = $self->{r}->cookies()->{$key};
-    return $c;
+    return $self->{_cookiesOut}->{$key}->{value} || $self->{_cookies}->{$key};
+}
+
+sub outgoingCookies {
+    my ($self) = @_;
+    return $self->{_cookiesOut};
 }
 
 sub upload {

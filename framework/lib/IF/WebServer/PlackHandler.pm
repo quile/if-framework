@@ -45,16 +45,25 @@ sub plackResponseFromResponse {
         $headers->{'Cache-Type'} = "text/html; charset=utf-8";
     }
 
-    foreach my $header ( keys %{$context->request()->headers_out()} ) {
+    my $req = $context->request();
+    foreach my $header ( keys %{$req->headers_out()} ) {
         next if ($isCached && $header eq 'Set-Cookie');
-        $headers->{$header} = $context->request->headerValueForKey($header);
+        $headers->{$header} = $req->headerValueForKey($header);
     }
 
-    return Plack::Response->new(
+    my $pr = Plack::Response->new(
         $status,
         $headers,
         $response->content(),
     );
+
+    return $pr if $isCached;
+
+    # drops the outgoing cookies
+    foreach my $key ( keys %{ $req->outgoingCookies() } ) {
+        $pr->cookies->{$key} = $req->outgoingCookies()->{$key};
+    }
+    return $pr;
 }
 
 

@@ -31,6 +31,8 @@ use IF::ObjectContext;
 use IF::Request;
 use IF::Array;
 use Encode      qw();
+use Carp;
+
 use URI::Escape qw( uri_escape uri_unescape );
 
 #==============================
@@ -202,6 +204,7 @@ sub buildFormValueDictionaryFromRequest {
 sub query {
     my $self = shift;
     unless ($self->{_query}) {
+        croak "Why is this still in here?";
         $self->{_query} = new CGI();
     }
     return $self->{_query};
@@ -278,7 +281,8 @@ sub cookieValueForKey {
     #IF::Log::dump($self->{_cookies});
     my $cookie = $self->request()->cookieValueForKey($key);
     return undef unless $cookie;
-    my $value = Encode::decode_utf8($self->unescape($cookie->value()));
+    my $cookieValue = ref($cookie)? $cookie->value() : $cookie;
+    my $value = Encode::decode_utf8($self->unescape($cookieValue));
     IF::Log::debug("======= got back cookie value $value for $key ========");
     return $value;
 }
