@@ -87,26 +87,10 @@ sub transHandler {
         if ($rewrittenUrl ne $url) {
             IF::Log::debug("Rewriting as $rewrittenUrl ($rewrittenArgs) -> redirecting");
             $env->{"if.rewritten-url"}  = $rewrittenUrl;
-            $env->{"QUERY_STRING"} = $rewrittenArgs;
-            #$env->{"if.rewritten-args"} = $rewrittenArgs;
-            #$r->uri($rewrittenUrl);
-            #$r->args($rewrittenArgs) if $rewrittenArgs;
-            # in mod_perl2 this prevents apache from running the
-            # MapToStorage phase and saves a bunch of cycles.
-            #$r->filename("TransHandler-N/A");
-            #return OK;
+            $env->{"QUERY_STRING"} = $rewrittenArgs if $rewrittenArgs;
             return
         }
     }
-
-    # Small optimization ... if we know this url is going to be
-    # handled by the big IF handler, we can give it a bogus
-    # filename and avoid the map to storage grind
-    #my $defaultPrefix = $r->dir_config('IFDefaultPrefix');
-    #if ($url =~ /^$defaultPrefix/) {
-    #    $r->filename("TransHandler-N/A");
-    #    return OK;
-    #}
 
     IF::Log::debug("No need to rewrite incoming URL");
     return; # DECLINED;

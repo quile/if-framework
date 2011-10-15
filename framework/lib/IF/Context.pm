@@ -369,7 +369,6 @@ sub formValuesForKey {
 sub formKeys {
     my $self = shift;
     my @values = keys %{$self->{_formValues}};
-    # IF::Log::dump(\@values);
     if (wantarray) {
         return @values;
     } else {
