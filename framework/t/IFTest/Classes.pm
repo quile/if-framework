@@ -48,6 +48,8 @@ use IFTest::TestUtility;
 use IFTest::TestMailer;
 use IFTest::TestMailQueue;
 
+use IFTest::TestObjectContext;
+
 # This is sometimes
 # misbehaving on shutdown; it seems that the next consumer
 # of the stash API after this test runs will get the last value

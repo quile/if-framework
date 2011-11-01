@@ -120,4 +120,8 @@ sub isToOne {
     return $self->type() eq 'TO_ONE';
 }
 
+sub isReadOnly {
+    my ($self) = @_;
+    return $self->{IS_READ_ONLY};
+}
 1;

@@ -113,6 +113,14 @@ sub removeObject {
     }
 }
 
+sub containsObject {
+    my ($self, $object) = @_;
+    foreach my $o (@$self) {
+        return 1 if $o == $object;
+    }
+    return 0;
+}
+
 sub toString {
     my $self = shift;
     my $string = "[ ";

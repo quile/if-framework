@@ -36,6 +36,7 @@ use utf8;
 # Entities
 
 use IFTest::Entity::Root;
+use IFTest::Entity::Ground;
 use IFTest::Entity::Trunk;
 use IFTest::Entity::Branch;
 use IFTest::Entity::Session;
@@ -50,10 +51,6 @@ use IFTest::Entity::StashSession;
 use IFTest::Module::Twang;
 use IFTest::Module::Bong;
 
-# sub contextClassName {
-#   return "IFTest::Context";
-# }
-#
 sub sessionClassName {
   return "IFTest::Entity::Session";
 }
@@ -96,13 +93,7 @@ sub application {
 #--------- this is not a method... it is executed when this
 #--------- is loaded outside of mod_perl...!!!
 
-unless ($ENV{'MOD_PERL'}) {
-    #my $oldMask = IF::Log::logMask();
-    #IF::Log::setLogMask(0x0000);
-    IF::Log::debug("Loading test application");
-    IF::Application->applicationInstanceWithName("IFTest");
-} else {
-    IF::Application->applicationInstanceWithName("IFTest");
-}
+IF::Log::debug("Loading test application");
+IF::Application->applicationInstanceWithName("IFTest");
 
 1;

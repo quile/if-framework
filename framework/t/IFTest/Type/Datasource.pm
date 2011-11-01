@@ -35,7 +35,7 @@ use Test::More;
 use IFTest::Application;
 use IF::ObjectContext;
 
-sub setUp : Test(startup => 9) {
+sub startUp : Test(startup => 9) {
     my ($self) = @_;
 
     $self->{oc} = IF::ObjectContext->new();

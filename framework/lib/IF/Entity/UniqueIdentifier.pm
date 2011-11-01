@@ -5,7 +5,7 @@ use base qw(
     IF::Dictionary
 );
 use overload '""' => 'stringValue';
-        
+
 
 sub new {
     my ($className) = @_;
@@ -55,6 +55,11 @@ sub setExternalId {
 sub stringValue {
     my ($self) = @_;
     return $self->entityName().",".$self->externalId();
+}
+
+sub description {
+    my ($self) = @_;
+    return $self->stringValue();
 }
 
 sub entity {

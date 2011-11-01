@@ -1,0 +1,927 @@
+# Model file last updated Mon Oct 31 23:52:19 2011
+# This file is GENERATED from IFTest/Model.pmodel!  Do not edit!
+$VAR1 = bless( {
+	       'NAMESPACE' => {
+			    'ENTITY' => 'IFTest::Entity'
+			  },
+	       'ENTITIES' => {
+			   'SiteClassifier' => bless( {
+						  'PRIMARY_KEY' => 'ID',
+						  'TABLE' => 'SITE_CLASSIFIER',
+						  'ATTRIBUTES' => {
+								'COUNTRY' => {
+									     'KEY' => undef,
+									     'SIZE' => '30',
+									     'NULL' => undef,
+									     'DEFAULT' => '\'\'',
+									     'TYPE' => 'varchar',
+									     'COLUMN_NAME' => 'COUNTRY',
+									     'ATTRIBUTE_NAME' => 'country',
+									     'EXTRA' => '\'\'',
+									     'VALUES' => []
+									   },
+								'ID' => {
+									'KEY' => undef,
+									'SIZE' => '11',
+									'NULL' => undef,
+									'DEFAULT' => undef,
+									'TYPE' => 'INT',
+									'COLUMN_NAME' => 'ID',
+									'ATTRIBUTE_NAME' => 'id',
+									'EXTRA' => undef,
+									'VALUES' => []
+								        },
+								'CITY' => {
+									  'KEY' => undef,
+									  'SIZE' => '60',
+									  'NULL' => undef,
+									  'DEFAULT' => '\'\'',
+									  'TYPE' => 'varchar',
+									  'COLUMN_NAME' => 'CITY',
+									  'ATTRIBUTE_NAME' => 'city',
+									  'EXTRA' => '\'\'',
+									  'VALUES' => []
+									},
+								'METRO_AREA' => {
+									        'KEY' => undef,
+									        'SIZE' => '60',
+									        'NULL' => undef,
+									        'DEFAULT' => '\'\'',
+									        'TYPE' => 'varchar',
+									        'COLUMN_NAME' => 'METRO_AREA',
+									        'ATTRIBUTE_NAME' => 'metroArea',
+									        'EXTRA' => '\'\'',
+									        'VALUES' => []
+									      },
+								'DEFAULT_LANGUAGE' => {
+										    'KEY' => undef,
+										    'SIZE' => '5',
+										    'NULL' => undef,
+										    'DEFAULT' => '\'en\'',
+										    'TYPE' => 'varchar',
+										    'COLUMN_NAME' => 'DEFAULT_LANGUAGE',
+										    'ATTRIBUTE_NAME' => 'defaultLanguage',
+										    'EXTRA' => '\'en\'',
+										    'VALUES' => []
+										  },
+								'CONSTRAINT_TYPE' => {
+										   'KEY' => undef,
+										   'SIZE' => '16',
+										   'NULL' => undef,
+										   'DEFAULT' => '\'NONE\'',
+										   'TYPE' => 'varchar',
+										   'COLUMN_NAME' => 'CONSTRAINT_TYPE',
+										   'ATTRIBUTE_NAME' => 'constraintType',
+										   'EXTRA' => '\'NONE\'',
+										   'VALUES' => []
+										 },
+								'MODIFICATION_DATE' => {
+										     'KEY' => undef,
+										     'SIZE' => undef,
+										     'NULL' => undef,
+										     'DEFAULT' => '\'0000-00-00 00:00:00\'',
+										     'TYPE' => 'DATETIME',
+										     'COLUMN_NAME' => 'MODIFICATION_DATE',
+										     'ATTRIBUTE_NAME' => 'modificationDate',
+										     'EXTRA' => '\'0000-00-00 00:00:00\'',
+										     'VALUES' => []
+										   },
+								'NAME' => {
+									  'KEY' => undef,
+									  'SIZE' => '30',
+									  'NULL' => undef,
+									  'DEFAULT' => '\'\'',
+									  'TYPE' => 'varchar',
+									  'COLUMN_NAME' => 'NAME',
+									  'ATTRIBUTE_NAME' => 'name',
+									  'EXTRA' => '\'\'',
+									  'VALUES' => []
+									},
+								'LANGUAGES' => {
+									       'KEY' => undef,
+									       'SIZE' => '48',
+									       'NULL' => undef,
+									       'DEFAULT' => '\'en\'',
+									       'TYPE' => 'varchar',
+									       'COLUMN_NAME' => 'LANGUAGES',
+									       'ATTRIBUTE_NAME' => 'languages',
+									       'EXTRA' => '\'en\'',
+									       'VALUES' => []
+									     },
+								'CREATION_DATE' => {
+										 'KEY' => undef,
+										 'SIZE' => undef,
+										 'NULL' => undef,
+										 'DEFAULT' => '\'0000-00-00 00:00:00\'',
+										 'TYPE' => 'DATETIME',
+										 'COLUMN_NAME' => 'CREATION_DATE',
+										 'ATTRIBUTE_NAME' => 'creationDate',
+										 'EXTRA' => '\'0000-00-00 00:00:00\'',
+										 'VALUES' => []
+									         },
+								'SUBURB' => {
+									    'KEY' => undef,
+									    'SIZE' => '60',
+									    'NULL' => undef,
+									    'DEFAULT' => '\'\'',
+									    'TYPE' => 'varchar',
+									    'COLUMN_NAME' => 'SUBURB',
+									    'ATTRIBUTE_NAME' => 'suburb',
+									    'EXTRA' => '\'\'',
+									    'VALUES' => []
+									  },
+								'COMPONENT_CLASS_NAME' => {
+										        'KEY' => undef,
+										        'SIZE' => '30',
+										        'NULL' => undef,
+										        'DEFAULT' => '\'\'',
+										        'TYPE' => 'varchar',
+										        'COLUMN_NAME' => 'COMPONENT_CLASS_NAME',
+										        'ATTRIBUTE_NAME' => 'componentClassName',
+										        'EXTRA' => '\'\'',
+										        'VALUES' => []
+										      },
+								'USER_RELATIONSHIP_NAME' => {
+											'KEY' => undef,
+											'SIZE' => '64',
+											'NULL' => undef,
+											'DEFAULT' => '\'\'',
+											'TYPE' => 'varchar',
+											'COLUMN_NAME' => 'USER_RELATIONSHIP_NAME',
+											'ATTRIBUTE_NAME' => 'userRelationshipName',
+											'EXTRA' => '\'\'',
+											'VALUES' => []
+										        },
+								'AREA' => {
+									  'KEY' => undef,
+									  'SIZE' => '60',
+									  'NULL' => undef,
+									  'DEFAULT' => '\'\'',
+									  'TYPE' => 'varchar',
+									  'COLUMN_NAME' => 'AREA',
+									  'ATTRIBUTE_NAME' => 'area',
+									  'EXTRA' => '\'\'',
+									  'VALUES' => []
+									},
+								'CONTINENT' => {
+									       'KEY' => undef,
+									       'SIZE' => '48',
+									       'NULL' => undef,
+									       'DEFAULT' => '\'\'',
+									       'TYPE' => 'varchar',
+									       'COLUMN_NAME' => 'CONTINENT',
+									       'ATTRIBUTE_NAME' => 'continent',
+									       'EXTRA' => '\'\'',
+									       'VALUES' => []
+									     },
+								'PARENT_ID' => {
+									       'KEY' => undef,
+									       'SIZE' => '11',
+									       'NULL' => undef,
+									       'DEFAULT' => '\'0\'',
+									       'TYPE' => 'int',
+									       'COLUMN_NAME' => 'PARENT_ID',
+									       'ATTRIBUTE_NAME' => 'parentId',
+									       'EXTRA' => '\'0\'',
+									       'VALUES' => []
+									     },
+								'STATE' => {
+									   'KEY' => undef,
+									   'SIZE' => '48',
+									   'NULL' => undef,
+									   'DEFAULT' => '\'\'',
+									   'TYPE' => 'varchar',
+									   'COLUMN_NAME' => 'STATE',
+									   'ATTRIBUTE_NAME' => 'state',
+									   'EXTRA' => '\'\'',
+									   'VALUES' => []
+									 }
+							        },
+						  'RELATIONSHIPS' => {
+								   'parent' => {
+									       'TARGET_ATTRIBUTE' => 'ID',
+									       'TARGET_ENTITY' => 'SiteClassifier',
+									       'TYPE' => 'TO_ONE',
+									       'SOURCE_ATTRIBUTE' => 'PARENT_ID'
+									     },
+								   'children' => {
+									         'TARGET_ATTRIBUTE' => 'PARENT_ID',
+									         'TARGET_ENTITY' => 'SiteClassifier',
+									         'TYPE' => 'TO_MANY',
+									         'SOURCE_ATTRIBUTE' => 'ID'
+									       }
+								 }
+						}, 'IF::EntityClassDescription' ),
+			   'Root' => bless( {
+					  'PRIMARY_KEY' => 'ID',
+					  'TABLE' => 'ROOT',
+					  'ATTRIBUTES' => {
+							'GROUND_ID' => {
+								       'KEY' => undef,
+								       'SIZE' => '11',
+								       'NULL' => undef,
+								       'DEFAULT' => '0',
+								       'TYPE' => 'INT',
+								       'COLUMN_NAME' => 'GROUND_ID',
+								       'ATTRIBUTE_NAME' => 'groundId',
+								       'EXTRA' => '0',
+								       'VALUES' => []
+								     },
+							'ID' => {
+								'KEY' => undef,
+								'SIZE' => '11',
+								'NULL' => undef,
+								'DEFAULT' => undef,
+								'TYPE' => 'INT',
+								'COLUMN_NAME' => 'ID',
+								'ATTRIBUTE_NAME' => 'id',
+								'EXTRA' => undef,
+								'VALUES' => []
+							        },
+							'TITLE' => {
+								   'KEY' => undef,
+								   'SIZE' => '255',
+								   'NULL' => undef,
+								   'DEFAULT' => '\'\'',
+								   'TYPE' => 'CHAR',
+								   'COLUMN_NAME' => 'TITLE',
+								   'ATTRIBUTE_NAME' => 'title',
+								   'EXTRA' => '\'\'',
+								   'VALUES' => []
+								 },
+							'CREATION_DATE' => {
+									 'KEY' => undef,
+									 'SIZE' => undef,
+									 'NULL' => undef,
+									 'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									 'TYPE' => 'DATETIME',
+									 'COLUMN_NAME' => 'CREATION_DATE',
+									 'ATTRIBUTE_NAME' => 'creationDate',
+									 'EXTRA' => '\'0000-00-00 00:00:00\'',
+									 'VALUES' => []
+								         },
+							'MODIFICATION_DATE' => {
+									     'KEY' => undef,
+									     'SIZE' => undef,
+									     'NULL' => undef,
+									     'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									     'TYPE' => 'DATETIME',
+									     'COLUMN_NAME' => 'MODIFICATION_DATE',
+									     'ATTRIBUTE_NAME' => 'modificationDate',
+									     'EXTRA' => '\'0000-00-00 00:00:00\'',
+									     'VALUES' => []
+									   }
+						        },
+					  'RELATIONSHIPS' => {
+							   'ground' => {
+								       'TARGET_ATTRIBUTE' => 'ID',
+								       'TARGET_ENTITY' => 'Ground',
+								       'TYPE' => 'TO_ONE',
+								       'SOURCE_ATTRIBUTE' => 'GROUND_ID'
+								     },
+							   'trunk' => {
+								      'TARGET_ATTRIBUTE' => 'ROOT_ID',
+								      'TARGET_ENTITY' => 'Trunk',
+								      'TYPE' => 'TO_ONE',
+								      'SOURCE_ATTRIBUTE' => 'ID'
+								    }
+							 }
+					}, 'IF::EntityClassDescription' ),
+			   'RequestContext' => bless( {
+						  'PRIMARY_KEY' => 'ID',
+						  'TABLE' => 'REQUEST_CONTEXT',
+						  'ATTRIBUTES' => {
+								'ID' => {
+									'KEY' => undef,
+									'SIZE' => '11',
+									'NULL' => undef,
+									'DEFAULT' => undef,
+									'TYPE' => 'INT',
+									'COLUMN_NAME' => 'ID',
+									'ATTRIBUTE_NAME' => 'id',
+									'EXTRA' => undef,
+									'VALUES' => []
+								        },
+								'RENDERED_COMPONENTS' => {
+										       'KEY' => undef,
+										       'SIZE' => undef,
+										       'NULL' => undef,
+										       'DEFAULT' => undef,
+										       'TYPE' => 'text',
+										       'COLUMN_NAME' => 'RENDERED_COMPONENTS',
+										       'ATTRIBUTE_NAME' => 'renderedComponents',
+										       'EXTRA' => undef,
+										       'VALUES' => []
+										     },
+								'CREATION_DATE' => {
+										 'KEY' => undef,
+										 'SIZE' => undef,
+										 'NULL' => undef,
+										 'DEFAULT' => '\'0000-00-00 00:00:00\'',
+										 'TYPE' => 'DATETIME',
+										 'COLUMN_NAME' => 'CREATION_DATE',
+										 'ATTRIBUTE_NAME' => 'creationDate',
+										 'EXTRA' => '\'0000-00-00 00:00:00\'',
+										 'VALUES' => []
+									         },
+								'CONTEXT_NUMBER' => {
+										  'KEY' => undef,
+										  'SIZE' => '11',
+										  'NULL' => undef,
+										  'DEFAULT' => '\'0\'',
+										  'TYPE' => 'int',
+										  'COLUMN_NAME' => 'CONTEXT_NUMBER',
+										  'ATTRIBUTE_NAME' => 'contextNumber',
+										  'EXTRA' => '\'0\'',
+										  'VALUES' => []
+										},
+								'CALLING_COMPONENT' => {
+										     'KEY' => undef,
+										     'SIZE' => '255',
+										     'NULL' => undef,
+										     'DEFAULT' => '\'\'',
+										     'TYPE' => 'varchar',
+										     'COLUMN_NAME' => 'CALLING_COMPONENT',
+										     'ATTRIBUTE_NAME' => 'callingComponent',
+										     'EXTRA' => '\'\'',
+										     'VALUES' => []
+										   },
+								'MODIFICATION_DATE' => {
+										     'KEY' => undef,
+										     'SIZE' => undef,
+										     'NULL' => undef,
+										     'DEFAULT' => '\'0000-00-00 00:00:00\'',
+										     'TYPE' => 'DATETIME',
+										     'COLUMN_NAME' => 'MODIFICATION_DATE',
+										     'ATTRIBUTE_NAME' => 'modificationDate',
+										     'EXTRA' => '\'0000-00-00 00:00:00\'',
+										     'VALUES' => []
+										   },
+								'SESSION_ID' => {
+									        'KEY' => undef,
+									        'SIZE' => '11',
+									        'NULL' => undef,
+									        'DEFAULT' => '\'0\'',
+									        'TYPE' => 'int',
+									        'COLUMN_NAME' => 'SESSION_ID',
+									        'ATTRIBUTE_NAME' => 'sessionId',
+									        'EXTRA' => '\'0\'',
+									        'VALUES' => []
+									      }
+							        },
+						  'RELATIONSHIPS' => {
+								   'session' => {
+									        'TARGET_ATTRIBUTE' => 'ID',
+									        'TARGET_ENTITY' => 'Session',
+									        'TYPE' => 'TO_ONE',
+									        'SOURCE_ATTRIBUTE' => 'SESSION_ID'
+									      }
+								 }
+						}, 'IF::EntityClassDescription' ),
+			   'Ground' => bless( {
+					    'PRIMARY_KEY' => 'ID',
+					    'TABLE' => 'GROUND',
+					    'ATTRIBUTES' => {
+							  'ID' => {
+								  'KEY' => undef,
+								  'SIZE' => '11',
+								  'NULL' => undef,
+								  'DEFAULT' => undef,
+								  'TYPE' => 'INT',
+								  'COLUMN_NAME' => 'ID',
+								  'ATTRIBUTE_NAME' => 'id',
+								  'EXTRA' => undef,
+								  'VALUES' => []
+								},
+							  'CREATION_DATE' => {
+									   'KEY' => undef,
+									   'SIZE' => undef,
+									   'NULL' => undef,
+									   'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									   'TYPE' => 'DATETIME',
+									   'COLUMN_NAME' => 'CREATION_DATE',
+									   'ATTRIBUTE_NAME' => 'creationDate',
+									   'EXTRA' => '\'0000-00-00 00:00:00\'',
+									   'VALUES' => []
+									 },
+							  'COLOUR' => {
+								      'KEY' => undef,
+								      'SIZE' => '255',
+								      'NULL' => undef,
+								      'DEFAULT' => '\'\'',
+								      'TYPE' => 'CHAR',
+								      'COLUMN_NAME' => 'COLOUR',
+								      'ATTRIBUTE_NAME' => 'colour',
+								      'EXTRA' => '\'\'',
+								      'VALUES' => []
+								    },
+							  'MODIFICATION_DATE' => {
+									       'KEY' => undef,
+									       'SIZE' => undef,
+									       'NULL' => undef,
+									       'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									       'TYPE' => 'DATETIME',
+									       'COLUMN_NAME' => 'MODIFICATION_DATE',
+									       'ATTRIBUTE_NAME' => 'modificationDate',
+									       'EXTRA' => '\'0000-00-00 00:00:00\'',
+									       'VALUES' => []
+									     }
+							},
+					    'RELATIONSHIPS' => {
+							     'roots' => {
+								        'TARGET_ATTRIBUTE' => 'GROUND_ID',
+								        'TARGET_ENTITY' => 'Root',
+								        'TYPE' => 'TO_MANY',
+								        'SOURCE_ATTRIBUTE' => 'ID'
+								      }
+							   }
+					  }, 'IF::EntityClassDescription' ),
+			   'Branch' => bless( {
+					    'PRIMARY_KEY' => 'ID',
+					    'TABLE' => 'BRANCH',
+					    'ATTRIBUTES' => {
+							  'TRUNK_ID' => {
+								        'KEY' => undef,
+								        'SIZE' => '11',
+								        'NULL' => undef,
+								        'DEFAULT' => '0',
+								        'TYPE' => 'INT',
+								        'COLUMN_NAME' => 'TRUNK_ID',
+								        'ATTRIBUTE_NAME' => 'trunkId',
+								        'EXTRA' => '0',
+								        'VALUES' => []
+								      },
+							  'ID' => {
+								  'KEY' => undef,
+								  'SIZE' => '11',
+								  'NULL' => undef,
+								  'DEFAULT' => undef,
+								  'TYPE' => 'INT',
+								  'COLUMN_NAME' => 'ID',
+								  'ATTRIBUTE_NAME' => 'id',
+								  'EXTRA' => undef,
+								  'VALUES' => []
+								},
+							  'LENGTH' => {
+								      'KEY' => undef,
+								      'SIZE' => '11',
+								      'NULL' => undef,
+								      'DEFAULT' => '0',
+								      'TYPE' => 'INT',
+								      'COLUMN_NAME' => 'LENGTH',
+								      'ATTRIBUTE_NAME' => 'length',
+								      'EXTRA' => '0',
+								      'VALUES' => []
+								    },
+							  'CREATION_DATE' => {
+									   'KEY' => undef,
+									   'SIZE' => undef,
+									   'NULL' => undef,
+									   'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									   'TYPE' => 'DATETIME',
+									   'COLUMN_NAME' => 'CREATION_DATE',
+									   'ATTRIBUTE_NAME' => 'creationDate',
+									   'EXTRA' => '\'0000-00-00 00:00:00\'',
+									   'VALUES' => []
+									 },
+							  'ZAB_ID' => {
+								      'KEY' => undef,
+								      'SIZE' => '11',
+								      'NULL' => undef,
+								      'DEFAULT' => '0',
+								      'TYPE' => 'INT',
+								      'COLUMN_NAME' => 'ZAB_ID',
+								      'ATTRIBUTE_NAME' => 'zabId',
+								      'EXTRA' => '0',
+								      'VALUES' => []
+								    },
+							  'MODIFICATION_DATE' => {
+									       'KEY' => undef,
+									       'SIZE' => undef,
+									       'NULL' => undef,
+									       'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									       'TYPE' => 'DATETIME',
+									       'COLUMN_NAME' => 'MODIFICATION_DATE',
+									       'ATTRIBUTE_NAME' => 'modificationDate',
+									       'EXTRA' => '\'0000-00-00 00:00:00\'',
+									       'VALUES' => []
+									     },
+							  'ZAB_TYPE' => {
+								        'KEY' => undef,
+								        'SIZE' => '16',
+								        'NULL' => undef,
+								        'DEFAULT' => undef,
+								        'TYPE' => 'VARCHAR',
+								        'COLUMN_NAME' => 'ZAB_TYPE',
+								        'ATTRIBUTE_NAME' => 'zabType',
+								        'EXTRA' => undef,
+								        'VALUES' => []
+								      },
+							  'LEAF_COUNT' => {
+									'KEY' => undef,
+									'SIZE' => '11',
+									'NULL' => undef,
+									'DEFAULT' => '0',
+									'TYPE' => 'INT',
+									'COLUMN_NAME' => 'LEAF_COUNT',
+									'ATTRIBUTE_NAME' => 'leafCount',
+									'EXTRA' => '0',
+									'VALUES' => []
+								        }
+							},
+					    'RELATIONSHIPS' => {
+							     'trunk' => {
+								        'TARGET_ATTRIBUTE' => 'ID',
+								        'TARGET_ENTITY' => 'Trunk',
+								        'TYPE' => 'TO_ONE',
+								        'SOURCE_ATTRIBUTE' => 'TRUNK_ID'
+								      },
+							     'globules' => {
+									 'RECIPROCAL_RELATIONSHIP_NAME' => 'branches',
+									 'JOIN_SOURCE_ATTRIBUTE' => 'GLOBULE_ID',
+									 'TARGET_ENTITY' => 'Globule',
+									 'TYPE' => 'FLATTENED_TO_MANY',
+									 'SOURCE_ATTRIBUTE' => 'ID',
+									 'TARGET_ATTRIBUTE' => 'ID',
+									 'JOIN_TARGET_ATTRIBUTE' => 'BRANCH_ID',
+									 'DELETION_RULE' => 'NULLIFY',
+									 'JOIN_TABLE' => 'BRANCH_X_GLOBULE'
+								         }
+							   }
+					  }, 'IF::EntityClassDescription' ),
+			   'Trunk' => bless( {
+					   'PRIMARY_KEY' => 'ID',
+					   'TABLE' => 'TRUNK',
+					   'ATTRIBUTES' => {
+							 'ROOT_ID' => {
+								      'KEY' => undef,
+								      'SIZE' => '11',
+								      'NULL' => undef,
+								      'DEFAULT' => '0',
+								      'TYPE' => 'INT',
+								      'COLUMN_NAME' => 'ROOT_ID',
+								      'ATTRIBUTE_NAME' => 'rootId',
+								      'EXTRA' => '0',
+								      'VALUES' => []
+								    },
+							 'ID' => {
+								 'KEY' => undef,
+								 'SIZE' => '11',
+								 'NULL' => undef,
+								 'DEFAULT' => undef,
+								 'TYPE' => 'INT',
+								 'COLUMN_NAME' => 'ID',
+								 'ATTRIBUTE_NAME' => 'id',
+								 'EXTRA' => undef,
+								 'VALUES' => []
+							         },
+							 'THICKNESS' => {
+								        'KEY' => undef,
+								        'SIZE' => '11',
+								        'NULL' => undef,
+								        'DEFAULT' => '0',
+								        'TYPE' => 'INT',
+								        'COLUMN_NAME' => 'THICKNESS',
+								        'ATTRIBUTE_NAME' => 'thickness',
+								        'EXTRA' => '0',
+								        'VALUES' => []
+								      },
+							 'CREATION_DATE' => {
+									  'KEY' => undef,
+									  'SIZE' => undef,
+									  'NULL' => undef,
+									  'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									  'TYPE' => 'DATETIME',
+									  'COLUMN_NAME' => 'CREATION_DATE',
+									  'ATTRIBUTE_NAME' => 'creationDate',
+									  'EXTRA' => '\'0000-00-00 00:00:00\'',
+									  'VALUES' => []
+									},
+							 'MODIFICATION_DATE' => {
+									      'KEY' => undef,
+									      'SIZE' => undef,
+									      'NULL' => undef,
+									      'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									      'TYPE' => 'DATETIME',
+									      'COLUMN_NAME' => 'MODIFICATION_DATE',
+									      'ATTRIBUTE_NAME' => 'modificationDate',
+									      'EXTRA' => '\'0000-00-00 00:00:00\'',
+									      'VALUES' => []
+									    }
+						         },
+					   'RELATIONSHIPS' => {
+							    'branches' => {
+									'TARGET_ATTRIBUTE' => 'TRUNK_ID',
+									'TARGET_ENTITY' => 'Branch',
+									'TYPE' => 'TO_MANY',
+									'SOURCE_ATTRIBUTE' => 'ID'
+								        },
+							    'root' => {
+								      'TARGET_ATTRIBUTE' => 'ID',
+								      'TARGET_ENTITY' => 'Root',
+								      'TYPE' => 'TO_ONE',
+								      'SOURCE_ATTRIBUTE' => 'ROOT_ID'
+								    }
+							  }
+					 }, 'IF::EntityClassDescription' ),
+			   'Zab' => bless( {
+					 'PRIMARY_KEY' => 'ID',
+					 'TABLE' => 'ZAB',
+					 'ATTRIBUTES' => {
+						         'ID' => {
+							         'KEY' => undef,
+							         'SIZE' => '11',
+							         'NULL' => undef,
+							         'DEFAULT' => undef,
+							         'TYPE' => 'INT',
+							         'COLUMN_NAME' => 'ID',
+							         'ATTRIBUTE_NAME' => 'id',
+							         'EXTRA' => undef,
+							         'VALUES' => []
+							       },
+						         'TITLE' => {
+								  'KEY' => undef,
+								  'SIZE' => '32',
+								  'NULL' => undef,
+								  'DEFAULT' => '\'\'',
+								  'TYPE' => 'CHAR',
+								  'COLUMN_NAME' => 'TITLE',
+								  'ATTRIBUTE_NAME' => 'title',
+								  'EXTRA' => '\'\'',
+								  'VALUES' => []
+								},
+						         'CREATION_DATE' => {
+									'KEY' => undef,
+									'SIZE' => undef,
+									'NULL' => undef,
+									'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									'TYPE' => 'DATETIME',
+									'COLUMN_NAME' => 'CREATION_DATE',
+									'ATTRIBUTE_NAME' => 'creationDate',
+									'EXTRA' => '\'0000-00-00 00:00:00\'',
+									'VALUES' => []
+								        },
+						         'MODIFICATION_DATE' => {
+									    'KEY' => undef,
+									    'SIZE' => undef,
+									    'NULL' => undef,
+									    'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									    'TYPE' => 'DATETIME',
+									    'COLUMN_NAME' => 'MODIFICATION_DATE',
+									    'ATTRIBUTE_NAME' => 'modificationDate',
+									    'EXTRA' => '\'0000-00-00 00:00:00\'',
+									    'VALUES' => []
+									  }
+						       }
+				         }, 'IF::EntityClassDescription' ),
+			   'Session' => bless( {
+					     'PRIMARY_KEY' => 'ID',
+					     'TABLE' => 'SESSION',
+					     'ATTRIBUTES' => {
+							   'ID' => {
+								   'KEY' => undef,
+								   'SIZE' => '11',
+								   'NULL' => undef,
+								   'DEFAULT' => undef,
+								   'TYPE' => 'INT',
+								   'COLUMN_NAME' => 'ID',
+								   'ATTRIBUTE_NAME' => 'id',
+								   'EXTRA' => undef,
+								   'VALUES' => []
+								 },
+							   'CREATION_DATE' => {
+									    'KEY' => undef,
+									    'SIZE' => undef,
+									    'NULL' => undef,
+									    'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									    'TYPE' => 'DATETIME',
+									    'COLUMN_NAME' => 'CREATION_DATE',
+									    'ATTRIBUTE_NAME' => 'creationDate',
+									    'EXTRA' => '\'0000-00-00 00:00:00\'',
+									    'VALUES' => []
+									  },
+							   'CONTEXT_NUMBER' => {
+									     'KEY' => undef,
+									     'SIZE' => '11',
+									     'NULL' => undef,
+									     'DEFAULT' => '\'0\'',
+									     'TYPE' => 'int',
+									     'COLUMN_NAME' => 'CONTEXT_NUMBER',
+									     'ATTRIBUTE_NAME' => 'contextNumber',
+									     'EXTRA' => '\'0\'',
+									     'VALUES' => []
+									   },
+							   'LAST_ACTIVE_DATE' => {
+									       'KEY' => undef,
+									       'SIZE' => undef,
+									       'NULL' => undef,
+									       'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									       'TYPE' => 'DATETIME',
+									       'COLUMN_NAME' => 'LAST_ACTIVE_DATE',
+									       'ATTRIBUTE_NAME' => 'lastActiveDate',
+									       'EXTRA' => '\'0000-00-00 00:00:00\'',
+									       'VALUES' => []
+									     },
+							   'CLIENT_IP' => {
+									'KEY' => undef,
+									'SIZE' => '16',
+									'NULL' => undef,
+									'DEFAULT' => '\'0\'',
+									'TYPE' => 'char',
+									'COLUMN_NAME' => 'CLIENT_IP',
+									'ATTRIBUTE_NAME' => 'clientIp',
+									'EXTRA' => '\'0\'',
+									'VALUES' => []
+								        },
+							   'MODIFICATION_DATE' => {
+									        'KEY' => undef,
+									        'SIZE' => undef,
+									        'NULL' => undef,
+									        'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									        'TYPE' => 'DATETIME',
+									        'COLUMN_NAME' => 'MODIFICATION_DATE',
+									        'ATTRIBUTE_NAME' => 'modificationDate',
+									        'EXTRA' => '\'0000-00-00 00:00:00\'',
+									        'VALUES' => []
+									      },
+							   'IS_LONG' => {
+								        'KEY' => undef,
+								        'SIZE' => '4',
+								        'NULL' => undef,
+								        'DEFAULT' => '\'0\'',
+								        'TYPE' => 'tinyint',
+								        'COLUMN_NAME' => 'IS_LONG',
+								        'ATTRIBUTE_NAME' => 'isLong',
+								        'EXTRA' => '\'0\'',
+								        'VALUES' => []
+								      }
+							 },
+					     'RELATIONSHIPS' => {
+							      'previousRequestContexts' => {
+										       'TARGET_ATTRIBUTE' => 'SESSION_ID',
+										       'TARGET_ENTITY' => 'RequestContext',
+										       'DELETION_RULE' => 'CASCADE',
+										       'TYPE' => 'TO_MANY',
+										       'SOURCE_ATTRIBUTE' => 'ID'
+										     }
+							    }
+					   }, 'IF::EntityClassDescription' ),
+			   'Globule' => bless( {
+					     'PRIMARY_KEY' => 'ID',
+					     'TABLE' => 'GLOBULE',
+					     'ATTRIBUTES' => {
+							   'ID' => {
+								   'KEY' => undef,
+								   'SIZE' => '11',
+								   'NULL' => undef,
+								   'DEFAULT' => undef,
+								   'TYPE' => 'INT',
+								   'COLUMN_NAME' => 'ID',
+								   'ATTRIBUTE_NAME' => 'id',
+								   'EXTRA' => undef,
+								   'VALUES' => []
+								 },
+							   'NAME' => {
+								     'KEY' => undef,
+								     'SIZE' => '64',
+								     'NULL' => undef,
+								     'DEFAULT' => '\'\'',
+								     'TYPE' => 'VARCHAR',
+								     'COLUMN_NAME' => 'NAME',
+								     'ATTRIBUTE_NAME' => 'name',
+								     'EXTRA' => '\'\'',
+								     'VALUES' => []
+								   },
+							   'CREATION_DATE' => {
+									    'KEY' => undef,
+									    'SIZE' => undef,
+									    'NULL' => undef,
+									    'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									    'TYPE' => 'DATETIME',
+									    'COLUMN_NAME' => 'CREATION_DATE',
+									    'ATTRIBUTE_NAME' => 'creationDate',
+									    'EXTRA' => '\'0000-00-00 00:00:00\'',
+									    'VALUES' => []
+									  },
+							   'MODIFICATION_DATE' => {
+									        'KEY' => undef,
+									        'SIZE' => undef,
+									        'NULL' => undef,
+									        'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									        'TYPE' => 'DATETIME',
+									        'COLUMN_NAME' => 'MODIFICATION_DATE',
+									        'ATTRIBUTE_NAME' => 'modificationDate',
+									        'EXTRA' => '\'0000-00-00 00:00:00\'',
+									        'VALUES' => []
+									      }
+							 },
+					     'RELATIONSHIPS' => {
+							      'branches' => {
+									  'RECIPROCAL_RELATIONSHIP_NAME' => 'globules',
+									  'JOIN_SOURCE_ATTRIBUTE' => 'BRANCH_ID',
+									  'TARGET_ENTITY' => 'Branch',
+									  'TYPE' => 'FLATTENED_TO_MANY',
+									  'SOURCE_ATTRIBUTE' => 'ID',
+									  'TARGET_ATTRIBUTE' => 'ID',
+									  'JOIN_TARGET_ATTRIBUTE' => 'GLOBULE_ID',
+									  'DELETION_RULE' => 'NULLIFY',
+									  'JOIN_TABLE' => 'BRANCH_X_GLOBULE'
+									}
+							    }
+					   }, 'IF::EntityClassDescription' ),
+			   'Elastic' => bless( {
+					     'PRIMARY_KEY' => 'ID',
+					     'TABLE' => 'ELASTIC',
+					     'ATTRIBUTES' => {
+							   'ID' => {
+								   'KEY' => undef,
+								   'SIZE' => '11',
+								   'NULL' => undef,
+								   'DEFAULT' => undef,
+								   'TYPE' => 'INT',
+								   'COLUMN_NAME' => 'ID',
+								   'ATTRIBUTE_NAME' => 'id',
+								   'EXTRA' => undef,
+								   'VALUES' => []
+								 },
+							   'PLING' => {
+								      'KEY' => undef,
+								      'SIZE' => '32',
+								      'NULL' => undef,
+								      'DEFAULT' => undef,
+								      'TYPE' => 'VARCHAR',
+								      'COLUMN_NAME' => 'PLING',
+								      'ATTRIBUTE_NAME' => 'pling',
+								      'EXTRA' => undef,
+								      'VALUES' => []
+								    },
+							   'CREATION_DATE' => {
+									    'KEY' => undef,
+									    'SIZE' => undef,
+									    'NULL' => undef,
+									    'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									    'TYPE' => 'DATETIME',
+									    'COLUMN_NAME' => 'CREATION_DATE',
+									    'ATTRIBUTE_NAME' => 'creationDate',
+									    'EXTRA' => '\'0000-00-00 00:00:00\'',
+									    'VALUES' => []
+									  },
+							   'SOURCE_ID' => {
+									'KEY' => undef,
+									'SIZE' => '11',
+									'NULL' => undef,
+									'DEFAULT' => '0',
+									'TYPE' => 'INT',
+									'COLUMN_NAME' => 'SOURCE_ID',
+									'ATTRIBUTE_NAME' => 'sourceId',
+									'EXTRA' => '0',
+									'VALUES' => []
+								        },
+							   'MODIFICATION_DATE' => {
+									        'KEY' => undef,
+									        'SIZE' => undef,
+									        'NULL' => undef,
+									        'DEFAULT' => '\'0000-00-00 00:00:00\'',
+									        'TYPE' => 'DATETIME',
+									        'COLUMN_NAME' => 'MODIFICATION_DATE',
+									        'ATTRIBUTE_NAME' => 'modificationDate',
+									        'EXTRA' => '\'0000-00-00 00:00:00\'',
+									        'VALUES' => []
+									      },
+							   'SOURCE_TYPE' => {
+									  'KEY' => undef,
+									  'SIZE' => undef,
+									  'NULL' => undef,
+									  'DEFAULT' => '\'\'',
+									  'TYPE' => 'STRING',
+									  'COLUMN_NAME' => 'SOURCE_TYPE',
+									  'ATTRIBUTE_NAME' => 'sourceType',
+									  'EXTRA' => '\'\'',
+									  'VALUES' => []
+									},
+							   'TARGET_ID' => {
+									'KEY' => undef,
+									'SIZE' => '11',
+									'NULL' => undef,
+									'DEFAULT' => '0',
+									'TYPE' => 'INT',
+									'COLUMN_NAME' => 'TARGET_ID',
+									'ATTRIBUTE_NAME' => 'targetId',
+									'EXTRA' => '0',
+									'VALUES' => []
+								        },
+							   'TARGET_TYPE' => {
+									  'KEY' => undef,
+									  'SIZE' => undef,
+									  'NULL' => undef,
+									  'DEFAULT' => '\'\'',
+									  'TYPE' => 'STRING',
+									  'COLUMN_NAME' => 'TARGET_TYPE',
+									  'ATTRIBUTE_NAME' => 'targetType',
+									  'EXTRA' => '\'\'',
+									  'VALUES' => []
+									}
+							 }
+					   }, 'IF::EntityClassDescription' )
+			 }
+	     }, 'IFTest::Model' );

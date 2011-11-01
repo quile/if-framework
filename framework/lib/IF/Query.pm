@@ -50,6 +50,7 @@ sub init {
     $self->{_prefetchingRelationships} = [];
     $self->{_readAhead} = undef;
     $self->{_isComplete} = 0;
+    $self->{_oc} = IF::ObjectContext->new();
     return $self;
 }
 
@@ -112,7 +113,6 @@ sub fetchSpecification {
     my ($self) = @_;
     my $q = IF::Qualifier->and($self->{_qualifiers});
     my $fs = IF::FetchSpecification->new($self->{_entityClassName}, $q);
-    #$fs->setFetchLimit($self->{_fetchLimit});
     $fs->setFetchLimit();
     $fs->setStartIndex($self->{_startIndex});
     $fs->setSortOrderings($self->{_sortOrderings});
@@ -211,7 +211,7 @@ sub one {
 # is called.
 sub count {
     my ($self) = @_;
-    return IF::ObjectContext->new()->countOfEntitiesMatchingFetchSpecification($self->fetchSpecification());
+    return $self->{_oc}->countOfEntitiesMatchingFetchSpecification($self->fetchSpecification());
 }
 
 sub next {
@@ -222,14 +222,19 @@ sub next {
     return unless IF::Log::assert($self->{_sth} && $self->{_fs}, "Statement handle and fetch spec are present");
     my $rows = $self->_readRowsForSingleResult();
     return undef unless ($rows && scalar @$rows > 0);
-    my $unpackedResults = $self->{_fs}->unpackResultsIntoEntities($rows);
+    my $unpackedResults = $self->{_fs}->unpackResultsIntoEntitiesInObjectContext($rows, $self->{_oc});
     IF::Log::assert(scalar @$unpackedResults == 1, "Got one result back");
     $self->{_fetchCount}++;
     if ($self->{_fetchLimit} > 0 && $self->{_fetchCount} >= $self->{_fetchLimit}) {
         #IF::Log::debug("Reached fetch count, closing fetch");
         $self->_close();
     }
-    return $unpackedResults->[0];
+
+    my $o = $unpackedResults->[0];
+    if ($self->{_oc}->trackingIsEnabled()) {
+        $self->{_oc}->trackEntity($o);
+    }
+    return $o;
 }
 
 # this gets called once per next() because

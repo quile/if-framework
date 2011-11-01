@@ -5,11 +5,12 @@ use base qw(
     IF::Entity
 );
 use IF::ObjectContext;
+use Scalar::Util qw( weaken );
 
 sub initValuesWithArray {
     my ($self, $values) = @_;
     $self->initStoredValuesWithArray($values);
-    $self->markAllStoredValuesAsClean();    # flush the dirty bits for those values    
+    $self->markAllStoredValuesAsClean();    # flush the dirty bits for those values
 }
 
 sub instanceWithId {
@@ -20,13 +21,13 @@ sub instanceWithId {
     return IF::ObjectContext->new()->entityWithPrimaryKey($entityName, $id);
 }
 
-sub instanceWithExternalId { 
+sub instanceWithExternalId {
     my ($className, $externalId) = @_;
     return undef unless $externalId;
     return undef unless IF::Log::assert(
         IF::Utility::externalIdIsValid($externalId),
         "instanceWithExternalId(): externalId='$externalId' .. is valid for $className",
-    ); 
+    );
     return $className->instanceWithId(IF::Utility::idFromExternalId($externalId));
 }
 
@@ -43,7 +44,7 @@ sub is {  # This is *the* equality test for Entities !
     my $self = shift;
     my $other = shift;
     return 0 unless $other;
-    
+
     my $primaryKey = $self->entityClassDescription()->_primaryKey();
     unless ($self->valueForKey($primaryKey)) {
         return 0;
@@ -89,7 +90,7 @@ sub fetchSpecificationForFlattenedToManyRelationshipNamed {
     $sqlExpression->addTable($targetTable) if $targetTable;
     $sqlExpression->addTable($relationship->{JOIN_TABLE});
     $sqlExpression->addTableToFetch($relationship->{JOIN_TABLE});
-    
+
     if ($relationship->{RELATIONSHIP_HINTS}) {
         # force it to fetch the id of the join table record, which
         # should suffice for uniquing these rows if this relationship
@@ -112,13 +113,13 @@ sub fetchSpecificationForFlattenedToManyRelationshipNamed {
     if ($sourceAttribute && $sourceAttribute->{TYPE} =~ /CHAR/io) {
         $sourceAttributeValue = IF::DB::quote($sourceAttributeValue);
     }
-    push (@$qualifiers, IF::Qualifier->new("SQL", 
+    push (@$qualifiers, IF::Qualifier->new("SQL",
                $sqlExpression->aliasForTable($targetTable).".".$relationship->{TARGET_ATTRIBUTE}."=".
                $sqlExpression->aliasForTable($relationship->{JOIN_TABLE}).".".$relationship->{JOIN_SOURCE_ATTRIBUTE}));
     push (@$qualifiers, IF::Qualifier->new("SQL",
-               $sqlExpression->aliasForTable($relationship->{JOIN_TABLE}).".".$relationship->{JOIN_TARGET_ATTRIBUTE}."=".    
+               $sqlExpression->aliasForTable($relationship->{JOIN_TABLE}).".".$relationship->{JOIN_TARGET_ATTRIBUTE}."=".
                $sourceAttributeValue));
-    
+
     if ($relationship->{JOIN_QUALIFIERS}) {
         foreach my $joinQualifierAttribute (keys %{$relationship->{JOIN_QUALIFIERS}}) {
             my $joinQualifierValue = $relationship->{JOIN_QUALIFIERS}->{$joinQualifierAttribute};
@@ -126,11 +127,11 @@ sub fetchSpecificationForFlattenedToManyRelationshipNamed {
                 $joinQualifierValue = IF::DB::quote($joinQualifierValue);
             }
             push (@$qualifiers, IF::Qualifier->new("SQL",
-                $sqlExpression->aliasForTable($relationship->{JOIN_TABLE}).".".$joinQualifierAttribute."=".    
+                $sqlExpression->aliasForTable($relationship->{JOIN_TABLE}).".".$joinQualifierAttribute."=".
                                                    $joinQualifierValue));
         }
     }
-    
+
     push (@$qualifiers, @{$self->additionalQualifiersForRelationshipNamed($relationshipName)});
     $fetchSpecification->setQualifier(IF::Qualifier->and($qualifiers));
     return $fetchSpecification;
@@ -160,7 +161,7 @@ sub _deprecated_addObjectToBothSidesOfRelationshipWithKeyAndHintsAndCommitIfNeed
     unless ($self->valueForKey($primaryKey)) {
         $self->save();
     }
-    
+
     if ($relationship->{TYPE} eq "FLATTENED_TO_MANY") {
         # build a join record for the join table
         my $record = {
@@ -169,7 +170,7 @@ sub _deprecated_addObjectToBothSidesOfRelationshipWithKeyAndHintsAndCommitIfNeed
             %$hints,
         };
         IF::DB::updateRecordInDatabase(undef, $record, $relationship->{JOIN_TABLE});
-    } else {    
+    } else {
         my $targetAttribute = $relationship->{TARGET_ATTRIBUTE};
         my $sourceAttribute = $relationship->{SOURCE_ATTRIBUTE};
         #IF::Log::debug("Source is $sourceAttribute, target is $targetAttribute");
@@ -198,7 +199,7 @@ sub _deprecated_addObjectToBothSidesOfRelationshipWithKeyAndCommitIfNeeded {
 # These are the newer versions of the methods:
 sub addObjectToBothSidesOfRelationshipWithKey {
     my ($self, $object, $relationshipName) = @_;
-    
+
     # I >think< this should blank out any previous relationship hints
     # if it has any:
     $object->_deprecated_setRelationshipHints() if $object;
@@ -220,11 +221,11 @@ sub addObjectToBothSidesOfRelationshipWithKeyAndHints {
         $self->setValueOfToOneRelationshipNamed($object, $relationshipName);
         return;
     }
-    
+
     # TODO un-deprecate this!
     $object->_deprecated_setRelationshipHints($hints);
     $self->_addCachedEntitiesToRelationshipNamed([$object], $relationshipName);
-    
+
     # if the relationship requires a join table entry, stash the
     # hints as part of a to-be-created join table entry, and
     # we're done for now
@@ -235,13 +236,13 @@ sub addObjectToBothSidesOfRelationshipWithKeyAndHints {
 
     # if neither object has been committed, we're done for now
     return if ($self->hasNeverBeenCommitted() && $object->hasNeverBeenCommitted());
-    
+
     # otherwise, let's figure out if we can set some IDs
     my $objectPrimaryKey = $object->entityClassDescription()->_primaryKey();
     my $primaryKey = $self->entityClassDescription()->_primaryKey();
     my $targetAttribute = $relationship->{TARGET_ATTRIBUTE};
     my $sourceAttribute = $relationship->{SOURCE_ATTRIBUTE};
-        
+
     # this object has been committed
     unless ($self->hasNeverBeenCommitted()) {
         # TODO look up the primary key by *attribute* not column
@@ -253,7 +254,7 @@ sub addObjectToBothSidesOfRelationshipWithKeyAndHints {
             $object->setValueForKey($self->valueForKey($sourceAttribute), $targetAttribute);
         }
     }
-    
+
     # related object has been committed
     unless ($object->hasNeverBeenCommitted()) {
         # TODO look up the primary key by *attribute* not column
@@ -383,7 +384,7 @@ sub entitiesForRelationshipNamed {
         return undef;
     }
     my $objectContext = IF::ObjectContext->new();
-    my $entities = [];    
+    my $entities = IF::Array->new();
     if ($relationship->{TYPE} ne "FLATTENED_TO_MANY") {
         # check for something we can short-cut
         if ($relationship->{TYPE} eq "TO_ONE") {
@@ -394,24 +395,24 @@ sub entitiesForRelationshipNamed {
             if (uc($relationship->{TARGET_ATTRIBUTE}) eq uc($targetEntityDescription->_primaryKey())) {
                 #IF::Log::stack(4);
                 #IF::Log::debug("TO_ONE relationship found with primary key as target, fetching with short-cut");
-                return [$objectContext->entityWithPrimaryKey($relationship->{TARGET_ENTITY}, 
+                return [$objectContext->entityWithPrimaryKey($relationship->{TARGET_ENTITY},
                                                             $self->storedValueForRawKey(uc($relationship->{SOURCE_ATTRIBUTE})))];
             }
         }
-            
+
         my $fsObject = $self->fetchSpecificationForToOneOrToManyRelationshipNamed($relationshipName);
         $entities = $objectContext->entitiesMatchingFetchSpecification($fsObject);
         return $entities;
     } else {
         my $fs = $self->fetchSpecificationForFlattenedToManyRelationshipNamed($relationshipName);
-        return [] unless $fs;
+        return IF::Array->new() unless $fs;
         my $entities = $objectContext->entitiesMatchingFetchSpecification($fs);
-        
+
         if ($relationship->{RELATIONSHIP_HINTS}) {
             # if a hint record showed up here, add a join record if appropriate
             foreach my $entity (@$entities) {
                 my $hints = $entity->_deprecated_relationshipHints();
-            
+
                 if ($hints->{ID}) {
                     IF::Log::debug("Fetched an entity with hints stored in db row with id ".$hints->{ID});
                     $self->__setJoinRecordForEntityThroughFlattenedToManyRelationshipNamed(
@@ -435,7 +436,7 @@ sub fetchSpecificationForToOneOrToManyRelationshipNamed {
 
     my $targetEntity = IF::Model->defaultModel()->entityClassDescriptionForEntityNamed($relationship->{TARGET_ENTITY});
     my $qualifiers = [];
-    push (@$qualifiers, IF::Qualifier->key("$relationship->{TARGET_ATTRIBUTE} = %@", 
+    push (@$qualifiers, IF::Qualifier->key("$relationship->{TARGET_ATTRIBUTE} = %@",
                     $self->storedValueForRawKey($relationship->{SOURCE_ATTRIBUTE})));
 
     if ($relationship->{QUALIFIER}) {
@@ -443,7 +444,7 @@ sub fetchSpecificationForToOneOrToManyRelationshipNamed {
     }
 
     push (@$qualifiers, @{$self->additionalQualifiersForRelationshipNamed($relationshipName)});
-    my $fs = IF::FetchSpecification->new($relationship->{TARGET_ENTITY}, 
+    my $fs = IF::FetchSpecification->new($relationship->{TARGET_ENTITY},
                 IF::Qualifier->and($qualifiers),
                 $relationship->{DEFAULT_SORT_ORDERINGS});
     $fs->setFetchLimit();
@@ -488,11 +489,24 @@ sub faultEntityForRelationshipNamed {
 }
 
 sub faultEntitiesForRelationshipNamed {
-    my $self = shift;
-    my $relationshipName = shift;
-    unless ($self->_hasCachedEntitiesForRelationshipNamed($relationshipName)) {
-        my $entities = $self->entitiesForRelationshipNamed($relationshipName);        
+    my ($self, $relationshipName) = @_;
+    if (!$self->_hasCachedEntitiesForRelationshipNamed($relationshipName)
+        || ($self->isTrackedByObjectContext() && $self->{_relationshipIsDirty}->{$relationshipName})) {
+        IF::Log::debug("fault called for $relationshipName on $self");
+        my $entities = $self->entitiesForRelationshipNamed($relationshipName);
+        my $_ces = $self->_cachedEntitiesForRelationshipNamed($relationshipName);
+        my $uncommitted = [ grep { $_->hasNeverBeenCommitted() } @$_ces ];
+        my $changed     = [ grep { $_->hasChanged() && !$_->hasNeverBeenCommitted() } @$_ces];
+        IF::Log::debug("Cached: $_ces");
+        IF::Log::debug("Uncommitted: $uncommitted");
+        IF::Log::debug("Changed: $changed");
+        push @$entities, @$uncommitted;
+        push @$entities, @$changed;
         $self->_setCachedEntitiesForRelationshipNamed($entities, $relationshipName);
+        if (scalar @$uncommitted == 0 && scalar @$changed == 0) {
+            # clear the dirty bit for this relationship
+            $self->{_relationshipIsDirty}->{$relationshipName} = 0;
+        }
     }
     return $self->_cachedEntitiesForRelationshipNamed($relationshipName);
 }
@@ -546,7 +560,7 @@ sub removeAllEntitiesForRelationshipDirectlyFromDatabase {
         my $hack = $goo->{SQL};
         $hack =~ s/T[0-9]+\.//gio;
         $query = $query." AND ".$hack;
-        
+
         IF::DB::rawRowsForSQLWithBindings({ SQL => $query, BIND_VALUES => $goo->{BIND_VALUES}});
         return;
     }
@@ -566,13 +580,13 @@ sub save {
     # which could still happen easily.
     return if $self->__isMarkedForSave();
     $self->__setIsMarkedForSave(1);
-    
+
     unless ($self->isValidForCommit()) {
         $self->__setIsMarkedForSave(0);
         return;
     }
     my $entityClassDescription = $self->entityClassDescription();
-    
+
     # First, check all the cached related entities and see
     # if any of them need to be committed
     my $relationships = $entityClassDescription->relationships();
@@ -593,7 +607,7 @@ sub save {
             $self->setValueForKey($entity->valueForKey($relationship->{TARGET_ATTRIBUTE}), $relationship->{SOURCE_ATTRIBUTE});
         }
     }
-                     
+
     # Allow the object a chance to react before being committed to the DB
     $self->prepareForCommit();
     $self->invokeNotificationFromObjectWithArguments("willBeSaved", $self);
@@ -602,15 +616,15 @@ sub save {
     # stored in the model so we can pull those and
     # ONLY those from the entity
 
-    my $dataRecord = { $self->entityClassDescription()->_primaryKey() => 
+    my $dataRecord = { $self->entityClassDescription()->_primaryKey() =>
                                 $self->valueForKey($self->entityClassDescription()->_primaryKey()) };
-    
+
     foreach my $k (@{$entityClassDescription->allAttributeNames()}) {
         next unless $self->storedValueForKeyHasChanged($k);
         my $columnName = $entityClassDescription->columnNameForAttributeName($k);
         $dataRecord->{$columnName} = $self->storedValueForKey($k);
     }
-    
+
     unless (scalar keys %$dataRecord == 1) {
         $dataRecord->{_ecd} = $self->entityClassDescription();
         if ($when eq "LATER" && !$self->hasUnsavedRelatedEntities()) {
@@ -620,20 +634,20 @@ sub save {
         }
         $self->{_currentStoredRepresentation} = undef;
         $self->didCommit();
-        $self->invokeNotificationFromObjectWithArguments("wasSaved", $self);        
-    
+        $self->invokeNotificationFromObjectWithArguments("wasSaved", $self);
+
         # check for a new ID
         $self->setId($dataRecord->{ID}) unless ($self->id());
         $self->markAllStoredValuesAsClean();
     } else {
         IF::Log::debug($self->entityClassName().": save ignored, no attributes set.");
     }
-    
+
     # now that we've committed the object, we can
     # fix relationships
     foreach my $relationshipName (keys %$relationships) {
         my $relationship = $relationships->{$relationshipName};
-        #IF::Log::debug("Checking for entities to save across $relationshipName");        
+        #IF::Log::debug("Checking for entities to save across $relationshipName");
         next if ($relationship->{IS_READ_ONLY});
         next if ($relationship->{TYPE} eq "TO_ONE" &&
                      uc($relationship->{SOURCE_ATTRIBUTE}) ne uc($primaryKey));
@@ -654,21 +668,21 @@ sub save {
                         $entity->setValueForKey(undef, $targetAttribute);
                         $entity->save(); # this should blank it out; you need to delete it yourself
                     } # TODO blank out to-one relationship here
-                } # elsif ($relationship->{TYPE} eq "FLATTENED_TO_MANY") {                
+                } # elsif ($relationship->{TYPE} eq "FLATTENED_TO_MANY") {
             }
-        }        
-        
+        }
+
         foreach my $entity (@{$self->_cachedEntitiesForRelationshipNamed($relationshipName)}) {
             #IF::Log::debug($entity);
             if ($relationship->{TYPE} eq "TO_ONE" || $relationship->{TYPE} eq "TO_MANY") {
                 my $targetAttribute = $relationship->{TARGET_ATTRIBUTE};
                 my $sourceAttribute = $relationship->{SOURCE_ATTRIBUTE};
-                
+
                 #IF::Log::debug("Setting ".$targetAttribute." to ".$self->valueForKey($sourceAttribute));
                 $entity->setValueForKey($self->valueForKey($sourceAttribute), $targetAttribute);
                 $entity->save($when);
             } elsif ($relationship->{TYPE} eq "FLATTENED_TO_MANY") {
-                
+
                 #IF::Log::debug("Checking if we need to commit entity $entity");
                 # TODO fix this handling:  right now it automatically tries to commit
                 # records here, even if they don't need to be committed
@@ -682,22 +696,22 @@ sub save {
                 # everywhere.
                 my $joinTarget;
                 my $joinSource;
-                
+
                 if ($relationship->{SOURCE_ATTRIBUTE} eq $primaryKey) {
                     $joinTarget = $primaryKey->valueForEntity($self);
                 } else {
                     $joinTarget = $self->valueForKey($relationship->{SOURCE_ATTRIBUTE});
                 }
-                
+
                 my $tecd = $entity->entityClassDescription();
                 my $tpk  = $tecd->_primaryKey();
-                
+
                 if ($relationship->{TARGET_ATTRIBUTE} eq $tpk) {
                     $joinSource = $tpk->valueForEntity($entity);
                 } else {
                     $joinSource = $entity->valueForKey($relationship->{TARGET_ATTRIBUTE});
                 }
-                
+
                 # the join record should be updated if it already exists,
                 # and inserted if it doesn't
                 my $rh = $entity->_deprecated_relationshipHints();
@@ -708,19 +722,19 @@ sub save {
                     %$jr,
                     %$rh
                 };
-                
+
                 #IF::Log::debug("Here are the hints:");
                 #IF::Log::dump($rhs);
-                
+
                 my $record = {
                     $relationship->{JOIN_TARGET_ATTRIBUTE} => $joinTarget,
                     $relationship->{JOIN_SOURCE_ATTRIBUTE} => $joinSource,
                     %$rhs,
                 };
                 IF::DB::updateRecordInDatabase(undef, $record, $relationship->{JOIN_TABLE});
-                
+
                 $entity->_deprecated_setRelationshipHints($record);
-                
+
                 if (scalar keys %{$rhs}) {
                     # blank out the hints and push the join record into holding for later use if necessary.
                     $self->_deprecated_setRelationshipHints();
@@ -740,7 +754,7 @@ sub save {
         }
 
         delete $self->{_relatedEntities}->{$relationshipName}->{removedEntities};
-        delete $self->{_relatedEntities}->{$relationshipName}->{deletedEntities};    
+        delete $self->{_relatedEntities}->{$relationshipName}->{deletedEntities};
     }
     $self->__setIsMarkedForSave(0);
 }
@@ -768,7 +782,7 @@ sub __setIsMarkedForSave {
 # entity A needs to know that it doesn't need to create
 # a join record again.
 # Furthermore, if entity A is related to both B and C, and
-# entities B and C are BOTH related to entity D, then 
+# entities B and C are BOTH related to entity D, then
 # entity D needs to know it's related to BOTH entities B
 # and C even though they're all saved in the same call
 # to save().
@@ -793,7 +807,7 @@ sub hasUnsavedRelatedEntities {
     my ($self) = @_;
     my $ecd = $self->entityClassDescription();
     return unless $    ecd;
-    
+
     my $relationships = $ecd->relationships();
     my $primaryKey = $ecd->_primaryKey();
 
@@ -801,7 +815,7 @@ sub hasUnsavedRelatedEntities {
         my $relationship = $relationships->{$relationshipName};
         next if ($relationship->{TYPE} eq "TO_ONE" &&
                      uc($relationship->{SOURCE_ATTRIBUTE}) ne uc($primaryKey));
-            
+
         foreach my $entity (@{$self->_cachedEntitiesForRelationshipNamed($relationshipName)}) {
             if ($relationship->{TYPE} eq "TO_ONE" || $relationship->{TYPE} eq "TO_MANY") {
                 return 1 if ($entity->hasChanged() || $entity->hasNeverBeenCommitted());
@@ -822,7 +836,7 @@ sub isValidForCommit {
 
 sub canBeDeleted {
     my ($self, $visitedObjects) = @_;
-    
+
     $visitedObjects = {} unless $visitedObjects;
     $visitedObjects->{$self} = 1; # mark it as visited, to avoid infinite recursion
     foreach my $relationshipName (keys %{$self->entityClassDescription()->relationships()}) {
@@ -860,7 +874,7 @@ sub _deleteSelf {
         return;
     }
     return unless ($self->canBeDeleted());
-    
+
     # Apply cascading delete rules
     my $entitiesToDelete = $self->entitiesForDeletionByRules();
     #IF::Log::debug("Scheduled to delete these entities:");
@@ -868,7 +882,7 @@ sub _deleteSelf {
     foreach my $entityToDelete (@$entitiesToDelete) {
         $objectContext->deleteEntity($entityToDelete);
     }
-    
+
     # check relationships for NULLIFY rules
     foreach my $relationshipName (keys %{$self->entityClassDescription()->relationships()}) {
         my $relationship = $self->relationshipNamed($relationshipName);
@@ -891,21 +905,24 @@ sub _deleteSelf {
             }
         }
     }
-    
+
     IF::Log::debug("==> _deleteSelf() called for ".ref($self).", destroying record with ID ".$self->valueForKey("ID")."\n");
     $self->willBeDeleted();
     IF::DB::deleteRecordInDatabase(undef, $self, $self->_table());
+    if ($self->isTrackedByObjectContext($objectContext)) {
+        $objectContext->untrackEntity($self);
+    }
     $self->{_wasDeletedFromDataStore} = 1;
 }
 
 sub entitiesForDeletionByRules {
     my $self = shift;
-    my $entitiesForDeletion = [];
+    my $entitiesForDeletion = IF::Array->new();
     foreach my $relationshipName (keys %{$self->entityClassDescription()->relationships()}) {
         my $relationship = $self->relationshipNamed($relationshipName);
         next unless $relationship && $relationship->{DELETION_RULE};
         next unless ($relationship->{DELETION_RULE} eq "CASCADE");
-        
+
         my $entities = $self->faultEntitiesForRelationshipNamed($relationshipName);
         if (@$entities) {
             push (@$entitiesForDeletion, @$entities);
@@ -916,7 +933,7 @@ sub entitiesForDeletionByRules {
 
 
 sub creationDate {
-    my $self = shift;    
+    my $self = shift;
     my $d = IF::Date::Unix->new($self->storedValueForKey("creationDate"));
     $d->_setOriginFormat($self->entityClassDescription()->attributeWithName("creationDate")->{TYPE});
     return $d;
@@ -984,7 +1001,7 @@ sub changeEntityClassToClassNamed {
 
 sub addEntitiesToRelationship {
     my ($self, $entities, $relationshipName) = @_;
-    $self->_addCachedEntitiesToRelationshipNamed($entities, $relationshipName);    
+    $self->_addCachedEntitiesToRelationshipNamed($entities, $relationshipName);
 }
 
 sub addEntityToRelationship {
@@ -996,16 +1013,16 @@ sub setValueOfToOneRelationshipNamed {
     my ($self, $entity, $relationshipName) = @_;
     my $relationship = $self->entityClassDescription()->relationshipWithName($relationshipName);
     return unless IF::Log::assert($relationship, "Relationship $relationshipName exists");
-    
+
     my $targetEntityClass = IF::Model->defaultModel()->entityClassDescriptionForEntityNamed($relationship->{TARGET_ENTITY});
     my $objectPrimaryKey = $targetEntityClass->_primaryKey();
     my $primaryKey = $self->entityClassDescription()->_primaryKey();
     my $targetAttribute = $relationship->{TARGET_ATTRIBUTE};
     my $sourceAttribute = $relationship->{SOURCE_ATTRIBUTE};
-    
+
     my $deletionRequired = (uc($primaryKey) eq uc($sourceAttribute));
     my $currentEntities = $self->entitiesForRelationshipNamed($relationshipName);
-    
+
     if ($deletionRequired) {
         # move them to the "deleted" array
         my $deletedEntities = $self->_deletedEntitiesForRelationshipNamed($relationshipName);
@@ -1017,16 +1034,16 @@ sub setValueOfToOneRelationshipNamed {
         push (@$removedEntities, @$currentEntities);
         $self->_setRemovedEntitiesForRelationshipNamed($removedEntities, $relationshipName);
     }
-            
+
     # clear what's there and add the new one
     #$self->_clearCachedEntitiesForRelationshipNamed($relationshipName);
-    $self->_setCachedEntitiesForRelationshipNamed([], $relationshipName);
+    $self->_setCachedEntitiesForRelationshipNamed(IF::Array->new(), $relationshipName);
     if ($entity) {
         $self->_addCachedEntitiesToRelationshipNamed([$entity], $relationshipName);
-        
+
         # if neither object has been committed, we're done for now
         return if ($self->hasNeverBeenCommitted() && $entity->hasNeverBeenCommitted());
-        
+
         # this object has been committed
         unless ($self->hasNeverBeenCommitted()) {
             # TODO look up the primary key by *attribute* not column
@@ -1037,7 +1054,7 @@ sub setValueOfToOneRelationshipNamed {
                 $entity->setValueForKey($self->valueForKey($sourceAttribute), $targetAttribute);
             }
         }
-        
+
         # related object has been committed
         unless ($entity->hasNeverBeenCommitted()) {
             # TODO look up the primary key by *attribute* not column
@@ -1059,7 +1076,7 @@ sub setValueOfToOneRelationshipNamed {
 sub initStoredValuesWithArray {
     my ($self, $storedValueArray) = @_;
     my $storedValues = {@$storedValueArray};
-    
+
     # TODO : This is kinda a hack to get around inflation from
     # an existing entity.  When the entity is passed into the
     # constructor, it gets dereferenced and converted to a hash
@@ -1256,7 +1273,7 @@ sub _hasCachedEntitiesForRelationshipNamed {
 
 sub _cachedEntitiesForRelationshipNamed {
     my ($self, $relationshipName) = @_;
-    return $self->{_relatedEntities}->{$relationshipName}->{entities} || [];
+    return $self->{_relatedEntities}->{$relationshipName}->{entities} || IF::Array->new();
 }
 
 sub _setCachedEntitiesForRelationshipNamed {
@@ -1272,14 +1289,29 @@ sub _clearCachedEntitiesForRelationshipNamed {
 sub _addCachedEntitiesToRelationshipNamed {
     my ($self, $entities, $relationshipName) = @_;
     unless ($self->{_relatedEntities}->{$relationshipName}->{entities}) {
-        $self->{_relatedEntities}->{$relationshipName}->{entities} = [];
+        $self->{_relatedEntities}->{$relationshipName}->{entities} = IF::Array->new();
     }
-    push (@{$self->{_relatedEntities}->{$relationshipName}->{entities}}, @$entities);
+    foreach my $e (@$entities) {
+        unless ($self->{_relatedEntities}->{$relationshipName}->{'entities'}->containsObject($e)) {
+            push (@{$self->{_relatedEntities}->{$relationshipName}->{entities}}, $e);
+
+        }
+        # if a new entity is being added, mark the relationship as 'dirty',
+        # which means we aren't sure if we have the right entities in memory;
+        # any access to this relationship from the higher-level API for this relationship
+        # will cause a DB fault to fetch the entities that are in the DB.
+        if ($e->hasNeverBeenCommitted()) {
+            if ($self->isTrackedByObjectContext() && ! $e->isTrackedByObjectContext()) {
+                $self->trackingObjectContext()->trackEntity($e);
+            }
+            $self->{_relationshipIsDirty}->{$relationshipName} = 1;
+        }
+    }
 }
 
 sub _removedEntitiesForRelationshipNamed {
     my ($self, $relationshipName) = @_;
-    return $self->{_relatedEntities}->{$relationshipName}->{removedEntities} || []; 
+    return $self->{_relatedEntities}->{$relationshipName}->{removedEntities} || IF::Array->new();
 }
 
 sub _setRemovedEntitiesForRelationshipNamed {
@@ -1289,7 +1321,7 @@ sub _setRemovedEntitiesForRelationshipNamed {
 
 sub _deletedEntitiesForRelationshipNamed {
     my ($self, $relationshipName) = @_;
-    return $self->{_relatedEntities}->{$relationshipName}->{deletedEntities} || [];    
+    return $self->{_relatedEntities}->{$relationshipName}->{deletedEntities} || IF::Array->new();
 }
 
 sub _setDeletedEntitiesForRelationshipNamed {
@@ -1299,7 +1331,7 @@ sub _setDeletedEntitiesForRelationshipNamed {
 
 sub _removeCachedEntitiesFromRelationshipNamed {
     my ($self, $entities, $relationshipName) = @_;
-    my $filteredEntities = [];
+    my $filteredEntities = IF::Array->new();
     my $relatedEntities = $self->_cachedEntitiesForRelationshipNamed($relationshipName);
     my $removedEntities = $self->_removedEntitiesForRelationshipNamed($relationshipName);
     foreach my $entity (@$entities) {
@@ -1311,10 +1343,10 @@ sub _removeCachedEntitiesFromRelationshipNamed {
             push (@$filteredEntities, $relatedEntity);
         }
         $relatedEntities = $filteredEntities;
-        $filteredEntities = [];
+        $filteredEntities = IF::Array->new();
     }
     $self->_setRemovedEntitiesForRelationshipNamed($removedEntities, $relationshipName);
-    $self->_setCachedEntitiesForRelationshipNamed($relatedEntities, $relationshipName);    
+    $self->_setCachedEntitiesForRelationshipNamed($relatedEntities, $relationshipName);
 }
 
 #-------- notifications ----------
@@ -1337,6 +1369,71 @@ sub hasNeverBeenCommitted {
 sub wasDeletedFromDataStore {
     my $self = shift;
     return $self->{_wasDeletedFromDataStore};
+}
+
+
+sub trackingObjectContext {
+    my ($self) = @_;
+    return $self->{__trackingObjectContext};
+}
+
+sub setTrackingObjectContext {
+    my ($self, $value) = @_;
+    $self->{__trackingObjectContext} = $value;
+    #print STDERR "Tracking OC is $value\n";
+    weaken($self->{__trackingObjectContext});
+}
+
+sub isTrackedByObjectContext {
+    my ($self, $oc) = @_;
+    if ($oc) {
+        return ($self->{__trackingObjectContext} == $oc);
+    }
+    return defined ($self->{__trackingObjectContext});
+}
+
+# This is called the first time an
+# **un-committed** entity is added to
+# the ObjectContext.
+sub awakeFromInsertionInObjectContext {
+    my ($self, $oc) = @_;
+}
+
+# This is called when an already-committed
+# object is tracked by the ObjectContext.
+sub awakeFromFetchInObjectContext {
+    my ($self, $oc) = @_;
+}
+
+# This returns all entities attached to this one via
+# a relationship that are in-memory right now.  This
+# can be used for things like adding them all at once
+# into the ObjectContext, etc.
+
+sub relatedEntities {
+    my ($self) = @_;
+    return $self->__cachedEntitiesForAllRelationships(IF::Array->new());
+}
+
+sub __cachedEntitiesForAllRelationships {
+    my ($self, $visited) = @_;
+    # "visited" is an array, not a dictionary
+    return IF::Array->new() if $visited->containsObject($self);
+    $visited->addObject($self);
+
+    my $ecd = $self->entityClassDescription();
+    my $relationships = $ecd->relationships();
+    my $cachedEntities = IF::Array->new();
+    foreach my $relationshipName (keys %$relationships) {
+        my $relationship = $ecd->relationshipWithName($relationshipName);
+        next if $relationship->isReadOnly();
+        my $cached = $self->_cachedEntitiesForRelationshipNamed($relationshipName);
+        foreach my $ce (@$cached) {
+            push @$cachedEntities, $ce;
+            push @$cachedEntities, @{$ce->__cachedEntitiesForAllRelationships($visited)};
+        }
+    }
+    return $cachedEntities;
 }
 
 1;

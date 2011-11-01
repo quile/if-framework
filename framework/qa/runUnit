@@ -64,5 +64,6 @@ unless ($noBootstrap) {
 # Test::Class subclasses go here
 
 use IFTest::Classes;
+use Carp::REPL 'test';
 
 Test::Class->runtests;

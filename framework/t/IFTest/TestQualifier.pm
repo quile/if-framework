@@ -187,7 +187,7 @@ sub test_prefetch_of_to_many_with_no_qualifiers : Test(1) {
 
     my $t11fs = IF::FetchSpecification->new("Trunk");
     $t11fs->setPrefetchingRelationships([qw(branches)]);
-    my $t11results = $self->{oc}->entitiesMatchingFetchSpecificationUsingSQLExpressions($t11fs);
+    my $t11results = $self->{oc}->entitiesMatchingFetchSpecification($t11fs);
     ok(scalar @$t11results &&
         IF::Array->arrayHasElements($t11results->[0]->_cachedEntitiesForRelationshipNamed("branches")),
         "Prefetching a to_many with no qualifiers");

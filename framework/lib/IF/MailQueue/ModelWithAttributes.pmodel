@@ -1,0 +1,286 @@
+# Model file last updated Tue Apr 20 16:54:17 2010
+# This file is GENERATED from lib/IF/MailQueue/Model.pmodel!  Do not edit!
+$VAR1 = bless( {
+	       'NAMESPACE' => {
+			    'ENTITY' => 'IF::MailQueue::Entity'
+			  },
+	       'ENTITIES' => {
+			   'MailQueueEntry' => bless( {
+						  'NAME' => 'MailQueueEntry',
+						  'PRIMARY_KEY' => 'ID',
+						  'TABLE' => 'MAIL_QUEUE_ENTRY',
+						  'ATTRIBUTES' => {
+								'MAIL_EVENT_ID' => {
+										 'KEY' => 'NO',
+										 'SIZE' => '11',
+										 'NULL' => 'NO',
+										 'DEFAULT' => '0',
+										 'TYPE' => 'int',
+										 'COLUMN_NAME' => 'MAIL_EVENT_ID',
+										 'ATTRIBUTE_NAME' => 'mailEventId',
+										 'EXTRA' => '0',
+										 'VALUES' => []
+									         },
+								'ID' => {
+									'KEY' => 'NO',
+									'SIZE' => '11',
+									'NULL' => 'NO',
+									'DEFAULT' => undef,
+									'TYPE' => 'int',
+									'COLUMN_NAME' => 'ID',
+									'ATTRIBUTE_NAME' => 'id',
+									'EXTRA' => undef,
+									'VALUES' => []
+								        },
+								'SENDER' => {
+									    'KEY' => 'NO',
+									    'SIZE' => '255',
+									    'NULL' => 'NO',
+									    'DEFAULT' => '',
+									    'TYPE' => 'varchar',
+									    'COLUMN_NAME' => 'SENDER',
+									    'ATTRIBUTE_NAME' => 'sender',
+									    'EXTRA' => '',
+									    'VALUES' => []
+									  },
+								'IS_LAST_MESSAGE' => {
+										   'KEY' => 'NO',
+										   'SIZE' => '4',
+										   'NULL' => 'NO',
+										   'DEFAULT' => '0',
+										   'TYPE' => 'tinyint',
+										   'COLUMN_NAME' => 'IS_LAST_MESSAGE',
+										   'ATTRIBUTE_NAME' => 'isLastMessage',
+										   'EXTRA' => '0',
+										   'VALUES' => []
+										 },
+								'FIELD_VALUES' => {
+										'KEY' => 'NO',
+										'SIZE' => undef,
+										'NULL' => 'NO',
+										'DEFAULT' => undef,
+										'TYPE' => 'longtext',
+										'COLUMN_NAME' => 'FIELD_VALUES',
+										'ATTRIBUTE_NAME' => 'fieldValues',
+										'EXTRA' => undef,
+										'VALUES' => []
+									        },
+								'CREATION_DATE' => {
+										 'KEY' => 'NO',
+										 'SIZE' => undef,
+										 'NULL' => 'NO',
+										 'DEFAULT' => '0000-00-00 00:00:00',
+										 'TYPE' => 'datetime',
+										 'COLUMN_NAME' => 'CREATION_DATE',
+										 'ATTRIBUTE_NAME' => 'creationDate',
+										 'EXTRA' => '0000-00-00 00:00:00',
+										 'VALUES' => []
+									         },
+								'EMAIL' => {
+									   'KEY' => 'NO',
+									   'SIZE' => '255',
+									   'NULL' => 'NO',
+									   'DEFAULT' => '',
+									   'TYPE' => 'varchar',
+									   'COLUMN_NAME' => 'EMAIL',
+									   'ATTRIBUTE_NAME' => 'email',
+									   'EXTRA' => '',
+									   'VALUES' => []
+									 },
+								'MAIL_MESSAGE_ID' => {
+										   'KEY' => 'NO',
+										   'SIZE' => '11',
+										   'NULL' => 'NO',
+										   'DEFAULT' => '0',
+										   'TYPE' => 'int',
+										   'COLUMN_NAME' => 'MAIL_MESSAGE_ID',
+										   'ATTRIBUTE_NAME' => 'mailMessageId',
+										   'EXTRA' => '0',
+										   'VALUES' => []
+										 },
+								'SEND_DATE' => {
+									       'KEY' => 'NO',
+									       'SIZE' => '11',
+									       'NULL' => 'NO',
+									       'DEFAULT' => '0',
+									       'TYPE' => 'int',
+									       'COLUMN_NAME' => 'SEND_DATE',
+									       'ATTRIBUTE_NAME' => 'sendDate',
+									       'EXTRA' => '0',
+									       'VALUES' => []
+									     },
+								'MODIFICATION_DATE' => {
+										     'KEY' => 'NO',
+										     'SIZE' => undef,
+										     'NULL' => 'NO',
+										     'DEFAULT' => '0000-00-00 00:00:00',
+										     'TYPE' => 'datetime',
+										     'COLUMN_NAME' => 'MODIFICATION_DATE',
+										     'ATTRIBUTE_NAME' => 'modificationDate',
+										     'EXTRA' => '0000-00-00 00:00:00',
+										     'VALUES' => []
+										   }
+							        },
+						  'RELATIONSHIPS' => {
+								   'mailEvent' => {
+										'TARGET_ATTRIBUTE' => 'ID',
+										'TARGET_ENTITY' => 'MailEvent',
+										'TYPE' => 'TO_ONE',
+										'SOURCE_ATTRIBUTE' => 'MAIL_EVENT_ID'
+									        },
+								   'message' => {
+									        'TARGET_ATTRIBUTE' => 'ID',
+									        'TARGET_ENTITY' => 'MailMessage',
+									        'TYPE' => 'TO_ONE',
+									        'SOURCE_ATTRIBUTE' => 'MAIL_MESSAGE_ID'
+									      }
+								 }
+						}, 'IF::EntityClassDescription' ),
+			   'MailMessage' => bless( {
+					         'NAME' => 'MailMessage',
+					         'PRIMARY_KEY' => 'ID',
+					         'TABLE' => 'MAIL_MESSAGE',
+					         'ATTRIBUTES' => {
+							       'ID' => {
+								       'KEY' => 'NO',
+								       'SIZE' => '11',
+								       'NULL' => 'NO',
+								       'DEFAULT' => undef,
+								       'TYPE' => 'int',
+								       'COLUMN_NAME' => 'ID',
+								       'ATTRIBUTE_NAME' => 'id',
+								       'EXTRA' => undef,
+								       'VALUES' => []
+								     },
+							       'BODY' => {
+								         'KEY' => 'NO',
+								         'SIZE' => undef,
+								         'NULL' => 'NO',
+								         'DEFAULT' => undef,
+								         'TYPE' => 'text',
+								         'COLUMN_NAME' => 'BODY',
+								         'ATTRIBUTE_NAME' => 'body',
+								         'EXTRA' => undef,
+								         'VALUES' => []
+								       },
+							       'SUBJECT' => {
+									  'KEY' => 'NO',
+									  'SIZE' => '255',
+									  'NULL' => 'NO',
+									  'DEFAULT' => '',
+									  'TYPE' => 'varchar',
+									  'COLUMN_NAME' => 'SUBJECT',
+									  'ATTRIBUTE_NAME' => 'subject',
+									  'EXTRA' => '',
+									  'VALUES' => []
+									},
+							       'CONTENT_TYPE' => {
+									       'KEY' => 'NO',
+									       'SIZE' => '20',
+									       'NULL' => 'NO',
+									       'DEFAULT' => 'text/plain',
+									       'TYPE' => 'varchar',
+									       'COLUMN_NAME' => 'CONTENT_TYPE',
+									       'ATTRIBUTE_NAME' => 'contentType',
+									       'EXTRA' => 'text/plain',
+									       'VALUES' => []
+									     },
+							       'CREATION_DATE' => {
+									        'KEY' => 'NO',
+									        'SIZE' => undef,
+									        'NULL' => 'NO',
+									        'DEFAULT' => '0000-00-00 00:00:00',
+									        'TYPE' => 'datetime',
+									        'COLUMN_NAME' => 'CREATION_DATE',
+									        'ATTRIBUTE_NAME' => 'creationDate',
+									        'EXTRA' => '0000-00-00 00:00:00',
+									        'VALUES' => []
+									      },
+							       'HEADERS' => {
+									  'KEY' => 'NO',
+									  'SIZE' => undef,
+									  'NULL' => 'NO',
+									  'DEFAULT' => undef,
+									  'TYPE' => 'text',
+									  'COLUMN_NAME' => 'HEADERS',
+									  'ATTRIBUTE_NAME' => 'headers',
+									  'EXTRA' => undef,
+									  'VALUES' => []
+									},
+							       'MODIFICATION_DATE' => {
+										  'KEY' => 'NO',
+										  'SIZE' => undef,
+										  'NULL' => 'NO',
+										  'DEFAULT' => '0000-00-00 00:00:00',
+										  'TYPE' => 'datetime',
+										  'COLUMN_NAME' => 'MODIFICATION_DATE',
+										  'ATTRIBUTE_NAME' => 'modificationDate',
+										  'EXTRA' => '0000-00-00 00:00:00',
+										  'VALUES' => []
+										}
+							     }
+					       }, 'IF::EntityClassDescription' ),
+			   'MailEvent' => bless( {
+					       'NAME' => 'MailEvent',
+					       'PRIMARY_KEY' => 'ID',
+					       'TABLE' => 'MAIL_EVENT',
+					       'ATTRIBUTES' => {
+							     'ID' => {
+								     'KEY' => 'NO',
+								     'SIZE' => '11',
+								     'NULL' => 'NO',
+								     'DEFAULT' => undef,
+								     'TYPE' => 'int',
+								     'COLUMN_NAME' => 'ID',
+								     'ATTRIBUTE_NAME' => 'id',
+								     'EXTRA' => undef,
+								     'VALUES' => []
+								   },
+							     'CREATED_BY' => {
+									   'KEY' => 'NO',
+									   'SIZE' => '80',
+									   'NULL' => 'NO',
+									   'DEFAULT' => '',
+									   'TYPE' => 'varchar',
+									   'COLUMN_NAME' => 'CREATED_BY',
+									   'ATTRIBUTE_NAME' => 'createdBy',
+									   'EXTRA' => '',
+									   'VALUES' => []
+									 },
+							     'CREATION_DATE' => {
+									      'KEY' => 'NO',
+									      'SIZE' => undef,
+									      'NULL' => 'NO',
+									      'DEFAULT' => '0000-00-00 00:00:00',
+									      'TYPE' => 'datetime',
+									      'COLUMN_NAME' => 'CREATION_DATE',
+									      'ATTRIBUTE_NAME' => 'creationDate',
+									      'EXTRA' => '0000-00-00 00:00:00',
+									      'VALUES' => []
+									    },
+							     'LOG_MESSAGE' => {
+									    'KEY' => 'NO',
+									    'SIZE' => '255',
+									    'NULL' => 'NO',
+									    'DEFAULT' => '',
+									    'TYPE' => 'varchar',
+									    'COLUMN_NAME' => 'LOG_MESSAGE',
+									    'ATTRIBUTE_NAME' => 'logMessage',
+									    'EXTRA' => '',
+									    'VALUES' => []
+									  },
+							     'MODIFICATION_DATE' => {
+										'KEY' => 'NO',
+										'SIZE' => undef,
+										'NULL' => 'NO',
+										'DEFAULT' => '0000-00-00 00:00:00',
+										'TYPE' => 'datetime',
+										'COLUMN_NAME' => 'MODIFICATION_DATE',
+										'ATTRIBUTE_NAME' => 'modificationDate',
+										'EXTRA' => '0000-00-00 00:00:00',
+										'VALUES' => []
+									        }
+							   }
+					     }, 'IF::EntityClassDescription' )
+			 }
+	     }, 'ICA::Model' );

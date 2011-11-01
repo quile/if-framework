@@ -11,23 +11,24 @@ use IF::Log;
 sub init {
     my ($self) = @_;
     $self->SUPER::init();
-    
+
     # TODO:  This is a stop-gap solution until we make
     # the whole DB interface OO.
+    # IF::Log::setLogMask(0xffff);
     IF::Log::debug("Setting DB information");
     IF::DB::setDatabaseInformation($self->configurationValueForKey("DB_LIST"),
                                    $self->configurationValueForKey("DB_CONFIG"),
                                    );
     IF::Log::debug("Attempting to load default model ".$self->configurationValueForKey("DEFAULT_MODEL"));
-    
+
     no strict 'refs';
     my $modelClass = $self->defaultModelClassName();
     eval "use $modelClass;";
-    if ($@) { IF::Log::error($@) }
-    
+    if ($@) { die $@ }
+
     my $m = $modelClass->new($self->configurationValueForKey("DEFAULT_MODEL"));
     IF::Model->setDefaultModel($m);
-    
+
     # Load up the application's modules and initialise them
     $self->loadModules();
     return $self;
@@ -50,7 +51,7 @@ sub defaultModule {
 
 sub cleanUpTransactionInContext {
     my ($self, $context) = @_;
-    
+
     # perform your transaction cleanup here
     $self->SUPER::cleanUpTransactionInContext($context);
 }
@@ -65,10 +66,10 @@ sub environmentIsProduction {
 
 sub loadModules {
     my ($self) = @_;
-    
+
     my $modules = $self->configurationValueForKey("APPLICATION_MODULES");
     return unless (IF::Log::assert(IF::Array->arrayHasElements($modules), "Found at least one application module to initialise"));
-    
+
     foreach my $module (@$modules) {
         eval "use $module";
         if ($@) {

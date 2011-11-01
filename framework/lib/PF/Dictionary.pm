@@ -88,6 +88,11 @@ sub allObjects {
     return [values %$self];
 }
 
+sub allValues {
+    my ($self) = @_;
+    return $self->allObjects();
+}
+
 sub removeObjectForKey {
     my $self = shift;
     my $key = shift;

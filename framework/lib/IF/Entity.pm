@@ -45,7 +45,7 @@ sub new {
     $self->{__storedValues} = {};        # contains representation of DB column values
     $self->{_wasDeletedFromDataStore} = 0;
     $self->{__joinRecordForRelationship} = {}; # tracks transient join information to other objects
-
+    $self->{_relationshipIsDirty} = {};
     my $namespace = $className;
     $namespace =~ s/::([A-Za-z0-9_]*)$//g;
     $self->{_entityClassName} = $1;
@@ -64,7 +64,12 @@ sub new {
 sub newFromDictionary {
     my ($className) = shift;
     my $e = $className->new();
-    my $dictionary = { @_ };
+    my $dictionary;
+    if ( IF::Dictionary::isHash( $_[0] ) ) {
+        $dictionary = $_[0];
+    } else {
+        $dictionary = { @_ };
+    }
     if ($dictionary) {
         foreach my $k (keys %$dictionary) {
             $e->setValueForKey($dictionary->{$k}, $k);

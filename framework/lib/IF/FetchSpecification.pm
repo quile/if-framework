@@ -396,13 +396,14 @@ sub resolveEntityHash {
 
 # This needs to be optimised so that it no longer requires the sort, which is a waste of RAM
 # and computation, especially for big lists
-sub unpackResultsIntoEntities {
+sub unpackResultsIntoEntitiesInObjectContext {
     my $self = shift;
     my $results = shift;
+    my $oc = shift;
     my $unpackedResults = {};
 
     my $primaryKey = uc($self->{_entityClassDescription}->_primaryKey()->stringValue());
-    my $objectContext = IF::ObjectContext->new();
+    my $objectContext = $oc || IF::ObjectContext->new();
     # IF::Log::debug("::: will be hashing the entities by $primaryKey");
     my $order = 0;
     my $rootEntityClassName = $self->inflateAsInstancesOfEntityNamed() || $self->{entity};
@@ -437,11 +438,17 @@ sub unpackResultsIntoEntities {
         }
         foreach my $result (@$results) {
             my $entityHash = $self->sqlExpression()->dictionaryOfEntitiesFromRawRow($result);
-            my $primaryEntity = $entityHash->{$rootEntityClassName};
+            my $uniqueHash = {};
+            foreach my $entityType (keys %$entityHash) {
+                my $u = $objectContext->trackedInstanceOfEntity($entityHash->{$entityType})
+                        || $entityHash->{$entityType};
+                $uniqueHash->{$entityType} = $u;
+            }
+            my $primaryEntity = $uniqueHash->{$rootEntityClassName};
             if ($isFetchingPartialEntity) {
                 $primaryEntity->setIsPartiallyInflated(1);
             }
-            my $primaryKeyValue = $primaryEntity->valueForKey($primaryKey);
+            my $primaryKeyValue = $primaryEntity->storedValueForRawKey($primaryKey);
             #IF::Log::debug("::: hashing entity with primary key $primaryKeyValue");
             my $existingPrimaryEntityRecord = $unpackedResults->{$primaryKeyValue};
             unless ($existingPrimaryEntityRecord) {
@@ -452,11 +459,11 @@ sub unpackResultsIntoEntities {
             } else {
                 $primaryEntity = $existingPrimaryEntityRecord->{ENTITY};
             }
-            $self->resolveEntityHash($entityHash, $primaryEntity);
+            $self->resolveEntityHash($uniqueHash, $primaryEntity);
             $order++;
         }
     }
-    my $sortedResults = [];
+    my $sortedResults = IF::Array->new();
     foreach my $result (sort {$a->{ORDER} <=> $b->{ORDER}} values %$unpackedResults) {
         push (@$sortedResults, $result->{ENTITY});
     }

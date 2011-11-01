@@ -80,6 +80,10 @@ use IF::ObjectContext;
 #     ok(!$found, "Successfully deleted object");
 # }
 
+sub setUp: Test(setup) {
+    my ($self) = @_;
+    IF::ObjectContext->new()->init();
+}
 
 sub test_basic: Test(2) {
     my ($self) = @_;
