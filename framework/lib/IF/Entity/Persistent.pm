@@ -1240,10 +1240,12 @@ sub currentStoredRepresentation {
     return if $self->hasNeverBeenCommitted();
     return $self->{_currentStoredRepresentation} if $self->{_currentStoredRepresentation};
     my $objectContext = IF::ObjectContext->new();
-    my $isUsingCache = $objectContext->shouldUseCache();
-    $objectContext->setShouldUseCache(0);
+    my $isTracking = $objectContext->trackingIsEnabled();
+    $objectContext->disableTracking();
     my $entity = $objectContext->entityWithPrimaryKey($self->{_entityClassName}, $self->id());
-    $objectContext->setShouldUseCache($isUsingCache);
+    if ($isTracking) {
+        $objectContext->enableTracking();
+    }
     $self->{_currentStoredRepresentation} = $entity;
     return $entity;
 }

@@ -139,64 +139,65 @@ sub test_to_one : Test(9) {
     # TODO check cleanup was successful
 }
 
-sub test_many_to_many : Test(7) {
-    my ($self) = @_;
-
-    my $entities = [];
-    my $branches = [];
-    my $isOk = 1;
-    foreach my $c (0..4) {
-        my $b = IFTest::Entity::Branch->new();
-        $b->setLength($c);
-        $b->setLeafCount($c+1);
-        push @$branches, $b;
-        $b->save();
-        $isOk = 0 unless $b->id();
-        last unless $isOk;
-    }
-    ok($isOk, "Created branches");
-
-    my $globules = [];
-    $isOk = 1;
-    foreach my $c (0..4) {
-        my $g = IFTest::Entity::Globule->new();
-        $g->setName("Globule $c");
-        push @$globules, $g;
-        $g->save();
-        $isOk = 0 unless $g->id();
-        last unless $isOk;
-    }
-    ok($isOk, "Created globules");
-
-    # associate them via a many-2-many
-
-    my $g0 = $globules->[0];
-    my $b4 = $branches->[4];
-    $g0->addObjectToBothSidesOfRelationshipWithKeyAndHints($branches->[4], "branches", { FOO => "four", BAR => "bur", } );
-    $g0->addObjectToBothSidesOfRelationshipWithKeyAndHints($branches->[2], "branches", { FOO => "two", BAR => "bum", } );
-    $g0->save();
-    my $brs = $g0->branches();
-    ok(scalar @$brs == 2, "Two branches on globule");
-
-    $b4->addObjectToBothSidesOfRelationshipWithKeyAndHints($globules->[1], "globules", { FOO => "one", BAR => "buz", }, );
-    $b4->save();
-    my $gs = $b4->globules();
-    ok(scalar @$gs == 2, "Two globules on branch");
-
-    $g0->removeObjectFromBothSidesOfRelationshipWithKey($branches->[4], "branches");
-    $g0->save();
-    my $brs = $g0->branches();
-    ok(scalar @$brs == 1, "One branch on globule");
-    # shame this is _deprecated_...
-    ok($brs->[0]->_deprecated_relationshipHintForKey("FOO") eq "two", "Hint is correct");
-    ok(scalar @{$b4->globules()}, "One globule on branch");
-
-    # cleanup
-    foreach my $e (@$entities) {
-        $e->_deleteSelf();
-    }
-
-    # TODO check cleanup was successful
-}
+#
+# sub test_many_to_many : Test(7) {
+#     my ($self) = @_;
+#
+#     my $entities = [];
+#     my $branches = [];
+#     my $isOk = 1;
+#     foreach my $c (0..4) {
+#         my $b = IFTest::Entity::Branch->new();
+#         $b->setLength($c);
+#         $b->setLeafCount($c+1);
+#         push @$branches, $b;
+#         $b->save();
+#         $isOk = 0 unless $b->id();
+#         last unless $isOk;
+#     }
+#     ok($isOk, "Created branches");
+#
+#     my $globules = [];
+#     $isOk = 1;
+#     foreach my $c (0..4) {
+#         my $g = IFTest::Entity::Globule->new();
+#         $g->setName("Globule $c");
+#         push @$globules, $g;
+#         $g->save();
+#         $isOk = 0 unless $g->id();
+#         last unless $isOk;
+#     }
+#     ok($isOk, "Created globules");
+#
+#     # associate them via a many-2-many
+#
+#     my $g0 = $globules->[0];
+#     my $b4 = $branches->[4];
+#     $g0->addObjectToBothSidesOfRelationshipWithKeyAndHints($branches->[4], "branches", { FOO => "four", BAR => "bur", } );
+#     $g0->addObjectToBothSidesOfRelationshipWithKeyAndHints($branches->[2], "branches", { FOO => "two", BAR => "bum", } );
+#     $g0->save();
+#     my $brs = $g0->branches();
+#     ok(scalar @$brs == 2, "Two branches on globule");
+#
+#     $b4->addObjectToBothSidesOfRelationshipWithKeyAndHints($globules->[1], "globules", { FOO => "one", BAR => "buz", }, );
+#     $b4->save();
+#     my $gs = $b4->globules();
+#     ok(scalar @$gs == 2, "Two globules on branch");
+#
+#     $g0->removeObjectFromBothSidesOfRelationshipWithKey($branches->[4], "branches");
+#     $g0->save();
+#     my $brs = $g0->branches();
+#     ok(scalar @$brs == 1, "One branch on globule");
+#     # shame this is _deprecated_...
+#     ok($brs->[0]->_deprecated_relationshipHintForKey("FOO") eq "two", "Hint is correct");
+#     ok(scalar @{$b4->globules()}, "One globule on branch");
+#
+#     # cleanup
+#     foreach my $e (@$entities) {
+#         $e->_deleteSelf();
+#     }
+#
+#     # TODO check cleanup was successful
+# }
 
 1;

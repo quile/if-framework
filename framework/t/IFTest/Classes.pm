@@ -40,15 +40,15 @@ use IFTest::TestContext;
 use IFTest::TestMemcached;
 use IFTest::TestModule;
 use IFTest::TestSession;
-use IFTest::TestSequence;
-use IFTest::TestStashSession;
-use IFTest::TestComponent;
-use IFTest::TestUtility;
-
-use IFTest::TestMailer;
-use IFTest::TestMailQueue;
-
-use IFTest::TestObjectContext;
+# use IFTest::TestSequence;
+# use IFTest::TestStashSession;
+# use IFTest::TestComponent;
+# use IFTest::TestUtility;
+# 
+# use IFTest::TestMailer;
+# use IFTest::TestMailQueue;
+# 
+# use IFTest::TestObjectContext;
 
 # This is sometimes
 # misbehaving on shutdown; it seems that the next consumer

@@ -32,7 +32,9 @@ use IF::Request::Offline;
 use IF::Context;
 use IFTest::Entity::SiteClassifier;
 
-sub setUp : Test(startup => 6) {
+use Data::Dumper;
+
+sub setUp : Test(startup => 8) {
     my ($self) = @_;
 
     my $app = IF::Application->applicationInstanceWithName("IFTest");
@@ -76,13 +78,16 @@ sub test_request_contexts : Test(4) {
     # -- this involves a fair amount of churn to
     #    save them one by one
     my $allOk = 1;
+    my $oc = IF::ObjectContext->new();
     for(my $i=1; $i<6; $i++) {
+        $oc->init();
         # get the current session
         my $cs = $self->{_sc}->sessionWithExternalId($s->externalId());
         $cs->setContextNumber($i);
 
         # get the current rc
         my $rc = $cs->requestContext();
+
         $cs->save();
         $rc->save();
 

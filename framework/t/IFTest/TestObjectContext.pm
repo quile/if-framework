@@ -234,7 +234,6 @@ sub testChangedObjects :Test(6) {
     ok( $self->{oc}->trackingIsEnabled(), "Tracking is enabled");
 
     # fetch any branch object
-    #$DB::single = 1;
     my $branch = IF::Query->new("Branch")->first();
     ok( $branch, "fetched a branch from the DB");
     ok( scalar @{$self->{oc}->trackedEntities()} == 1, "OC is tracking one entity");
